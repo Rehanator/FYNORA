@@ -449,7 +449,17 @@ function PaymentsPage() {
   );
 }
 
-function SnapshotRow({ label, value, icon: Icon }: { label: string; value: string; icon: LucideIcon }) {
+function SnapshotRow({
+  label,
+  value,
+  prefix,
+  icon: Icon,
+}: {
+  label: string;
+  value: number;
+  prefix?: string;
+  icon: LucideIcon;
+}) {
   return (
     <div className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
       <div className="flex items-center gap-3">
@@ -458,10 +468,20 @@ function SnapshotRow({ label, value, icon: Icon }: { label: string; value: strin
         </div>
         <span className="text-sm text-muted-foreground">{label}</span>
       </div>
-      <span className="text-xl font-semibold tracking-tight">{value}</span>
+      <span className="text-xl font-semibold tracking-tight">
+        <NumberTicker
+          value={value}
+          prefix={prefix}
+          duration={1.2}
+          stagger={0.03}
+          startOnView={false}
+          format={(v: number) => v.toLocaleString("en-IN")}
+        />
+      </span>
     </div>
   );
 }
+
 
 function TabBtn({
   active,
