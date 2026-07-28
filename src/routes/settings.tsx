@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Bell, Key, Palette, Pencil, Building, Check, CreditCard, Lock } from "lucide-react";
+import { Bell, Pencil, Building, Check, CreditCard, Lock } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
