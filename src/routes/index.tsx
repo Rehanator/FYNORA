@@ -250,41 +250,19 @@ function ScrollHero() {
 
           {/* Phone UI (phone mode) */}
           <motion.div style={{ opacity: phoneOpacity }} className="absolute inset-0 p-3">
-            <div className="flex h-full flex-col rounded-[36px] bg-gradient-to-b from-[#0f1216] to-black p-4">
-              <div className="mx-auto h-1 w-14 rounded-full bg-white/20" />
-              <div className="mt-4" style={FONT}>
-                <div className="text-[10px] uppercase tracking-widest text-white/40">FYNORA Pay</div>
-                <div className="mt-1 text-lg font-semibold text-white">Good morning, Anita</div>
-              </div>
-              <div className="mt-4 rounded-2xl bg-[#00a657] p-4 text-white shadow-lg" style={FONT}>
-                <div className="text-[10px] uppercase tracking-widest opacity-80">Due today</div>
-                <div className="mt-1 text-2xl font-bold">₹48,500</div>
-                <div className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-white/20 px-2.5 py-1 text-[11px]">
-                  Secure UPI <ArrowRight className="h-3 w-3" />
-                </div>
-              </div>
-              <div className="mt-3 grid grid-cols-2 gap-2" style={FONT}>
-                {[
-                  { label: "Tuition", v: "₹32,000" },
-                  { label: "Transport", v: "₹8,500" },
-                  { label: "Late Fee", v: "₹500" },
-                  { label: "Activity", v: "₹7,500" },
-                ].map((r) => (
-                  <div key={r.label} className="rounded-xl bg-white/[0.04] p-2.5">
-                    <div className="text-[9px] uppercase tracking-wider text-white/40">{r.label}</div>
-                    <div className="mt-0.5 text-[13px] font-semibold text-white">{r.v}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-auto flex items-center justify-between rounded-xl bg-white/[0.03] px-3 py-2" style={FONT}>
-                <div className="flex items-center gap-1.5 text-[10px] text-white/60">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#00a657]" />
-                  Live sync
-                </div>
-                <div className="text-[10px] text-white/40">v3.2</div>
-              </div>
+            <div className="h-full w-full overflow-hidden rounded-[36px] bg-black">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover"
+              >
+                <source src={phoneDemo.url} type="video/mp4" />
+              </video>
             </div>
           </motion.div>
+
         </motion.div>
 
         {/* Scroll hint */}
