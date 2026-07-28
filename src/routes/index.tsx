@@ -81,11 +81,12 @@ function FloatingIcon({
   floatDelay: number;
 }) {
   // As the user scrolls 0 → 0.3, each icon flies from its (startX, startY)
-  // to the center (0, 0) while scaling + fading out — the "drop" into the box.
+  // down into the box that sits below the headline — the "drop".
   const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.3], [startY, DROP_TARGET_Y]);
   const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const opacity = useTransform(scrollYProgress, [0, 0.28], [1, 0]);
+
 
   const renderInner = () => {
     switch (id) {
