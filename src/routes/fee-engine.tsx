@@ -50,10 +50,12 @@ const toneStyles: Record<string, string> = {
   rose: "bg-rose-500/10 text-rose-400",
 };
 
-const feeHeads: Array<{
+type FeeHead = {
   name: string; category: string; icon: FeeIconKey; amount: number;
   cycle: string; students: number; status: string; color: string;
-}> = [
+};
+
+const initialFeeHeads: FeeHead[] = [
   { name: "Tuition Fee", category: "ALL GRADES", icon: "book", amount: 45000, cycle: "Quarterly", students: 1240, status: "Active", color: "teal" },
   { name: "Transport", category: "ALL GRADES", icon: "bus", amount: 12000, cycle: "Quarterly", students: 860, status: "Active", color: "blue" },
   { name: "Sports & Clubs", category: "CLASS X", icon: "trophy", amount: 4500, cycle: "Annually", students: 620, status: "Annual", color: "orange" },
@@ -62,7 +64,11 @@ const feeHeads: Array<{
   { name: "Arts & Music", category: "CLASS VI - VIII", icon: "palette", amount: 2900, cycle: "Annually", students: 310, status: "Annual", color: "rose" },
 ];
 
+const newFeeIcons: FeeIconKey[] = ["book", "bus", "trophy", "beaker", "utensils", "palette"];
+const newFeeColors = ["teal", "blue", "orange", "purple", "emerald", "rose"];
+
 type EditingFee = { name: string; amount: number; cycle: string };
+
 
 function TiltCard({
   children,
