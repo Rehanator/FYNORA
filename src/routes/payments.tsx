@@ -193,6 +193,7 @@ const initialOffline: OfflineRowFull[] = [
 
 function PaymentsPage() {
   const [tab, setTab] = useState<"digital" | "offline">("digital");
+  const [dateFilter, setDateFilter] = useState<DateFilter>("Today");
   const [rows, setRows] = useState(initialOffline);
   const pendingCount = rows.filter((r) => r.status === "pending").length;
   const approvedCount = rows.filter((r) => r.status === "approved").length;
