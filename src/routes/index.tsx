@@ -125,21 +125,9 @@ function ControllerLanding() {
   return (
     <div className="min-h-dvh bg-white text-[#093242]" style={{ fontFamily: "urbane, ui-sans-serif, system-ui, sans-serif", fontSize: 16 }}>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-full lg:block lg:w-[78%]">
-          <video
-            src={heroVideo.url}
-            autoPlay
-            loop
-            muted
-            playsInline
-            aria-label="3D animation of financial dashboards"
-            className="h-full w-full object-cover object-right mix-blend-multiply opacity-95"
-          />
-        </div>
-
-        <div className="relative z-10 mx-auto w-[min(1200px,calc(100%-2rem))] pt-16 pb-20 sm:pt-24 lg:min-h-[38rem] lg:flex lg:items-center">
-          <motion.div initial="hidden" animate="show" variants={fadeUp} className="min-w-0 max-w-xl lg:py-16">
+      <section className="mx-auto w-[min(1200px,calc(100%-2rem))] pt-16 pb-20 sm:pt-24">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
+          <motion.div initial="hidden" animate="show" variants={fadeUp} className="min-w-0">
             <p className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: BLUE }}>
               The Controller
             </p>
@@ -147,7 +135,7 @@ function ControllerLanding() {
               Comprehensive financial management for growing service{" "}
               <span style={{ color: BLUE }}>SMEs</span>
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-[#093242]/75">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#093242]/75">
               An outsourced financial controller for service businesses that have outgrown
               spreadsheets — reliable figures, monthly reviews, and decisions you can defend.
             </p>
@@ -155,19 +143,18 @@ function ControllerLanding() {
               <CtaButton />
               <a
                 href="#approach"
-                className="inline-flex items-center gap-2 rounded-[12px] border border-[#093242]/15 bg-white/70 px-6 py-3.5 text-base font-semibold backdrop-blur-sm transition-colors duration-200 hover:bg-[#ebf6fa] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3166e8] focus-visible:ring-offset-2"
+                className="inline-flex items-center gap-2 rounded-[12px] border border-[#093242]/15 px-6 py-3.5 text-base font-semibold transition-colors duration-200 hover:bg-[#ebf6fa] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3166e8] focus-visible:ring-offset-2"
               >
                 See our approach
               </a>
             </div>
           </motion.div>
 
-          <div className="mt-10 lg:hidden">
+          <motion.div initial="hidden" animate="show" variants={fadeUp} className="min-w-0">
             <LoopVideo src={heroVideo.url} label="3D animation of financial dashboards" />
-          </div>
+          </motion.div>
         </div>
       </section>
-
 
       {/* Questions grid */}
       <section className="py-20" style={{ backgroundColor: RAISED }}>
