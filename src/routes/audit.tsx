@@ -366,6 +366,8 @@ function LiveAuditStream({ query, types }: { query: string; types: string[] | nu
   const [entries, setEntries] = useState<StreamEntry[]>(() =>
     Array.from({ length: 10 }, (_, i) => makeEntry((10 - i) * 4000)),
   );
+  const [isAtBottom, setIsAtBottom] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
