@@ -102,6 +102,8 @@ const defaulters = [
 
 function Dashboard() {
   const [sent, setSent] = useState<Record<string, boolean>>({});
+  const [bulkSent, setBulkSent] = useState(false);
+
 
   const notify = (d: { id: string; name: string; due: string }) => {
     toast.success(`Reminder sent to ${d.name}'s parent`, {
