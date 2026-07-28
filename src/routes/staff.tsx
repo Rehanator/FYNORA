@@ -53,7 +53,7 @@ const cardVariants = {
   }),
 };
 
-const TeamMemberCard = React.memo(({ member, index }: { member: Member; index: number }) => {
+const TeamMemberCard = React.memo(({ member, index, onView }: { member: Member; index: number; onView: (m: Member) => void }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
