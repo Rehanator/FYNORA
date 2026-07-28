@@ -20,7 +20,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/payments")({
   head: () => ({
     meta: [
-      { title: "Omnichannel Payments · FYNORA" },
+      { title: "Omnichannel Payments · CoFee" },
       { name: "description", content: "Live UPI collections and manual reconciliation in one console." },
       { property: "og:title", content: "Omnichannel Payments" },
       { property: "og:description", content: "Live UPI collections and manual reconciliation in one console." },

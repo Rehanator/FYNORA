@@ -5,13 +5,13 @@ import dashboardMockup from "@/assets/dashboard-mockup.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "FYNORA — The Future of School Fee Management" },
+      { title: "CoFee — The Future of School Fee Management" },
       {
         name: "description",
         content:
           "Eliminate chaotic spreadsheets. Automate collections, offer smart EMI splits, and reconcile payments instantly with our modern FinTech suite for schools.",
       },
-      { property: "og:title", content: "FYNORA — The Future of School Fee Management" },
+      { property: "og:title", content: "CoFee — The Future of School Fee Management" },
       {
         property: "og:description",
         content:
@@ -78,7 +78,7 @@ function Landing() {
             <Link to="/dashboard" className="block">
             <img
               src={dashboardMockup}
-              alt="Preview of the FYNORA admin dashboard showing revenue analytics, defaulters and WhatsApp payment automation."
+              alt="Preview of the CoFee admin dashboard showing revenue analytics, defaulters and WhatsApp payment automation."
               width={1600}
               height={1008}
               className="w-full rounded-2xl transition hover:brightness-[1.02]"
