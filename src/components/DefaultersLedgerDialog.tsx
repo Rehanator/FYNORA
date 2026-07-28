@@ -135,9 +135,9 @@ export function DefaultersLedgerDialog({
           </select>
         </div>
 
-        <div className="max-h-[380px] overflow-y-auto slim-scroll px-2">
+        <div className="max-h-[380px] overflow-y-auto defaulters-scroll px-2">
           <table className="w-full text-sm">
-            <thead className="sticky top-0 z-10 bg-[var(--card,transparent)] backdrop-blur">
+            <thead className="sticky top-0 z-10 bg-background/80 backdrop-blur">
               <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:text-left [&>th]:text-[10px] [&>th]:font-semibold [&>th]:uppercase [&>th]:tracking-wider [&>th]:text-muted-foreground">
                 <th>Student</th>
                 <th>Grade</th>
