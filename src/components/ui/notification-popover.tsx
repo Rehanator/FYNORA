@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export type Notification = {
   id: string;
@@ -57,9 +58,11 @@ const initialNotifications: Notification[] = [
 export function NotificationPopover({ className }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const [activeTab, setActiveTab] = useState<"all" | "unread">("all");
   const ref = useRef<HTMLDivElement>(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
+  const displayedNotifications = activeTab === "unread" ? notifications.filter((n) => !n.read) : notifications;
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -97,17 +100,50 @@ export function NotificationPopover({ className }: { className?: string }) {
             transition={{ duration: 0.18 }}
             className="glass absolute right-0 top-full z-50 mt-3 w-[320px] overflow-hidden rounded-2xl shadow-xl"
           >
-            <div className="flex items-center justify-between border-b border-black/[0.07] px-4 py-3">
-              <span className="text-sm font-semibold">Notifications</span>
-              <button
-                onClick={markAllAsRead}
-                className="text-[11px] font-medium text-muted-foreground transition hover:text-foreground"
-              >
-                Mark all as read
-              </button>
+            <div className="border-b border-black/[0.07] p-4">
+              <div className="flex w-full items-center justify-between">
+                {/* Tabs */}
+                <div className="flex space-x-1 rounded-lg border border-gray-800/50 bg-black/20 p-1">
+                  <button
+                    onClick={() => setActiveTab("all")}
+                    className={`rounded-md px-3 py-1.5 text-xs transition-all ${
+                      activeTab === "all"
+                        ? "bg-zinc-800 font-medium text-white shadow-sm"
+                        : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    All
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("unread")}
+                    className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-all ${
+                      activeTab === "unread"
+                        ? "bg-zinc-800 font-medium text-white shadow-sm"
+                        : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    Unread
+                    {unreadCount > 0 && (
+                      <span className="rounded-full bg-red-500/20 px-1.5 py-0.5 text-[10px] font-bold text-red-400">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Mark as Read Action */}
+                <Button
+                  onClick={markAllAsRead}
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 text-xs text-gray-400 hover:bg-black/[0.05] hover:text-white"
+                >
+                  Mark all as read
+                </Button>
+              </div>
             </div>
             <div className="max-h-[320px] divide-y divide-black/[0.06] overflow-y-auto">
-              {notifications.map((n, i) => (
+              {displayedNotifications.map((n, i) => (
                 <NotificationItem key={n.id} notification={n} index={i} onMarkAsRead={markAsRead} />
               ))}
             </div>
