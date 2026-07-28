@@ -390,37 +390,47 @@ function PaymentsPage() {
               </div>
             </div>
             <div className="space-y-3">
-              {upiFeed.map((u, i) => (
-                <div
-                  key={i}
-                  className="group flex items-center gap-4 rounded-xl border border-border bg-card/60 px-4 py-3 transition hover:bg-secondary/60"
-                >
-                  <div
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm font-semibold shadow-sm"
-                    style={{ backgroundColor: u.iconBg }}
+              <AnimatePresence initial={false}>
+                {feed.map((u) => (
+                  <motion.div
+                    key={u.id}
+                    layout
+                    initial={{ opacity: 0, y: -20, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 12, scale: 0.98 }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    className="group flex items-center gap-4 rounded-xl border border-border bg-card/60 px-4 py-3 transition hover:bg-secondary/60"
                   >
-                    {u.icon === "bolt" ? "⚡" : "↘"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold text-foreground">
-                      {u.payer} → {u.student} · {u.grade}
+                    <div
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm font-semibold shadow-sm"
+                      style={{ backgroundColor: u.iconBg }}
+                    >
+                      {u.icon === "bolt" ? "⚡" : "↘"}
                     </div>
-                    <div className="truncate text-[11px] text-muted-foreground">
-                      {u.vpa} · {u.txnId}
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-sm font-semibold text-foreground">
+                        {u.payer} → {u.student} · {u.grade}
+                      </div>
+                      <div className="truncate text-[11px] text-muted-foreground">
+                        {u.vpa} · {u.txnId}
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-base font-semibold text-foreground">₹{u.amount.toLocaleString("en-IN")}</div>
-                    <div className="mt-0.5 flex items-center justify-end gap-2">
-                      <span className="inline-flex items-center gap-1 rounded-full border border-success/25 bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success">
-                        <CheckCircle2 className="h-3 w-3" /> Auto approved
-                      </span>
-                      <span className="text-[11px] text-muted-foreground">{u.time}</span>
+                    <div className="text-right">
+                      <div className="text-base font-semibold text-foreground">₹{u.amount.toLocaleString("en-IN")}</div>
+                      <div className="mt-0.5 flex items-center justify-end gap-2">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-success/25 bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success">
+                          <CheckCircle2 className="h-3 w-3" /> Auto approved
+                        </span>
+                        <span className="text-[11px] text-muted-foreground">
+                          {now ? relativeTime(u.createdAt, now) : "Just now"}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
+
           </div>
 
           {/* Right column - Today's UPI Collection */}
