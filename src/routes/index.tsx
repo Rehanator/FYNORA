@@ -121,7 +121,7 @@ function FloatingIcon({
           <div className="w-24 rounded-xl bg-white p-2.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5 sm:w-28">
             <div className="flex items-center gap-1.5">
               <Receipt className="h-3.5 w-3.5 text-[#00a657]" strokeWidth={2} />
-              <div className="text-[8px] font-semibold uppercase tracking-wider text-white">Receipt</div>
+              <div className="text-[8px] font-semibold uppercase tracking-wider text-[#14171d]">Receipt</div>
             </div>
             <div className="mt-2 space-y-1">
               <div className="h-1 w-full rounded bg-black/10" />
@@ -142,7 +142,7 @@ function FloatingIcon({
             </div>
             <div className="grid place-items-center py-2">
               <Calendar className="h-4 w-4 text-zinc-500" strokeWidth={2} />
-              <div className="mt-0.5 text-lg font-bold leading-none text-white">15</div>
+              <div className="mt-0.5 text-lg font-bold leading-none text-[#14171d]">15</div>
               <div className="text-[8px] font-medium uppercase tracking-wider text-zinc-500">Jul</div>
             </div>
           </div>
@@ -191,8 +191,8 @@ function ScrollHero() {
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Ambient wash */}
         <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[oklch(0.92_0.09_165)] opacity-40 blur-[160px]" />
-          <div className="absolute right-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-[oklch(0.88_0.10_220)] opacity-40 blur-[160px]" />
+          <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/15 blur-[180px]" />
+          <div className="absolute right-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-[oklch(0.6_0.12_220)]/15 blur-[180px]" />
         </div>
 
         {/* Heading */}
@@ -200,11 +200,11 @@ function ScrollHero() {
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
           className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-1.5 text-xs font-medium text-[#14171d] backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/70 px-4 py-1.5 text-xs font-medium text-zinc-200 backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
             Built for modern K-12 finance teams
           </span>
-          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-[#14171d] sm:text-6xl md:text-7xl">
+          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl">
             Fed up with chaotic{" "}
             <span className="bg-gradient-to-r from-[#00a657] to-[oklch(0.55_0.15_200)] bg-clip-text text-transparent">
               Fee Collection?
@@ -284,12 +284,12 @@ function StatsSection() {
   ];
   return (
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
-      <div className="mx-auto max-w-6xl rounded-[50px] border border-black/5 bg-[#edf7f5] p-8 shadow-[0_30px_80px_-40px_rgba(0,166,87,0.35)] sm:p-14">
+      <div className="mx-auto max-w-6xl rounded-[50px] border border-zinc-800/50 bg-[#0b0b0b] p-8 shadow-[0_30px_80px_-40px_rgba(0,166,87,0.35)] sm:p-14">
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-white">
+          <span className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-200">
             <span className="h-1.5 w-1.5 rounded-full bg-[#00a657]" /> Real outcomes
           </span>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-[#14171d] sm:text-5xl">
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             Why switch to FYNORA?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-zinc-400">
@@ -300,7 +300,7 @@ function StatsSection() {
           {stats.map(({ v, label, icon: Icon }) => (
             <div
               key={label}
-              className="group rounded-3xl border border-black/5 bg-white p-6 transition hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,166,87,0.4)]"
+              className="group rounded-3xl border border-zinc-800/50 bg-[#111111] p-6 transition hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,166,87,0.4)]"
             >
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#00a657]/10 text-[#00a657]">
                 <Icon className="h-5 w-5" strokeWidth={2} />
@@ -359,7 +359,7 @@ function ZigZagBlocks() {
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#00a657]/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-[#00a657]">
                   {b.tag}
                 </div>
-                <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-[#14171d] sm:text-4xl md:text-5xl">
+                <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
                   {b.heading}
                 </h3>
                 <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-400 sm:text-lg">
@@ -374,13 +374,13 @@ function ZigZagBlocks() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-[36px] bg-[#edf7f5] p-6 sm:p-12">
+              <div className="rounded-[36px] border border-zinc-800/50 bg-[#111111] p-6 sm:p-12">
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="h-auto w-full rounded-3xl mix-blend-multiply"
+                  className="h-auto w-full rounded-3xl"
                 >
                   <source src={b.video} type="video/mp4" />
                 </video>
@@ -403,7 +403,7 @@ function ExpandSection() {
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <h2 className="text-4xl font-semibold tracking-tight text-[#14171d] sm:text-5xl">
+          <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             Expand your possibilities
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-zinc-400">
@@ -414,7 +414,7 @@ function ExpandSection() {
           {addons.map(({ name, desc, icon: Icon }) => (
             <div
               key={name}
-              className="group rounded-[36px] border border-black/5 bg-white p-8 transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(0,166,87,0.35)]"
+              className="group rounded-[36px] border border-zinc-800/50 bg-[#111111] p-8 transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(0,166,87,0.35)]"
             >
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#00a657] text-white shadow-lg">
                 <Icon className="h-6 w-6" strokeWidth={1.75} />
@@ -429,10 +429,10 @@ function ExpandSection() {
         </div>
 
         {/* Trust */}
-        <div className="mt-20 rounded-[50px] bg-[#edf7f5] p-8 sm:p-14">
+        <div className="mt-20 rounded-[50px] border border-zinc-800/50 bg-[#0b0b0b] p-8 sm:p-14">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div>
-              <h3 className="text-3xl font-semibold tracking-tight text-[#14171d] sm:text-4xl">
+              <h3 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Why institutes trust FYNORA?
               </h3>
               <p className="mt-3 max-w-md text-zinc-400">
@@ -443,7 +443,7 @@ function ExpandSection() {
               {["SOC 2", "GDPR", "ISO 27001", "PCI DSS"].map((b) => (
                 <div
                   key={b}
-                  className="grid aspect-square place-items-center rounded-2xl border border-black/5 bg-white text-center shadow-sm"
+                  className="grid aspect-square place-items-center rounded-2xl border border-zinc-800/50 bg-[#111111] text-center shadow-sm"
                 >
                   <div>
                     <ShieldCheck className="mx-auto h-6 w-6 text-[#00a657]" />
@@ -497,7 +497,7 @@ function FinalCTA() {
 
 function Landing() {
   return (
-    <main className="relative" style={FONT}>
+    <main className="relative bg-black" style={FONT}>
       <ScrollHero />
       <StatsSection />
       <ZigZagBlocks />
