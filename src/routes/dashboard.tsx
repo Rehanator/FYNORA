@@ -91,6 +91,13 @@ const defaulters = [
   { id: "STU-089", name: "Kabir Menon", grade: "12-C", due: "₹28,900", days: 24, level: "med" },
   { id: "STU-311", name: "Zoya Khan", grade: "8-A", due: "₹19,400", days: 18, level: "med" },
   { id: "STU-402", name: "Rohan Patel", grade: "11-B", due: "₹12,750", days: 9, level: "low" },
+  { id: "STU-158", name: "Meera Iyer", grade: "10-A", due: "₹42,100", days: 38, level: "high" },
+  { id: "STU-273", name: "Devansh Kapoor", grade: "9-C", due: "₹34,800", days: 29, level: "high" },
+  { id: "STU-095", name: "Anaya Bose", grade: "11-A", due: "₹26,400", days: 22, level: "med" },
+  { id: "STU-347", name: "Vihaan Nair", grade: "7-B", due: "₹21,900", days: 20, level: "med" },
+  { id: "STU-421", name: "Sara Malhotra", grade: "12-A", due: "₹17,650", days: 14, level: "low" },
+  { id: "STU-512", name: "Arjun Verma", grade: "8-C", due: "₹15,200", days: 11, level: "low" },
+  { id: "STU-608", name: "Priya Chawla", grade: "10-C", due: "₹9,850", days: 7, level: "low" },
 ];
 
 function Dashboard() {
