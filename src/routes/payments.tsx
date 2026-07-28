@@ -352,10 +352,12 @@ function PaymentsPage() {
               <div className="text-xs text-muted-foreground">Real-time settlement summary</div>
             </div>
             <div className="flex-1 divide-y divide-border">
-              {snapshotItems.map((item) => (
-                <SnapshotRow key={item.label} label={item.label} value={item.value} icon={item.icon} />
-              ))}
+              <SnapshotRow label="Collected Today" value={collectedToday} prefix="₹" icon={snapshotIcons.collected} />
+              <SnapshotRow label="Total Transactions" value={totalTxns} icon={snapshotIcons.transactions} />
+              <SnapshotRow label="Avg. Ticket Size" value={avgTicket} prefix="₹" icon={snapshotIcons.avgTicket} />
+              <SnapshotRow label="Convenience Fees Saved" value={feesSaved} prefix="₹" icon={snapshotIcons.feesSaved} />
             </div>
+
           </div>
         </div>
       ) : (
