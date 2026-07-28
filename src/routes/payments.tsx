@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
 export const Route = createFileRoute("/payments")({
   head: () => ({
@@ -144,33 +145,36 @@ function PaymentsPage() {
   const metrics = [
     {
       label: "Today's Collection",
-      value: `₹${todaysCollection.toLocaleString("en-IN")}`,
+      value: todaysCollection,
+      prefix: "₹",
       change: "↑ +12% vs yesterday",
       changeType: "positive" as const,
       icon: Wallet,
     },
     {
       label: "UPI Transactions",
-      value: upiTransactions.toLocaleString("en-IN"),
+      value: upiTransactions,
       change: "Zero-fee routed",
       changeType: "neutral" as const,
       icon: Smartphone,
     },
     {
       label: "Offline Earning",
-      value: `₹${offlineEarning.toLocaleString("en-IN")}`,
+      value: offlineEarning,
+      prefix: "₹",
       change: "Awaiting bank deposit",
       changeType: "neutral" as const,
       icon: Banknote,
     },
     {
       label: "Pending Offline",
-      value: pendingOffline.toLocaleString("en-IN"),
+      value: pendingOffline,
       change: "Requires reconciliation",
       changeType: "warning" as const,
       icon: Percent,
     },
   ];
+
 
   const decide = (id: string, status: "approved" | "rejected") => {
     setRows((r) => r.map((x) => (x.id === id ? { ...x, status } : x)));
@@ -232,7 +236,16 @@ function PaymentsPage() {
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-xs text-muted-foreground">{m.label}</div>
-                <div className="mt-1 text-2xl font-semibold tracking-tight">{m.value}</div>
+                <div className="mt-1 text-2xl font-semibold tracking-tight">
+                  <NumberTicker
+                    value={m.value}
+                    prefix={m.prefix}
+                    duration={1.2}
+                    stagger={0.03}
+                    startOnView={false}
+                    format={(v) => v.toLocaleString("en-IN")}
+                  />
+                </div>
               </div>
               <div className="grid h-9 w-9 place-items-center rounded-xl bg-secondary">
                 <m.icon className="h-4 w-4 text-primary" />
