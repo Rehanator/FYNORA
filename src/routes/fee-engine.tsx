@@ -606,9 +606,15 @@ function FeeModal({
           </button>
           <button
             onClick={() => {
-              onClose();
+              const trimmed = name.trim();
+              if (!trimmed) {
+                toast.error("Please enter a fee name");
+                return;
+              }
+              const parsedAmount = Number(amount.replace(/[^0-9.]/g, "")) || 0;
+              onSubmit({ name: trimmed, amount: parsedAmount, cycle });
               if (isEditing) {
-                toast.success("Fee head updated", { description: `${name || editingFee.name} saved successfully.` });
+                toast.success("Fee head updated", { description: `${trimmed} saved successfully.` });
               } else {
                 toast.success("Fee head created", { description: `New ${cycle.toLowerCase()} fee added to your structure.` });
               }
