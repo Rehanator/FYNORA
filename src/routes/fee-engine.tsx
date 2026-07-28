@@ -551,7 +551,15 @@ function RuleToggle({
   );
 }
 
-function FeeModal({ editingFee, onClose }: { editingFee: EditingFee | null; onClose: () => void }) {
+function FeeModal({
+  editingFee,
+  onClose,
+  onSubmit,
+}: {
+  editingFee: EditingFee | null;
+  onClose: () => void;
+  onSubmit: (data: { name: string; amount: number; cycle: string }) => void;
+}) {
   const isEditing = editingFee !== null;
   const [name, setName] = useState(editingFee?.name ?? "");
   const [amount, setAmount] = useState(editingFee ? String(editingFee.amount) : "");
