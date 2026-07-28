@@ -54,7 +54,7 @@ function LoopVideo({ src, label }: { src: string; label: string }) {
       muted
       playsInline
       aria-label={label}
-      className="mix-blend-multiply w-full h-auto object-contain scale-110 lg:scale-125 origin-center"
+      className="mix-blend-multiply w-full h-auto rounded-[24px] object-cover"
     />
   );
 }
@@ -126,7 +126,7 @@ function ControllerLanding() {
     <div className="min-h-dvh bg-white text-[#093242]" style={{ fontFamily: "urbane, ui-sans-serif, system-ui, sans-serif", fontSize: 16 }}>
       {/* Hero */}
       <section className="mx-auto w-[min(1200px,calc(100%-2rem))] pt-16 pb-20 sm:pt-24">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <motion.div initial="hidden" animate="show" variants={fadeUp} className="min-w-0">
             <p className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: BLUE }}>
               The Controller
