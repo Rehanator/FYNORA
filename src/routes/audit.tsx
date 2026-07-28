@@ -395,8 +395,21 @@ function LiveAuditStream({ query, types }: { query: string; types: string[] | nu
   });
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [visible.length]);
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const threshold = 8;
+      setIsAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < threshold);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isAtBottom && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [visible.length, isAtBottom]);
 
   return (
     <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/90 shadow-2xl shadow-slate-900/50 backdrop-blur-xl">
