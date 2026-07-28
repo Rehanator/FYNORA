@@ -491,7 +491,9 @@ function FeeEngine() {
         </div>
       </div>
 
-      {isModalOpen && <FeeModal editingFee={editingFee} onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <FeeModal editingFee={editingFee} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmitFee} />
+      )}
     </div>
   );
 }
