@@ -272,7 +272,7 @@ function Dashboard() {
               <span className="text-sm font-semibold">Prioritized Defaulters</span>
               <span className="inline-flex items-center gap-1 rounded-full border border-[oklch(0.7_0.2_25_/_0.4)] bg-[oklch(0.7_0.2_25_/_0.15)] px-2 py-0.5 text-[10px] font-semibold text-[oklch(0.55_0.22_25)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[oklch(0.55_0.22_25)] shadow-[0_0_6px_oklch(0.55_0.22_25)]" />
-                5 Critical
+                {defaulters.filter((d) => d.level === "high").length} Critical
               </span>
             </div>
             <div className="text-xs text-muted-foreground">Highest overdue balances, first</div>
@@ -288,16 +288,16 @@ function Dashboard() {
             <Send className="h-4 w-4" /> Send Bulk Reminder
           </button>
         </div>
-        <div className="overflow-x-auto">
+        <div className="defaulters-scroll max-h-[350px] overflow-y-auto overflow-x-auto rounded-xl">
           <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="text-[11px] uppercase tracking-wider text-muted-foreground">
+            <thead className="sticky top-0 z-10 bg-card text-[11px] uppercase tracking-wider text-muted-foreground shadow-[0_1px_0_0_hsl(var(--border))]">
               <tr>
-                <th className="pb-3 font-medium">Student</th>
-                <th className="pb-3 font-medium">Grade</th>
-                <th className="pb-3 font-medium">Overdue</th>
-                <th className="pb-3 font-medium">Days late</th>
-                <th className="pb-3 font-medium">Urgency</th>
-                <th className="pb-3 text-right font-medium">Action</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Student</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Grade</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Overdue</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Days late</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Urgency</th>
+                <th className="bg-card pb-3 pt-2 text-right font-medium">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.04]">
@@ -340,6 +340,19 @@ function Dashboard() {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="mt-3 border-t border-black/[0.06] pt-3">
+          <button
+            onClick={() =>
+              toast("Opening full defaulters ledger…", {
+                description: "Paginated view with filters, exports and audit trail.",
+              })
+            }
+            className="group flex w-full items-center justify-center gap-2 rounded-xl border border-black/[0.06] bg-black/[0.02] px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground"
+          >
+            View All Defaulters
+            <span className="transition-transform group-hover:translate-x-0.5">→</span>
+          </button>
         </div>
       </div>
 
