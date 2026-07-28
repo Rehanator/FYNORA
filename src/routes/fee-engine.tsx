@@ -136,8 +136,35 @@ const students: Student[] = [
 ];
 
 function FeeEngine() {
+  const [feeHeads, setFeeHeads] = useState<FeeHead[]>(initialFeeHeads);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingFee, setEditingFee] = useState<EditingFee | null>(null);
+
+  const handleSubmitFee = (data: { name: string; amount: number; cycle: string }) => {
+    if (editingFee) {
+      setFeeHeads((prev) =>
+        prev.map((f) =>
+          f.name === editingFee.name ? { ...f, name: data.name, amount: data.amount, cycle: data.cycle } : f,
+        ),
+      );
+    } else {
+      setFeeHeads((prev) => [
+        ...prev,
+        {
+          name: data.name,
+          category: "ALL GRADES",
+          icon: newFeeIcons[prev.length % newFeeIcons.length],
+          amount: data.amount,
+          cycle: data.cycle,
+          students: 0,
+          status: "Active",
+          color: newFeeColors[prev.length % newFeeColors.length],
+        },
+      ]);
+    }
+    setIsModalOpen(false);
+  };
+
   const [split, setSplit] = useState(false);
   const [installments, setInstallments] = useState(4);
   const [selectedStudent, setSelectedStudent] = useState<Student>(students[0]);
