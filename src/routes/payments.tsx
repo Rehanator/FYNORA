@@ -89,12 +89,13 @@ const upiFeed: UpiRow[] = [
   },
 ];
 
-const snapshotItems = [
-  { label: "Collected Today", value: "₹2,14,850", icon: Wallet },
-  { label: "Total Transactions", value: "86", icon: CheckCircle2 },
-  { label: "Avg. Ticket Size", value: "₹2,498", icon: TrendingUp },
-  { label: "Convenience Fees Saved", value: "₹4,297", icon: CreditCard },
-];
+const snapshotIcons = {
+  collected: Wallet,
+  transactions: CheckCircle2,
+  avgTicket: TrendingUp,
+  feesSaved: CreditCard,
+};
+
 
 type OfflineStatus = "pending" | "approved" | "rejected";
 type OfflineRow = {
@@ -141,6 +142,25 @@ function PaymentsPage() {
     }, intervalMs);
     return () => clearInterval(interval);
   }, []);
+
+  // Today's UPI Collection snapshot simulation
+  const [collectedToday, setCollectedToday] = useState(214850);
+  const [totalTxns, setTotalTxns] = useState(86);
+  const [feesSaved, setFeesSaved] = useState(4297);
+  const avgTicket = Math.round(collectedToday / totalTxns);
+
+  useEffect(() => {
+    const intervalMs = Math.floor(Math.random() * 2000) + 4000; // 4–6 seconds
+    const interval = setInterval(() => {
+      const amount = Math.floor(Math.random() * 4500) + 500; // ₹500–₹5,000
+      setCollectedToday((prev) => prev + amount);
+      setTotalTxns((prev) => prev + 1);
+      setFeesSaved((prev) => prev + Math.round(amount * 0.02));
+    }, intervalMs);
+    return () => clearInterval(interval);
+  }, []);
+
+
 
   const metrics = [
     {
@@ -351,10 +371,12 @@ function PaymentsPage() {
               <div className="text-xs text-muted-foreground">Real-time settlement summary</div>
             </div>
             <div className="flex-1 divide-y divide-border">
-              {snapshotItems.map((item) => (
-                <SnapshotRow key={item.label} label={item.label} value={item.value} icon={item.icon} />
-              ))}
+              <SnapshotRow label="Collected Today" value={collectedToday} prefix="₹" icon={snapshotIcons.collected} />
+              <SnapshotRow label="Total Transactions" value={totalTxns} icon={snapshotIcons.transactions} />
+              <SnapshotRow label="Avg. Ticket Size" value={avgTicket} prefix="₹" icon={snapshotIcons.avgTicket} />
+              <SnapshotRow label="Convenience Fees Saved" value={feesSaved} prefix="₹" icon={snapshotIcons.feesSaved} />
             </div>
+
           </div>
         </div>
       ) : (
@@ -446,7 +468,17 @@ function PaymentsPage() {
   );
 }
 
-function SnapshotRow({ label, value, icon: Icon }: { label: string; value: string; icon: LucideIcon }) {
+function SnapshotRow({
+  label,
+  value,
+  prefix,
+  icon: Icon,
+}: {
+  label: string;
+  value: number;
+  prefix?: string;
+  icon: LucideIcon;
+}) {
   return (
     <div className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
       <div className="flex items-center gap-3">
@@ -455,10 +487,20 @@ function SnapshotRow({ label, value, icon: Icon }: { label: string; value: strin
         </div>
         <span className="text-sm text-muted-foreground">{label}</span>
       </div>
-      <span className="text-xl font-semibold tracking-tight">{value}</span>
+      <span className="text-xl font-semibold tracking-tight">
+        <NumberTicker
+          value={value}
+          prefix={prefix}
+          duration={1.2}
+          stagger={0.03}
+          startOnView={false}
+          format={(v: number) => v.toLocaleString("en-IN")}
+        />
+      </span>
     </div>
   );
 }
+
 
 function TabBtn({
   active,
