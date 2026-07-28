@@ -91,6 +91,13 @@ const defaulters = [
   { id: "STU-089", name: "Kabir Menon", grade: "12-C", due: "₹28,900", days: 24, level: "med" },
   { id: "STU-311", name: "Zoya Khan", grade: "8-A", due: "₹19,400", days: 18, level: "med" },
   { id: "STU-402", name: "Rohan Patel", grade: "11-B", due: "₹12,750", days: 9, level: "low" },
+  { id: "STU-158", name: "Meera Iyer", grade: "10-A", due: "₹42,100", days: 38, level: "high" },
+  { id: "STU-273", name: "Devansh Kapoor", grade: "9-C", due: "₹34,800", days: 29, level: "high" },
+  { id: "STU-095", name: "Anaya Bose", grade: "11-A", due: "₹26,400", days: 22, level: "med" },
+  { id: "STU-347", name: "Vihaan Nair", grade: "7-B", due: "₹21,900", days: 20, level: "med" },
+  { id: "STU-421", name: "Sara Malhotra", grade: "12-A", due: "₹17,650", days: 14, level: "low" },
+  { id: "STU-512", name: "Arjun Verma", grade: "8-C", due: "₹15,200", days: 11, level: "low" },
+  { id: "STU-608", name: "Priya Chawla", grade: "10-C", due: "₹9,850", days: 7, level: "low" },
 ];
 
 function Dashboard() {
@@ -265,7 +272,7 @@ function Dashboard() {
               <span className="text-sm font-semibold">Prioritized Defaulters</span>
               <span className="inline-flex items-center gap-1 rounded-full border border-[oklch(0.7_0.2_25_/_0.4)] bg-[oklch(0.7_0.2_25_/_0.15)] px-2 py-0.5 text-[10px] font-semibold text-[oklch(0.55_0.22_25)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[oklch(0.55_0.22_25)] shadow-[0_0_6px_oklch(0.55_0.22_25)]" />
-                5 Critical
+                {defaulters.filter((d) => d.level === "high").length} Critical
               </span>
             </div>
             <div className="text-xs text-muted-foreground">Highest overdue balances, first</div>
@@ -281,16 +288,16 @@ function Dashboard() {
             <Send className="h-4 w-4" /> Send Bulk Reminder
           </button>
         </div>
-        <div className="overflow-x-auto">
+        <div className="defaulters-scroll max-h-[350px] overflow-y-auto overflow-x-auto rounded-xl">
           <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="text-[11px] uppercase tracking-wider text-muted-foreground">
+            <thead className="sticky top-0 z-10 bg-card text-[11px] uppercase tracking-wider text-muted-foreground shadow-[0_1px_0_0_hsl(var(--border))]">
               <tr>
-                <th className="pb-3 font-medium">Student</th>
-                <th className="pb-3 font-medium">Grade</th>
-                <th className="pb-3 font-medium">Overdue</th>
-                <th className="pb-3 font-medium">Days late</th>
-                <th className="pb-3 font-medium">Urgency</th>
-                <th className="pb-3 text-right font-medium">Action</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Student</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Grade</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Overdue</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Days late</th>
+                <th className="bg-card pb-3 pt-2 font-medium">Urgency</th>
+                <th className="bg-card pb-3 pt-2 text-right font-medium">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.04]">
@@ -333,6 +340,19 @@ function Dashboard() {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="mt-3 border-t border-black/[0.06] pt-3">
+          <button
+            onClick={() =>
+              toast("Opening full defaulters ledger…", {
+                description: "Paginated view with filters, exports and audit trail.",
+              })
+            }
+            className="group flex w-full items-center justify-center gap-2 rounded-xl border border-black/[0.06] bg-black/[0.02] px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground"
+          >
+            View All Defaulters
+            <span className="transition-transform group-hover:translate-x-0.5">→</span>
+          </button>
         </div>
       </div>
 
