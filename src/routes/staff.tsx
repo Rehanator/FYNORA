@@ -144,13 +144,42 @@ const TeamMemberCard = React.memo(({ member, index, onView }: { member: Member; 
 });
 TeamMemberCard.displayName = "TeamMemberCard";
 
+const DOT_COLORS = ["bg-emerald-400", "bg-fuchsia-400", "bg-amber-400", "bg-violet-400", "bg-cyan-400", "bg-pink-400", "bg-rose-400"];
+
+const emptyForm = { name: "", role: "", dept: "", years: "", email: "", phone: "" };
+
 function Staff() {
   const [active, setActive] = useState<Filter>("All");
+  const [members, setMembers] = useState<Member[]>(initialStaff);
+  const [selected, setSelected] = useState<Member | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
+  const [form, setForm] = useState(emptyForm);
 
   const filtered = useMemo(
-    () => (active === "All" ? staff : staff.filter((s) => s.dept === active)),
-    [active],
+    () => (active === "All" ? members : members.filter((s) => s.dept === active)),
+    [active, members],
   );
+
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.role.trim() || !form.email.trim()) {
+      toast.error("Name, role and email are required.");
+      return;
+    }
+    const newMember: Member = {
+      name: form.name.trim(),
+      role: form.role.trim(),
+      dept: form.dept.trim() || "Administration",
+      years: Number(form.years) || 0,
+      email: form.email.trim(),
+      phone: form.phone.trim() || "+91 00000 00000",
+      dotColor: DOT_COLORS[members.length % DOT_COLORS.length],
+      avatar: `https://i.pravatar.cc/160?u=${encodeURIComponent(form.email.trim())}`,
+    };
+    setMembers((prev) => [newMember, ...prev]);
+    setForm(emptyForm);
+    setAddOpen(false);
+  };
 
   return (
     <div className="space-y-8" style={{ perspective: "1200px" }}>
@@ -162,9 +191,7 @@ function Staff() {
           </p>
         </div>
         <button
-          onClick={() =>
-            toast("Add staff", { description: "Staff onboarding form opens here in the full build." })
-          }
+          onClick={() => setAddOpen(true)}
           className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[0_0_16px_-4px_rgba(34,211,238,0.45)] transition hover:opacity-90">
           <UserPlus className="h-4 w-4" />
           Add Staff
@@ -195,9 +222,97 @@ function Staff() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filtered.map((m, i) => (
-          <TeamMemberCard key={m.email} member={m} index={i} />
+          <TeamMemberCard key={m.email} member={m} index={i} onView={setSelected} />
         ))}
       </div>
+
+      {/* Profile dialog */}
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="sm:max-w-md">
+          {selected && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="sr-only">{selected.name}</DialogTitle>
+                <DialogDescription className="sr-only">Staff member profile details</DialogDescription>
+              </DialogHeader>
+              <div className="flex items-center gap-4">
+                <img src={selected.avatar} alt={selected.name} className="h-16 w-16 rounded-full border-2 border-border object-cover" />
+                <div className="min-w-0">
+                  <div className="truncate text-lg font-semibold text-foreground">{selected.name}</div>
+                  <div className="truncate text-sm text-muted-foreground">{selected.role}</div>
+                  <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    <span className={`h-1.5 w-1.5 rounded-full ${selected.dotColor}`} />
+                    {selected.dept}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-2 space-y-3 text-sm">
+                <div className="flex items-center gap-3 rounded-xl border border-primary/25 bg-primary/10 px-3 py-2">
+                  <Award className="h-4 w-4 text-primary" />
+                  <span className="font-semibold text-foreground">{selected.years} Years</span>
+                  <span className="text-xs text-muted-foreground">Experience</span>
+                </div>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Briefcase className="h-4 w-4 shrink-0" />
+                  <span>{selected.dept} Department</span>
+                </div>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Mail className="h-4 w-4 shrink-0" />
+                  <span className="truncate">{selected.email}</span>
+                </div>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Phone className="h-4 w-4 shrink-0" />
+                  <span>{selected.phone}</span>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Add staff dialog */}
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Add Staff Member</DialogTitle>
+            <DialogDescription>Onboard a new team member to the directory.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleAdd} className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="s-name">Name</Label>
+                <Input id="s-name" maxLength={100} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Neha Verma" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="s-role">Role</Label>
+                <Input id="s-role" maxLength={100} value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Accounts Executive" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="s-dept">Department</Label>
+                <Input id="s-dept" maxLength={50} value={form.dept} onChange={(e) => setForm({ ...form, dept: e.target.value })} placeholder="Finance" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="s-years">Experience (years)</Label>
+                <Input id="s-years" type="number" min={0} max={60} value={form.years} onChange={(e) => setForm({ ...form, years: e.target.value })} placeholder="5" />
+              </div>
+              <div className="space-y-2 sm:col-span-2">
+                <Label htmlFor="s-email">Email</Label>
+                <Input id="s-email" type="email" maxLength={255} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="neha.v@smartschool.edu" />
+              </div>
+            </div>
+            <DialogFooter>
+              <button
+                type="submit"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+              >
+                <UserPlus className="h-4 w-4" />
+                Add Staff
+              </button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
