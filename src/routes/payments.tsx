@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Smartphone,
   Banknote,
@@ -28,37 +28,6 @@ export const Route = createFileRoute("/payments")({
   }),
   component: PaymentsPage,
 });
-
-const metrics = [
-  {
-    label: "Today's Collection",
-    value: "₹4,82,300",
-    change: "↑ +12% vs yesterday",
-    changeType: "positive" as const,
-    icon: Wallet,
-  },
-  {
-    label: "UPI Transactions",
-    value: "326",
-    change: "Zero-fee routed",
-    changeType: "neutral" as const,
-    icon: Smartphone,
-  },
-  {
-    label: "Offline Earning",
-    value: "₹1,12,800",
-    change: "Awaiting bank deposit",
-    changeType: "neutral" as const,
-    icon: Banknote,
-  },
-  {
-    label: "Pending Offline",
-    value: "18",
-    change: "Requires reconciliation",
-    changeType: "warning" as const,
-    icon: Percent,
-  },
-];
 
 type UpiRow = {
   payer: string;
