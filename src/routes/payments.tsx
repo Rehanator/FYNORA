@@ -89,12 +89,13 @@ const upiFeed: UpiRow[] = [
   },
 ];
 
-const snapshotItems = [
-  { label: "Collected Today", value: "₹2,14,850", icon: Wallet },
-  { label: "Total Transactions", value: "86", icon: CheckCircle2 },
-  { label: "Avg. Ticket Size", value: "₹2,498", icon: TrendingUp },
-  { label: "Convenience Fees Saved", value: "₹4,297", icon: CreditCard },
-];
+const snapshotIcons = {
+  collected: Wallet,
+  transactions: CheckCircle2,
+  avgTicket: TrendingUp,
+  feesSaved: CreditCard,
+};
+
 
 type OfflineStatus = "pending" | "approved" | "rejected";
 type OfflineRow = {
