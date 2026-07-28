@@ -192,17 +192,22 @@ function ScrollHero() {
 
   return (
     <section ref={ref} className="relative h-[300vh]">
-      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+      <div className="sticky top-0 flex h-screen w-full flex-col items-center overflow-hidden pt-20 text-center">
         {/* Ambient wash */}
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[oklch(0.92_0.09_165)] opacity-40 blur-[160px]" />
           <div className="absolute right-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-[oklch(0.88_0.10_220)] opacity-40 blur-[160px]" />
         </div>
 
-        {/* Heading */}
+        {/* Floating icons — decorative, framing the text from the edges */}
+        {FLOATING_ICONS.map((cfg) => (
+          <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
+        ))}
+
+        {/* Top block: heading + CTAs */}
         <motion.div
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
-          className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
+          className="relative z-20 w-[min(920px,92%)] text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-1.5 text-xs font-medium text-[#14171d] backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
@@ -217,14 +222,24 @@ function ScrollHero() {
           <p className="mx-auto mt-5 max-w-xl text-base text-[#14171d]/70 sm:text-lg">
             Drop the spreadsheets. FYNORA automates every rupee — from reminders to reconciliation.
           </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-2 rounded-2xl bg-[#00a657] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a657]"
+            >
+              Explore FYNORA <ArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 rounded-2xl border border-black/10 bg-white/80 px-7 py-3.5 text-sm font-semibold text-[#14171d] backdrop-blur transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a657]"
+            >
+              Book a Demo
+            </a>
+          </div>
         </motion.div>
 
-        {/* Floating icons that drop into the box */}
-        {FLOATING_ICONS.map((cfg) => (
-          <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
-        ))}
-
-        {/* Morphing box → phone */}
+        {/* Bottom block: the morphing box → phone, below the text in normal flow */}
+        <div className="relative z-10 mx-auto mt-24 flex w-full max-w-3xl justify-center">
         <motion.div
           style={{
             width: boxWidth,
@@ -235,6 +250,7 @@ function ScrollHero() {
           }}
           className="relative overflow-hidden bg-[#0b0d10] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]"
         >
+
           <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
           <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
