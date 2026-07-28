@@ -17,6 +17,7 @@ import {
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { NumberTicker } from "@/components/ui/number-ticker";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const Route = createFileRoute("/payments")({
   head: () => ({
