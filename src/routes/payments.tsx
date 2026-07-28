@@ -144,33 +144,36 @@ function PaymentsPage() {
   const metrics = [
     {
       label: "Today's Collection",
-      value: `₹${todaysCollection.toLocaleString("en-IN")}`,
+      value: todaysCollection,
+      prefix: "₹",
       change: "↑ +12% vs yesterday",
       changeType: "positive" as const,
       icon: Wallet,
     },
     {
       label: "UPI Transactions",
-      value: upiTransactions.toLocaleString("en-IN"),
+      value: upiTransactions,
       change: "Zero-fee routed",
       changeType: "neutral" as const,
       icon: Smartphone,
     },
     {
       label: "Offline Earning",
-      value: `₹${offlineEarning.toLocaleString("en-IN")}`,
+      value: offlineEarning,
+      prefix: "₹",
       change: "Awaiting bank deposit",
       changeType: "neutral" as const,
       icon: Banknote,
     },
     {
       label: "Pending Offline",
-      value: pendingOffline.toLocaleString("en-IN"),
+      value: pendingOffline,
       change: "Requires reconciliation",
       changeType: "warning" as const,
       icon: Percent,
     },
   ];
+
 
   const decide = (id: string, status: "approved" | "rejected") => {
     setRows((r) => r.map((x) => (x.id === id ? { ...x, status } : x)));
