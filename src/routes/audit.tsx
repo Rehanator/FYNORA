@@ -366,13 +366,20 @@ function LiveAuditStream({ query, types }: { query: string; types: string[] | nu
   const [entries, setEntries] = useState<StreamEntry[]>(() =>
     Array.from({ length: 10 }, (_, i) => makeEntry((10 - i) * 4000)),
   );
+  const [isAtBottom, setIsAtBottom] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const t = setInterval(() => {
-      setEntries((prev) => [...prev.slice(-30), makeEntry()]);
-    }, 1600);
-    return () => clearInterval(t);
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const schedule = () => {
+      timeoutId = setTimeout(() => {
+        setEntries((prev) => [...prev.slice(-30), makeEntry()]);
+        schedule();
+      }, 3000 + Math.random() * 2000);
+    };
+    schedule();
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const visible = entries.filter((e) => {
@@ -388,8 +395,21 @@ function LiveAuditStream({ query, types }: { query: string; types: string[] | nu
   });
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [visible.length]);
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const threshold = 8;
+      setIsAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < threshold);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isAtBottom && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [visible.length, isAtBottom]);
 
   return (
     <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/90 shadow-2xl shadow-slate-900/50 backdrop-blur-xl">
@@ -406,7 +426,7 @@ function LiveAuditStream({ query, types }: { query: string; types: string[] | nu
         </div>
       </div>
 
-      <div className="h-[26rem] overflow-x-auto overflow-y-hidden px-4 py-3">
+      <div ref={scrollRef} className="h-[26rem] overflow-x-auto overflow-y-auto px-4 py-3">
         <div className="flex h-full min-w-max flex-col justify-end gap-1">
           <AnimatePresence initial={false}>
             {visible.slice(-14).map((e) => (
