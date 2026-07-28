@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import cofeeLogo from "@/assets/cofee-logo.png.asset.json";
+import cofeeLogo from "@/assets/fynora-logo.png.asset.json";
 import { ThemeToggle } from "./ThemeToggle";
 import { AppDock } from "./AppDock";
 
