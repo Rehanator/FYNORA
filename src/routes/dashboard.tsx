@@ -108,8 +108,11 @@ function Dashboard() {
       description: `WhatsApp payment link for ${d.due} delivered.`,
     });
 
-    const text = `Dear Parent, this is a reminder that the pending fee for ${d.name} is ${d.due}. Please pay via FYNORA.`;
-    window.open(`https://wa.me/919876543210?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+    const message = encodeURIComponent(
+      `Dear Parent, this is a reminder that the pending fee for ${d.name} is ${d.due}. Please pay via FYNORA.`
+    );
+    const url = `https://api.whatsapp.com/send?phone=919876543210&text=${message}`;
+    window.open(url, "_blank", "noopener,noreferrer");
 
     setSent((p) => ({ ...p, [d.id]: true }));
     setTimeout(() => setSent((p) => ({ ...p, [d.id]: false })), 2000);
