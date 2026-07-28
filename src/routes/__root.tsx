@@ -24,7 +24,7 @@ function NotFoundComponent() {
       <div className="glass mx-auto max-w-md rounded-3xl p-10 text-center">
         <h1 className="text-6xl font-bold">404</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          This page isn't part of the CoFee console.
+          This page isn't part of the FYNORA console.
         </p>
         <Link
           to="/"
@@ -76,17 +76,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CoFee — The Future of School Fee Management" },
+      { title: "FYNORA — The Future of School Fee Management" },
       {
         name: "description",
         content:
           "Eliminate chaotic spreadsheets. Automate collections, offer smart EMI splits, and reconcile payments instantly with our modern FinTech suite for schools.",
       },
-      { property: "og:title", content: "CoFee — The Future of School Fee Management" },
+      { property: "og:title", content: "FYNORA — The Future of School Fee Management" },
       { property: "og:description", content: "Eliminate chaotic spreadsheets. Automate collections, offer smart EMI splits, and reconcile payments instantly with our modern FinTech suite for schools." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "CoFee — The Future of School Fee Management" },
+      { name: "twitter:title", content: "FYNORA — The Future of School Fee Management" },
       { name: "twitter:description", content: "Eliminate chaotic spreadsheets. Automate collections, offer smart EMI splits, and reconcile payments instantly with our modern FinTech suite for schools." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ec653b9b-ae90-4257-bca3-11e873fc47dc/id-preview-6732ab38--67e09847-7766-4954-bd75-25d54b35d67c.lovable.app-1784926991446.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ec653b9b-ae90-4257-bca3-11e873fc47dc/id-preview-6732ab38--67e09847-7766-4954-bd75-25d54b35d67c.lovable.app-1784926991446.png" },
@@ -94,11 +94,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
       },
     ],
   }),

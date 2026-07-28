@@ -7,7 +7,7 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 export const Route = createFileRoute("/staff")({
   head: () => ({
     meta: [
-      { title: "Staff Directory · CoFee" },
+      { title: "Staff Directory · FYNORA" },
       { name: "description", content: "Trusted finance professionals managing every school transaction with accuracy and transparency." },
       { property: "og:title", content: "Staff Directory" },
       { property: "og:description", content: "Every staff card, every specialization, every year of experience." },
