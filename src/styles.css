@@ -35,7 +35,7 @@
   --color-lavender: var(--lavender);
   --color-warning: var(--warning);
   --color-success: var(--success);
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
