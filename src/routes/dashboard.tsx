@@ -17,6 +17,7 @@ import {
 import { PageHeader } from "@/components/PageHeader";
 import { TodayCollectionPulse } from "@/components/TodayCollectionPulse";
 import { toast } from "sonner";
+import { DefaultersLedgerDialog } from "@/components/DefaultersLedgerDialog";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -103,6 +104,7 @@ const defaulters = [
 function Dashboard() {
   const [sent, setSent] = useState<Record<string, boolean>>({});
   const [bulkSent, setBulkSent] = useState(false);
+  const [ledgerOpen, setLedgerOpen] = useState(false);
 
 
   const notify = (d: { id: string; name: string; due: string }) => {
@@ -417,11 +419,7 @@ function Dashboard() {
         </div>
         <div className="mt-3 border-t border-black/[0.06] pt-3">
           <button
-            onClick={() =>
-              toast("Opening full defaulters ledger…", {
-                description: "Paginated view with filters, exports and audit trail.",
-              })
-            }
+            onClick={() => setLedgerOpen(true)}
             className="group flex w-full items-center justify-center gap-2 rounded-xl border border-black/[0.06] bg-black/[0.02] px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground"
           >
             View All Defaulters
@@ -429,6 +427,8 @@ function Dashboard() {
           </button>
         </div>
       </div>
+
+      <DefaultersLedgerDialog open={ledgerOpen} onOpenChange={setLedgerOpen} />
 
       {/* Operational summary widgets */}
       <div className="grid gap-4 sm:grid-cols-3">
