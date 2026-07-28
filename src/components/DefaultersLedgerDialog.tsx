@@ -7,6 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Row = {
   id: string;
@@ -118,21 +125,34 @@ export function DefaultersLedgerDialog({
               className="w-full rounded-xl border border-black/[0.06] bg-black/[0.02] py-2 pl-9 pr-3 text-sm outline-none transition placeholder:text-muted-foreground focus:bg-black/[0.04]"
             />
           </div>
-          <select
+          <Select
             value={grade}
-            onChange={(e) => {
-              setGrade(e.target.value);
+            onValueChange={(value) => {
+              setGrade(value);
               setPage(0);
             }}
-            className="rounded-xl border border-black/[0.06] bg-black/[0.02] px-3 py-2 text-sm outline-none transition focus:bg-black/[0.04] sm:w-48"
           >
-            <option value="all">Filter by Grade — All</option>
-            {grades.map((g) => (
-              <option key={g} value={g}>
-                Grade {g}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="rounded-xl border border-black/[0.06] bg-black/[0.02] px-3 py-2 text-sm outline-none transition focus:bg-black/[0.04] sm:w-48 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-white">
+              <SelectValue placeholder="Filter by Grade" />
+            </SelectTrigger>
+            <SelectContent className="border-zinc-200 bg-white text-zinc-900 dark:border-gray-800 dark:bg-[#111111] dark:text-white">
+              <SelectItem
+                value="all"
+                className="text-zinc-900 hover:bg-zinc-100 focus:bg-zinc-100 focus:text-zinc-900 dark:text-white dark:hover:bg-zinc-800 dark:focus:bg-zinc-800 dark:focus:text-white"
+              >
+                Filter by Grade — All
+              </SelectItem>
+              {grades.map((g) => (
+                <SelectItem
+                  key={g}
+                  value={g}
+                  className="text-zinc-900 hover:bg-zinc-100 focus:bg-zinc-100 focus:text-zinc-900 dark:text-white dark:hover:bg-zinc-800 dark:focus:bg-zinc-800 dark:focus:text-white"
+                >
+                  Grade {g}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="max-h-[380px] overflow-y-auto defaulters-scroll px-2">
