@@ -17,6 +17,7 @@ import {
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { NumberTicker } from "@/components/ui/number-ticker";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const Route = createFileRoute("/payments")({
   head: () => ({
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/payments")({
 });
 
 type UpiRow = {
+  id: string;
   payer: string;
   student: string;
   grade: string;
@@ -39,11 +41,12 @@ type UpiRow = {
   amount: number;
   icon: "bolt" | "incoming";
   iconBg: string;
-  time: string;
+  createdAt: number;
 };
 
-const upiFeed: UpiRow[] = [
+const initialUpiFeed: UpiRow[] = [
   {
+    id: "TXN-9821245",
     payer: "Mrs. Sharma",
     student: "Riya Sharma",
     grade: "IX-B",
@@ -52,9 +55,10 @@ const upiFeed: UpiRow[] = [
     amount: 15000,
     icon: "bolt",
     iconBg: "oklch(0.88 0.14 165)",
-    time: "12s ago",
+    createdAt: -12_000,
   },
   {
+    id: "TXN-9821244",
     payer: "Mr. Reddy",
     student: "Isha Reddy",
     grade: "VII-A",
@@ -63,9 +67,10 @@ const upiFeed: UpiRow[] = [
     amount: 8600,
     icon: "incoming",
     iconBg: "oklch(0.82 0.13 220)",
-    time: "34s ago",
+    createdAt: -34_000,
   },
   {
+    id: "TXN-9821243",
     payer: "Mrs. Menon",
     student: "Kabir Menon",
     grade: "XI-C",
@@ -74,9 +79,10 @@ const upiFeed: UpiRow[] = [
     amount: 22400,
     icon: "bolt",
     iconBg: "oklch(0.82 0.12 300)",
-    time: "1m ago",
+    createdAt: -60_000,
   },
   {
+    id: "TXN-9821242",
     payer: "Mr. Khan",
     student: "Zoya Khan",
     grade: "V-B",
@@ -85,9 +91,63 @@ const upiFeed: UpiRow[] = [
     amount: 4500,
     icon: "incoming",
     iconBg: "oklch(0.82 0.14 70)",
-    time: "2m ago",
+    createdAt: -120_000,
   },
 ];
+
+const FAMILIES = [
+  { surname: "Gupta", parent: "Mr.", child: "Rohan" },
+  { surname: "Iyer", parent: "Mrs.", child: "Aditi" },
+  { surname: "Nair", parent: "Mr.", child: "Arjun" },
+  { surname: "Bansal", parent: "Mrs.", child: "Meera" },
+  { surname: "Chauhan", parent: "Mr.", child: "Dev" },
+  { surname: "Pillai", parent: "Mrs.", child: "Tara" },
+  { surname: "Deshmukh", parent: "Mr.", child: "Yash" },
+  { surname: "Saxena", parent: "Mrs.", child: "Ira" },
+  { surname: "Joshi", parent: "Mr.", child: "Kunal" },
+  { surname: "Ahuja", parent: "Mrs.", child: "Naina" },
+];
+const HANDLES = ["@okhdfc", "@ybl", "@paytm", "@upi", "@okaxis", "@ibl"];
+const GRADES = ["III-A", "V-B", "VII-A", "VIII-C", "IX-B", "X-A", "XI-C", "XII-B"];
+const AVATAR_BG = [
+  "oklch(0.88 0.14 165)",
+  "oklch(0.82 0.13 220)",
+  "oklch(0.82 0.12 300)",
+  "oklch(0.82 0.14 70)",
+  "oklch(0.85 0.13 140)",
+  "oklch(0.83 0.13 20)",
+];
+
+const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+
+let txnSeq = 9821246;
+
+function makeUpiRow(): UpiRow {
+  const fam = pick(FAMILIES);
+  const txnId = `TXN-${txnSeq++}`;
+  return {
+    id: `${txnId}-${Date.now()}`,
+    payer: `${fam.parent} ${fam.surname}`,
+    student: `${fam.child} ${fam.surname}`,
+    grade: pick(GRADES),
+    vpa: `${fam.child.toLowerCase()}.${fam.surname[0].toLowerCase()}${pick(HANDLES)}`,
+    txnId,
+    amount: Math.round((Math.floor(Math.random() * 28000) + 2000) / 100) * 100,
+    icon: Math.random() > 0.5 ? "bolt" : "incoming",
+    iconBg: pick(AVATAR_BG),
+    createdAt: Date.now(),
+  };
+}
+
+function relativeTime(createdAt: number, now: number) {
+  const seconds = Math.max(0, Math.round((now - createdAt) / 1000));
+  if (seconds < 5) return "Just now";
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  return `${Math.floor(minutes / 60)}h ago`;
+}
+
 
 const snapshotIcons = {
   collected: Wallet,
@@ -142,6 +202,28 @@ function PaymentsPage() {
     }, intervalMs);
     return () => clearInterval(interval);
   }, []);
+
+  // Live UPI feed simulation (webhook-style inbound payments)
+  const [feed, setFeed] = useState<UpiRow[]>(initialUpiFeed);
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    const mountedAt = Date.now();
+    setFeed((prev) => prev.map((r) => ({ ...r, createdAt: r.createdAt > 0 ? r.createdAt : mountedAt + r.createdAt })));
+    setNow(mountedAt);
+
+    const clock = setInterval(() => setNow(Date.now()), 1000);
+    const feedTimer = setInterval(
+      () => setFeed((prev) => [makeUpiRow(), ...prev].slice(0, 4)),
+      Math.floor(Math.random() * 2000) + 6000, // 6–8 seconds
+    );
+    return () => {
+      clearInterval(clock);
+      clearInterval(feedTimer);
+    };
+  }, []);
+
+
 
   // Today's UPI Collection snapshot simulation
   const [collectedToday, setCollectedToday] = useState(214850);
@@ -331,37 +413,47 @@ function PaymentsPage() {
               </div>
             </div>
             <div className="space-y-3">
-              {upiFeed.map((u, i) => (
-                <div
-                  key={i}
-                  className="group flex items-center gap-4 rounded-xl border border-border bg-card/60 px-4 py-3 transition hover:bg-secondary/60"
-                >
-                  <div
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm font-semibold shadow-sm"
-                    style={{ backgroundColor: u.iconBg }}
+              <AnimatePresence initial={false}>
+                {feed.map((u) => (
+                  <motion.div
+                    key={u.id}
+                    layout
+                    initial={{ opacity: 0, y: -20, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 12, scale: 0.98 }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    className="group flex items-center gap-4 rounded-xl border border-border bg-card/60 px-4 py-3 transition hover:bg-secondary/60"
                   >
-                    {u.icon === "bolt" ? "⚡" : "↘"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold text-foreground">
-                      {u.payer} → {u.student} · {u.grade}
+                    <div
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm font-semibold shadow-sm"
+                      style={{ backgroundColor: u.iconBg }}
+                    >
+                      {u.icon === "bolt" ? "⚡" : "↘"}
                     </div>
-                    <div className="truncate text-[11px] text-muted-foreground">
-                      {u.vpa} · {u.txnId}
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-sm font-semibold text-foreground">
+                        {u.payer} → {u.student} · {u.grade}
+                      </div>
+                      <div className="truncate text-[11px] text-muted-foreground">
+                        {u.vpa} · {u.txnId}
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-base font-semibold text-foreground">₹{u.amount.toLocaleString("en-IN")}</div>
-                    <div className="mt-0.5 flex items-center justify-end gap-2">
-                      <span className="inline-flex items-center gap-1 rounded-full border border-success/25 bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success">
-                        <CheckCircle2 className="h-3 w-3" /> Auto approved
-                      </span>
-                      <span className="text-[11px] text-muted-foreground">{u.time}</span>
+                    <div className="text-right">
+                      <div className="text-base font-semibold text-foreground">₹{u.amount.toLocaleString("en-IN")}</div>
+                      <div className="mt-0.5 flex items-center justify-end gap-2">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-success/25 bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success">
+                          <CheckCircle2 className="h-3 w-3" /> Auto approved
+                        </span>
+                        <span className="text-[11px] text-muted-foreground">
+                          {now ? relativeTime(u.createdAt, now) : "Just now"}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
+
           </div>
 
           {/* Right column - Today's UPI Collection */}
