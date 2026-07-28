@@ -129,18 +129,9 @@ const TeamMemberCard = React.memo(({ member, index }: { member: Member; index: n
         <div className="h-px w-full bg-border" />
 
         {/* Footer */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-muted-foreground">
-            <a href="#" aria-label="Github" className="transition hover:text-foreground"><Github className="h-4 w-4" /></a>
-            <a href="#" aria-label="LinkedIn" className="transition hover:text-foreground"><Linkedin className="h-4 w-4" /></a>
-            <a href="#" aria-label="Twitter" className="transition hover:text-foreground"><Twitter className="h-4 w-4" /></a>
-          </div>
+        <div className="flex items-center justify-end">
           <button
-            onClick={() =>
-              toast(member.name, {
-                description: `${member.role} · ${member.dept} · ${member.email}`,
-              })
-            }
+            onClick={() => onView(member)}
             className="group inline-flex items-center gap-1 text-xs font-medium text-primary transition hover:opacity-80"
           >
             View Profile
