@@ -57,17 +57,17 @@ function InstitutionProfileCard() {
   };
 
   return (
-    <Card className="relative overflow-hidden rounded-xl border border-slate-700/50 bg-gradient-to-br from-slate-900 to-slate-950 text-slate-100 shadow-2xl shadow-slate-950/40">
+    <Card className="relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-100 shadow-2xl shadow-black/40">
       <CardHeader className="flex flex-row items-start justify-between gap-4 pb-4">
         <div className="flex items-start gap-4">
           <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-cyan-400/20 to-teal-500/20 text-cyan-300 shadow-[0_0_20px_-4px_rgba(34,211,238,0.35)] ring-1 ring-cyan-400/20">
             <Building className="h-6 w-6" strokeWidth={2} />
           </div>
           <div className="space-y-1">
-            <CardTitle className="text-lg font-semibold tracking-tight text-slate-100">
+            <CardTitle className="text-lg font-semibold tracking-tight text-zinc-100">
               Institution Profile
             </CardTitle>
-            <CardDescription className="text-sm text-slate-400">
+            <CardDescription className="text-sm text-zinc-400">
               Workspace details for invoices, receipts, and parent communications.
             </CardDescription>
           </div>
@@ -76,7 +76,7 @@ function InstitutionProfileCard() {
           variant="outline"
           size="sm"
           onClick={handleEditToggle}
-          className="border-slate-700/60 bg-slate-800/50 text-slate-200 hover:border-cyan-500/40 hover:bg-slate-800 hover:text-cyan-100"
+          className="border-zinc-800 bg-zinc-900 text-zinc-200 hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100"
         >
           {isEditing ? (
             <Check className="h-3.5 w-3.5" />
@@ -87,13 +87,13 @@ function InstitutionProfileCard() {
         </Button>
       </CardHeader>
 
-      <Separator className="bg-slate-700/50" />
+      <Separator className="bg-zinc-800" />
 
       <CardContent className="p-6">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
           {fields.map((field) => (
             <div key={field.key} className="min-w-0">
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
                 {field.label}
               </div>
               {isEditing ? (
@@ -101,10 +101,10 @@ function InstitutionProfileCard() {
                   type="text"
                   value={field.value}
                   onChange={(e) => updateValue(field.key, e.target.value)}
-                  className="w-full rounded-full border border-slate-700/50 bg-slate-800/50 px-4 py-2.5 text-sm font-medium text-slate-200 placeholder:text-slate-500 focus:border-cyan-500/50 focus:outline-none focus:ring-1 focus:ring-cyan-500/30"
+                  className="w-full rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-medium text-zinc-200 placeholder:text-zinc-500 focus:border-cyan-500/50 focus:outline-none focus:ring-1 focus:ring-cyan-500/30"
                 />
               ) : (
-                <div className="truncate rounded-full border border-slate-700/50 bg-slate-800/50 px-4 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:border-slate-600/60 hover:bg-slate-800/70">
+                <div className="truncate rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800">
                   {field.value}
                 </div>
               )}
