@@ -31,6 +31,7 @@ export const Route = createFileRoute("/payments")({
 });
 
 type UpiRow = {
+  id: string;
   payer: string;
   student: string;
   grade: string;
@@ -39,11 +40,12 @@ type UpiRow = {
   amount: number;
   icon: "bolt" | "incoming";
   iconBg: string;
-  time: string;
+  createdAt: number;
 };
 
-const upiFeed: UpiRow[] = [
+const initialUpiFeed: UpiRow[] = [
   {
+    id: "TXN-9821245",
     payer: "Mrs. Sharma",
     student: "Riya Sharma",
     grade: "IX-B",
@@ -52,9 +54,10 @@ const upiFeed: UpiRow[] = [
     amount: 15000,
     icon: "bolt",
     iconBg: "oklch(0.88 0.14 165)",
-    time: "12s ago",
+    createdAt: -12_000,
   },
   {
+    id: "TXN-9821244",
     payer: "Mr. Reddy",
     student: "Isha Reddy",
     grade: "VII-A",
@@ -63,9 +66,10 @@ const upiFeed: UpiRow[] = [
     amount: 8600,
     icon: "incoming",
     iconBg: "oklch(0.82 0.13 220)",
-    time: "34s ago",
+    createdAt: -34_000,
   },
   {
+    id: "TXN-9821243",
     payer: "Mrs. Menon",
     student: "Kabir Menon",
     grade: "XI-C",
@@ -74,9 +78,10 @@ const upiFeed: UpiRow[] = [
     amount: 22400,
     icon: "bolt",
     iconBg: "oklch(0.82 0.12 300)",
-    time: "1m ago",
+    createdAt: -60_000,
   },
   {
+    id: "TXN-9821242",
     payer: "Mr. Khan",
     student: "Zoya Khan",
     grade: "V-B",
@@ -85,9 +90,63 @@ const upiFeed: UpiRow[] = [
     amount: 4500,
     icon: "incoming",
     iconBg: "oklch(0.82 0.14 70)",
-    time: "2m ago",
+    createdAt: -120_000,
   },
 ];
+
+const FAMILIES = [
+  { surname: "Gupta", parent: "Mr.", child: "Rohan" },
+  { surname: "Iyer", parent: "Mrs.", child: "Aditi" },
+  { surname: "Nair", parent: "Mr.", child: "Arjun" },
+  { surname: "Bansal", parent: "Mrs.", child: "Meera" },
+  { surname: "Chauhan", parent: "Mr.", child: "Dev" },
+  { surname: "Pillai", parent: "Mrs.", child: "Tara" },
+  { surname: "Deshmukh", parent: "Mr.", child: "Yash" },
+  { surname: "Saxena", parent: "Mrs.", child: "Ira" },
+  { surname: "Joshi", parent: "Mr.", child: "Kunal" },
+  { surname: "Ahuja", parent: "Mrs.", child: "Naina" },
+];
+const HANDLES = ["@okhdfc", "@ybl", "@paytm", "@upi", "@okaxis", "@ibl"];
+const GRADES = ["III-A", "V-B", "VII-A", "VIII-C", "IX-B", "X-A", "XI-C", "XII-B"];
+const AVATAR_BG = [
+  "oklch(0.88 0.14 165)",
+  "oklch(0.82 0.13 220)",
+  "oklch(0.82 0.12 300)",
+  "oklch(0.82 0.14 70)",
+  "oklch(0.85 0.13 140)",
+  "oklch(0.83 0.13 20)",
+];
+
+const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+
+let txnSeq = 9821246;
+
+function makeUpiRow(): UpiRow {
+  const fam = pick(FAMILIES);
+  const txnId = `TXN-${txnSeq++}`;
+  return {
+    id: `${txnId}-${Date.now()}`,
+    payer: `${fam.parent} ${fam.surname}`,
+    student: `${fam.child} ${fam.surname}`,
+    grade: pick(GRADES),
+    vpa: `${fam.child.toLowerCase()}.${fam.surname[0].toLowerCase()}${pick(HANDLES)}`,
+    txnId,
+    amount: Math.round((Math.floor(Math.random() * 28000) + 2000) / 100) * 100,
+    icon: Math.random() > 0.5 ? "bolt" : "incoming",
+    iconBg: pick(AVATAR_BG),
+    createdAt: Date.now(),
+  };
+}
+
+function relativeTime(createdAt: number, now: number) {
+  const seconds = Math.max(0, Math.round((now - createdAt) / 1000));
+  if (seconds < 5) return "Just now";
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  return `${Math.floor(minutes / 60)}h ago`;
+}
+
 
 const snapshotIcons = {
   collected: Wallet,
