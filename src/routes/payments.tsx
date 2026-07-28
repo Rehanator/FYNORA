@@ -143,6 +143,25 @@ function PaymentsPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Today's UPI Collection snapshot simulation
+  const [collectedToday, setCollectedToday] = useState(214850);
+  const [totalTxns, setTotalTxns] = useState(86);
+  const [feesSaved, setFeesSaved] = useState(4297);
+  const avgTicket = Math.round(collectedToday / totalTxns);
+
+  useEffect(() => {
+    const intervalMs = Math.floor(Math.random() * 2000) + 4000; // 4–6 seconds
+    const interval = setInterval(() => {
+      const amount = Math.floor(Math.random() * 4500) + 500; // ₹500–₹5,000
+      setCollectedToday((prev) => prev + amount);
+      setTotalTxns((prev) => prev + 1);
+      setFeesSaved((prev) => prev + Math.round(amount * 0.02));
+    }, intervalMs);
+    return () => clearInterval(interval);
+  }, []);
+
+
+
   const metrics = [
     {
       label: "Today's Collection",
