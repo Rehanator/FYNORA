@@ -109,9 +109,9 @@ function Dashboard() {
     });
 
     const message = encodeURIComponent(
-      `Dear Parent, this is a reminder that the pending fee for ${d.name} is ${d.due}. Please pay via FYNORA.`
+      `Dear Parent, this is a reminder that the pending fee is due. Please pay via FYNORA.`
     );
-    const url = `https://api.whatsapp.com/send?phone=919876543210&text=${message}`;
+    const url = `https://wa.me/919867487919?text=${message}`;
     window.open(url, "_blank", "noopener,noreferrer");
 
     setSent((p) => ({ ...p, [d.id]: true }));
