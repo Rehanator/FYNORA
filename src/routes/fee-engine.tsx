@@ -32,7 +32,7 @@ import {
 export const Route = createFileRoute("/fee-engine")({
   head: () => ({
     meta: [
-      { title: "Fee Engine · FYNORA" },
+      { title: "Fee Engine · CoFee" },
       { name: "description", content: "Manage fee heads, EMI splits and automated waiver rules." },
       { property: "og:title", content: "Fee Engine" },
       { property: "og:description", content: "Dynamic fee rules and Edu-EMI splits for schools." },

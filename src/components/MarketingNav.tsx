@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import fynoraLogo from "@/assets/fynora-logo.png.asset.json";
+import cofeeLogo from "@/assets/fynora-logo.png.asset.json";
 import { ThemeToggle } from "./ThemeToggle";
 import { AppDock } from "./AppDock";
 
@@ -10,11 +10,11 @@ export function MarketingNav() {
       <div className="glass flex items-center justify-between gap-4 rounded-2xl px-4 py-2.5 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5">
           <img
-            src={fynoraLogo.url}
-            alt="FYNORA logo"
+            src={cofeeLogo.url}
+            alt="CoFee logo"
             className="h-9 w-auto object-contain"
           />
-          <span className="text-lg font-bold uppercase tracking-widest">FYNORA</span>
+          <span className="text-lg font-bold uppercase tracking-widest">CoFee</span>
         </Link>
 
         <nav className="hidden items-center md:flex">

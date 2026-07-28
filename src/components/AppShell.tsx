@@ -12,7 +12,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
-import fynoraLogo from "@/assets/fynora-logo.png.asset.json";
+import cofeeLogo from "@/assets/fynora-logo.png.asset.json";
 import { toast } from "sonner";
 import { Sidebar, SidebarBody, SidebarLink, useSidebar } from "./ui/sidebar-aceternity";
 import { motion } from "framer-motion";
@@ -30,7 +30,7 @@ function SidebarBrand() {
   const { open, animate } = useSidebar();
   return (
     <div className="flex items-center gap-3 px-1 pt-1 pb-5">
-      <img src={fynoraLogo.url} alt="FYNORA logo" className="h-8 w-auto shrink-0 object-contain" />
+      <img src={cofeeLogo.url} alt="CoFee logo" className="h-8 w-auto shrink-0 object-contain" />
       <motion.div
         animate={{
           display: animate ? (open ? "block" : "none") : "block",
@@ -38,7 +38,7 @@ function SidebarBrand() {
         }}
         className="min-w-0"
       >
-        <div className="truncate text-lg font-bold uppercase tracking-widest text-white">FYNORA</div>
+        <div className="truncate text-lg font-bold uppercase tracking-widest text-white">CoFee</div>
       </motion.div>
     </div>
   );

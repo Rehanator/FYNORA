@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/PageHeader";
 export const Route = createFileRoute("/audit")({
   head: () => ({
     meta: [
-      { title: "Audit Trail · FYNORA" },
+      { title: "Audit Trail · CoFee" },
       { name: "description", content: "Tamper-proof, read-only ledger of every admin action." },
       { property: "og:title", content: "System Audit Log" },
       { property: "og:description", content: "Immutable proof of every financial action, timestamped and IP-verified." },

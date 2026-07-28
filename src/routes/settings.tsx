@@ -10,10 +10,10 @@ import { Separator } from "@/components/ui/separator";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Settings · FYNORA" },
+      { title: "Settings · CoFee" },
       { name: "description", content: "Configure school profile, notifications, integrations and branding." },
       { property: "og:title", content: "Settings" },
-      { property: "og:description", content: "Fine-tune your FYNORA console." },
+      { property: "og:description", content: "Fine-tune your CoFee console." },
     ],
   }),
   component: Settings,
@@ -125,7 +125,7 @@ function Settings() {
       <PageHeader
         eyebrow="Console"
         title="Settings"
-        description="Configure how FYNORA behaves for your institution."
+        description="Configure how CoFee behaves for your institution."
       />
 
       <InstitutionProfileCard />
