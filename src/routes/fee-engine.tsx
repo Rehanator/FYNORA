@@ -50,10 +50,12 @@ const toneStyles: Record<string, string> = {
   rose: "bg-rose-500/10 text-rose-400",
 };
 
-const feeHeads: Array<{
+type FeeHead = {
   name: string; category: string; icon: FeeIconKey; amount: number;
   cycle: string; students: number; status: string; color: string;
-}> = [
+};
+
+const initialFeeHeads: FeeHead[] = [
   { name: "Tuition Fee", category: "ALL GRADES", icon: "book", amount: 45000, cycle: "Quarterly", students: 1240, status: "Active", color: "teal" },
   { name: "Transport", category: "ALL GRADES", icon: "bus", amount: 12000, cycle: "Quarterly", students: 860, status: "Active", color: "blue" },
   { name: "Sports & Clubs", category: "CLASS X", icon: "trophy", amount: 4500, cycle: "Annually", students: 620, status: "Annual", color: "orange" },
@@ -62,7 +64,11 @@ const feeHeads: Array<{
   { name: "Arts & Music", category: "CLASS VI - VIII", icon: "palette", amount: 2900, cycle: "Annually", students: 310, status: "Annual", color: "rose" },
 ];
 
+const newFeeIcons: FeeIconKey[] = ["book", "bus", "trophy", "beaker", "utensils", "palette"];
+const newFeeColors = ["teal", "blue", "orange", "purple", "emerald", "rose"];
+
 type EditingFee = { name: string; amount: number; cycle: string };
+
 
 function TiltCard({
   children,
@@ -130,8 +136,35 @@ const students: Student[] = [
 ];
 
 function FeeEngine() {
+  const [feeHeads, setFeeHeads] = useState<FeeHead[]>(initialFeeHeads);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingFee, setEditingFee] = useState<EditingFee | null>(null);
+
+  const handleSubmitFee = (data: { name: string; amount: number; cycle: string }) => {
+    if (editingFee) {
+      setFeeHeads((prev) =>
+        prev.map((f) =>
+          f.name === editingFee.name ? { ...f, name: data.name, amount: data.amount, cycle: data.cycle } : f,
+        ),
+      );
+    } else {
+      setFeeHeads((prev) => [
+        ...prev,
+        {
+          name: data.name,
+          category: "ALL GRADES",
+          icon: newFeeIcons[prev.length % newFeeIcons.length],
+          amount: data.amount,
+          cycle: data.cycle,
+          students: 0,
+          status: "Active",
+          color: newFeeColors[prev.length % newFeeColors.length],
+        },
+      ]);
+    }
+    setIsModalOpen(false);
+  };
+
   const [split, setSplit] = useState(false);
   const [installments, setInstallments] = useState(4);
   const [selectedStudent, setSelectedStudent] = useState<Student>(students[0]);
@@ -458,7 +491,9 @@ function FeeEngine() {
         </div>
       </div>
 
-      {isModalOpen && <FeeModal editingFee={editingFee} onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <FeeModal editingFee={editingFee} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmitFee} />
+      )}
     </div>
   );
 }
@@ -516,7 +551,15 @@ function RuleToggle({
   );
 }
 
-function FeeModal({ editingFee, onClose }: { editingFee: EditingFee | null; onClose: () => void }) {
+function FeeModal({
+  editingFee,
+  onClose,
+  onSubmit,
+}: {
+  editingFee: EditingFee | null;
+  onClose: () => void;
+  onSubmit: (data: { name: string; amount: number; cycle: string }) => void;
+}) {
   const isEditing = editingFee !== null;
   const [name, setName] = useState(editingFee?.name ?? "");
   const [amount, setAmount] = useState(editingFee ? String(editingFee.amount) : "");
@@ -563,9 +606,15 @@ function FeeModal({ editingFee, onClose }: { editingFee: EditingFee | null; onCl
           </button>
           <button
             onClick={() => {
-              onClose();
+              const trimmed = name.trim();
+              if (!trimmed) {
+                toast.error("Please enter a fee name");
+                return;
+              }
+              const parsedAmount = Number(amount.replace(/[^0-9.]/g, "")) || 0;
+              onSubmit({ name: trimmed, amount: parsedAmount, cycle });
               if (isEditing) {
-                toast.success("Fee head updated", { description: `${name || editingFee.name} saved successfully.` });
+                toast.success("Fee head updated", { description: `${trimmed} saved successfully.` });
               } else {
                 toast.success("Fee head created", { description: `New ${cycle.toLowerCase()} fee added to your structure.` });
               }
