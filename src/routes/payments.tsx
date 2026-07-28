@@ -315,12 +315,37 @@ function PaymentsPage() {
         description="Live UPI collections and manual reconciliation in one console."
         actions={
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setTab((t) => (t === "digital" ? "offline" : "digital"))}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-secondary px-3 py-2 text-sm font-medium transition hover:bg-secondary/80"
-            >
-              <Filter className="h-4 w-4" /> Filter
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-xl border border-border bg-secondary px-3 py-2 text-sm font-medium transition hover:bg-secondary/80 focus:outline-none">
+                <Filter className="h-4 w-4" /> {dateFilter}
+                <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-44 border-gray-800 bg-[#111111] text-white"
+              >
+                <DropdownMenuLabel className="text-[11px] uppercase tracking-wider text-zinc-500">
+                  Date range
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-gray-800" />
+                {DATE_FILTERS.map((option) => (
+                  <DropdownMenuItem
+                    key={option}
+                    onSelect={() => {
+                      setDateFilter(option);
+                      toast.success(`Filter applied · ${option}`, {
+                        description: "Payment records scoped to the selected range.",
+                      });
+                    }}
+                    className="cursor-pointer text-sm text-white focus:bg-zinc-800 focus:text-white data-[highlighted]:bg-zinc-800"
+                  >
+                    <span className="flex-1">{option}</span>
+                    {dateFilter === option && <Check className="h-3.5 w-3.5 text-primary" />}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <button
               onClick={exportCsv}
               className="inline-flex items-center gap-2 rounded-xl border border-border bg-secondary px-3 py-2 text-sm font-medium transition hover:bg-secondary/80"
