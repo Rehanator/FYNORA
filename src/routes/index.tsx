@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef } from "react";
 import {
   IndianRupee,
@@ -179,6 +179,17 @@ function ScrollHero() {
   const headingOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   const headingY = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
 
+  // Box → Phone morph (starts after icons have dropped in)
+  const boxWidth = useTransform(scrollYProgress, [0.3, 0.7], [320, 240]);
+  const boxHeight = useTransform(scrollYProgress, [0.3, 0.7], [320, 500]);
+  const boxRadius = useTransform(scrollYProgress, [0.3, 0.7], [40, 48]);
+  const boxRotate = useTransform(scrollYProgress, [0.3, 0.7], [-8, 0]);
+  const labelOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0]);
+  const phoneOpacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
+
+  // Subtle pulse on the box while icons are dropping in
+  const boxPulse = useTransform(scrollYProgress, [0, 0.15, 0.3], [1, 1.04, 1]);
+
   return (
     <section ref={ref} className="relative h-[300vh]">
       <div className="sticky top-0 flex h-screen w-full flex-col items-center overflow-hidden pt-20 text-center">
@@ -227,16 +238,75 @@ function ScrollHero() {
           </div>
         </motion.div>
 
-        {/* Bottom block: the video asset, below the text in normal flow */}
-        <div className="relative z-10 mt-24 flex w-full justify-center">
-          <video
-            src="/InShot_20260728_164658291.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="pointer-events-none relative z-10 mx-auto mt-12 h-auto w-full max-w-[600px] object-contain drop-shadow-2xl"
-          />
+        {/* Bottom block: the morphing box → phone, below the text in normal flow */}
+        <div className="relative z-10 mx-auto mt-24 flex w-full max-w-3xl justify-center">
+        <motion.div
+          style={{
+            width: boxWidth,
+            height: boxHeight,
+            borderRadius: boxRadius,
+            rotate: boxRotate,
+            scale: boxPulse,
+          }}
+          className="relative overflow-hidden bg-[#0b0d10] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]"
+        >
+
+          <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
+          <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
+
+          {/* FYNORA label (box mode) */}
+          <motion.div
+            style={{ opacity: labelOpacity, ...FONT }}
+            className="absolute inset-0 grid place-items-center"
+          >
+            <div className="text-center">
+              <div className="text-[10px] font-medium uppercase tracking-[0.4em] text-white/50">
+                Drop it in
+              </div>
+              <div className="mt-2 bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
+                FYNORA
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Phone UI (phone mode) */}
+          <motion.div style={{ opacity: phoneOpacity }} className="absolute inset-0 p-3">
+            <div className="flex h-full flex-col rounded-[36px] bg-gradient-to-b from-[#0f1216] to-black p-4">
+              <div className="mx-auto h-1 w-14 rounded-full bg-white/20" />
+              <div className="mt-4" style={FONT}>
+                <div className="text-[10px] uppercase tracking-widest text-white/40">FYNORA Pay</div>
+                <div className="mt-1 text-lg font-semibold text-white">Good morning, Anita</div>
+              </div>
+              <div className="mt-4 rounded-2xl bg-[#00a657] p-4 text-white shadow-lg" style={FONT}>
+                <div className="text-[10px] uppercase tracking-widest opacity-80">Due today</div>
+                <div className="mt-1 text-2xl font-bold">₹48,500</div>
+                <div className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-white/20 px-2.5 py-1 text-[11px]">
+                  Secure UPI <ArrowRight className="h-3 w-3" />
+                </div>
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-2" style={FONT}>
+                {[
+                  { label: "Tuition", v: "₹32,000" },
+                  { label: "Transport", v: "₹8,500" },
+                  { label: "Late Fee", v: "₹500" },
+                  { label: "Activity", v: "₹7,500" },
+                ].map((r) => (
+                  <div key={r.label} className="rounded-xl bg-white/[0.04] p-2.5">
+                    <div className="text-[9px] uppercase tracking-wider text-white/40">{r.label}</div>
+                    <div className="mt-0.5 text-[13px] font-semibold text-white">{r.v}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-auto flex items-center justify-between rounded-xl bg-white/[0.03] px-3 py-2" style={FONT}>
+                <div className="flex items-center gap-1.5 text-[10px] text-white/60">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#00a657]" />
+                  Live sync
+                </div>
+                <div className="text-[10px] text-white/40">v3.2</div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
         </div>
 
 
