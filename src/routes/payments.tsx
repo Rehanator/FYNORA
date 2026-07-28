@@ -121,6 +121,57 @@ function PaymentsPage() {
   const pendingCount = rows.filter((r) => r.status === "pending").length;
   const approvedCount = rows.filter((r) => r.status === "approved").length;
 
+  // Live metric simulation
+  const [todaysCollection, setTodaysCollection] = useState(482300);
+  const [upiTransactions, setUpiTransactions] = useState(326);
+  const [offlineEarning] = useState(112800);
+  const [pendingOffline, setPendingOffline] = useState(18);
+
+  useEffect(() => {
+    let tick = 0;
+    const intervalMs = Math.floor(Math.random() * 2000) + 3000; // 3–5 seconds
+    const interval = setInterval(() => {
+      setTodaysCollection((prev) => prev + Math.floor(Math.random() * 1100) + 400);
+      setUpiTransactions((prev) => prev + (Math.random() > 0.5 ? 2 : 1));
+      if (tick % 2 === 0) {
+        setPendingOffline((prev) => prev + 1);
+      }
+      tick++;
+    }, intervalMs);
+    return () => clearInterval(interval);
+  }, []);
+
+  const metrics = [
+    {
+      label: "Today's Collection",
+      value: `₹${todaysCollection.toLocaleString("en-IN")}`,
+      change: "↑ +12% vs yesterday",
+      changeType: "positive" as const,
+      icon: Wallet,
+    },
+    {
+      label: "UPI Transactions",
+      value: upiTransactions.toLocaleString("en-IN"),
+      change: "Zero-fee routed",
+      changeType: "neutral" as const,
+      icon: Smartphone,
+    },
+    {
+      label: "Offline Earning",
+      value: `₹${offlineEarning.toLocaleString("en-IN")}`,
+      change: "Awaiting bank deposit",
+      changeType: "neutral" as const,
+      icon: Banknote,
+    },
+    {
+      label: "Pending Offline",
+      value: pendingOffline.toLocaleString("en-IN"),
+      change: "Requires reconciliation",
+      changeType: "warning" as const,
+      icon: Percent,
+    },
+  ];
+
   const decide = (id: string, status: "approved" | "rejected") => {
     setRows((r) => r.map((x) => (x.id === id ? { ...x, status } : x)));
     const row = rows.find((x) => x.id === id);
