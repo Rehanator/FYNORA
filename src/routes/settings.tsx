@@ -170,14 +170,22 @@ function TogglePanel({
   );
 }
 
-const integrations = [
+const initialIntegrations = [
   { name: "UPI · Razorpay", sub: "acct_XYZ1029", connected: true },
-  { name: "WhatsApp Business API", sub: "+91 80-4700-2000", connected: true },
+  { name: "WhatsApp Business API", sub: "+91 9867487919", connected: true },
   { name: "SMS Gateway · MSG91", sub: "sender: SPRNGF", connected: true },
   { name: "Tally Sync", sub: "—", connected: false },
 ];
 
 function IntegrationsPanel() {
+  const [items, setItems] = useState(initialIntegrations);
+
+  const toggle = (name: string) => {
+    setItems((prev) =>
+      prev.map((i) => (i.name === name ? { ...i, connected: !i.connected } : i))
+    );
+  };
+
   return (
     <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
       <div className="flex items-center gap-3">
@@ -188,7 +196,7 @@ function IntegrationsPanel() {
       </div>
 
       <div className="mt-4 space-y-3">
-        {integrations.map((i) => (
+        {items.map((i) => (
           <div
             key={i.name}
             className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.04] px-4 py-3"
@@ -197,13 +205,17 @@ function IntegrationsPanel() {
               <div className="truncate text-sm font-semibold">{i.name}</div>
               <div className="mt-0.5 truncate text-xs text-muted-foreground">{i.sub}</div>
             </div>
-            {i.connected ? (
-              <span className="shrink-0 text-xs font-semibold text-emerald-400">Connected</span>
-            ) : (
-              <span className="shrink-0 rounded-full bg-white/[0.06] px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                Not connected
-              </span>
-            )}
+            <button
+              type="button"
+              onClick={() => toggle(i.name)}
+              className={`shrink-0 cursor-pointer text-xs font-semibold transition-colors ${
+                i.connected
+                  ? "text-emerald-400 hover:text-emerald-300"
+                  : "rounded-full bg-white/[0.06] px-2.5 py-1 text-muted-foreground hover:bg-white/[0.10] hover:text-zinc-300"
+              }`}
+            >
+              {i.connected ? "Connected" : "Not connected"}
+            </button>
           </div>
         ))}
       </div>
