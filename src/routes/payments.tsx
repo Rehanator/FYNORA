@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
 export const Route = createFileRoute("/payments")({
   head: () => ({
