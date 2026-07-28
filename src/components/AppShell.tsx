@@ -8,10 +8,11 @@ import {
   ShieldCheck,
   Settings,
   Search,
-  Bell,
+
   MessageCircle,
 } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { NotificationPopover } from "./ui/notification-popover";
 import fynoraLogo from "@/assets/fynora-logo.png.asset.json";
 import { toast } from "sonner";
 import { Sidebar, SidebarBody, SidebarLink, useSidebar } from "./ui/sidebar-aceternity";
@@ -165,18 +166,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </kbd>
             </div>
             <ThemeToggle />
-            <button
-              aria-label="Notifications"
-              onClick={() =>
-                toast("3 new notifications", {
-                  description: "2 offline payments awaiting approval · 1 waiver request.",
-                })
-              }
-              className="relative grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-black/[0.07] bg-black/[0.04] hover:bg-black/[0.07]"
-            >
-              <Bell className="h-[18px] w-[18px]" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[oklch(0.82_0.16_70)] shadow-[0_0_8px_oklch(0.82_0.16_70)]" />
-            </button>
+            <NotificationPopover />
             <div className="flex shrink-0 items-center gap-3 rounded-xl border border-black/[0.07] bg-black/[0.04] py-1.5 pr-3 pl-1.5">
               <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[oklch(0.82_0.12_300)] to-[oklch(0.82_0.13_220)] text-xs font-semibold text-[oklch(0.2_0.03_260)]">
                 AK
