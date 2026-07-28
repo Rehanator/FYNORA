@@ -200,17 +200,17 @@ function ScrollHero() {
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
           className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/70 px-4 py-1.5 text-xs font-medium text-zinc-200 backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-200 dark:shadow-none">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
             Built for modern K-12 finance teams
           </span>
-          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl">
+          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-6xl md:text-7xl">
             Fed up with chaotic{" "}
             <span className="bg-gradient-to-r from-[#00a657] to-[oklch(0.55_0.15_200)] bg-clip-text text-transparent">
               Fee Collection?
             </span>
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base text-zinc-400 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-xl text-base text-slate-600 dark:text-zinc-400 sm:text-lg">
             Drop the spreadsheets. FYNORA automates every rupee — from reminders to reconciliation.
           </p>
         </motion.div>
@@ -221,7 +221,7 @@ function ScrollHero() {
         ))}
 
         {/* Cinematic backlit glow behind the box/phone */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 blur-[120px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[120px] dark:opacity-100" />
 
         {/* Morphing box → phone */}
         <motion.div
@@ -271,7 +271,7 @@ function ScrollHero() {
         </motion.div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-zinc-500" style={FONT}>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500" style={FONT}>
           Scroll ↓
         </div>
       </div>
@@ -288,15 +288,15 @@ function StatsSection() {
   ];
   return (
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
-      <div className="mx-auto max-w-6xl rounded-[50px] border border-zinc-800/50 bg-[#0b0b0b] p-8 shadow-[0_30px_80px_-40px_rgba(0,166,87,0.35)] sm:p-14">
+      <div className="mx-auto max-w-6xl rounded-[50px] border border-slate-200 bg-white p-8 shadow-sm dark:border-zinc-800/50 dark:bg-[#0b0b0b] dark:shadow-[0_30px_80px_-40px_rgba(0,166,87,0.35)] sm:p-14">
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-200">
+          <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 dark:bg-zinc-900 dark:text-zinc-200">
             <span className="h-1.5 w-1.5 rounded-full bg-[#00a657]" /> Real outcomes
           </span>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
             Why switch to FYNORA?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-zinc-400">
+          <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-zinc-400">
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
         </div>
@@ -304,13 +304,13 @@ function StatsSection() {
           {stats.map(({ v, label, icon: Icon }) => (
             <div
               key={label}
-              className="group rounded-3xl border border-zinc-800/50 bg-[#111111] p-6 transition hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,166,87,0.4)]"
+              className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,166,87,0.4)] dark:border-zinc-800/50 dark:bg-zinc-900/80 dark:shadow-none"
             >
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#00a657]/10 text-[#00a657]">
                 <Icon className="h-5 w-5" strokeWidth={2} />
               </div>
-              <div className="mt-5 text-4xl font-bold tracking-tight text-white">{v}</div>
-              <div className="mt-1 text-sm text-zinc-400">{label}</div>
+              <div className="mt-5 text-4xl font-bold tracking-tight text-slate-900 dark:text-white">{v}</div>
+              <div className="mt-1 text-sm text-slate-600 dark:text-zinc-400">{label}</div>
             </div>
           ))}
         </div>
@@ -363,13 +363,13 @@ function ZigZagBlocks() {
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#00a657]/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-[#00a657]">
                   {b.tag}
                 </div>
-                <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
+                <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-white sm:text-4xl md:text-5xl">
                   {b.heading}
                 </h3>
-                <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-400 sm:text-lg">
+                <p className="mt-4 max-w-lg text-base leading-relaxed text-slate-600 dark:text-zinc-400 sm:text-lg">
                   {b.text}
                 </p>
-                <div className="mt-6 flex items-center gap-4 text-sm text-zinc-400">
+                <div className="mt-6 flex items-center gap-4 text-sm text-slate-600 dark:text-zinc-400">
                   <div className="inline-flex items-center gap-1.5">
                     <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> No code setup
                   </div>
@@ -378,7 +378,7 @@ function ZigZagBlocks() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-[36px] border border-zinc-800/50 bg-[#111111] p-6 sm:p-12">
+              <div className="rounded-[36px] border border-slate-200 bg-white p-6 shadow-sm dark:border-zinc-800/50 dark:bg-zinc-900/80 dark:shadow-none sm:p-12">
                 <video
                   autoPlay
                   loop
@@ -407,10 +407,10 @@ function ExpandSection() {
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h2 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
             Expand your possibilities
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-zinc-400">
+          <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-zinc-400">
             Add-on modules that grow with your institution — plug in what you need, when you need it.
           </p>
         </div>
@@ -418,13 +418,13 @@ function ExpandSection() {
           {addons.map(({ name, desc, icon: Icon }) => (
             <div
               key={name}
-              className="group rounded-[36px] border border-zinc-800/50 bg-[#111111] p-8 transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(0,166,87,0.35)]"
+              className="group rounded-[36px] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(0,166,87,0.35)] dark:border-zinc-800/50 dark:bg-zinc-900/80 dark:shadow-none"
             >
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#00a657] text-white shadow-lg">
                 <Icon className="h-6 w-6" strokeWidth={1.75} />
               </div>
-              <h3 className="mt-6 text-xl font-semibold text-white">{name}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{desc}</p>
+              <h3 className="mt-6 text-xl font-semibold text-slate-800 dark:text-white">{name}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-zinc-400">{desc}</p>
               <div className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-[#00a657]">
                 Learn more <ArrowRight className="h-4 w-4" />
               </div>
@@ -433,13 +433,13 @@ function ExpandSection() {
         </div>
 
         {/* Trust */}
-        <div className="mt-20 rounded-[50px] border border-zinc-800/50 bg-[#0b0b0b] p-8 sm:p-14">
+        <div className="mt-20 rounded-[50px] border border-slate-200 bg-white p-8 shadow-sm dark:border-zinc-800/50 dark:bg-[#0b0b0b] dark:shadow-none sm:p-14">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div>
-              <h3 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              <h3 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
                 Why institutes trust FYNORA?
               </h3>
-              <p className="mt-3 max-w-md text-zinc-400">
+              <p className="mt-3 max-w-md text-slate-600 dark:text-zinc-400">
                 Built with bank-grade encryption, immutable audit trails, and role-based access from day one.
               </p>
             </div>
@@ -447,11 +447,11 @@ function ExpandSection() {
               {["SOC 2", "GDPR", "ISO 27001", "PCI DSS"].map((b) => (
                 <div
                   key={b}
-                  className="grid aspect-square place-items-center rounded-2xl border border-zinc-800/50 bg-[#111111] text-center shadow-sm"
+                  className="grid aspect-square place-items-center rounded-2xl border border-slate-200 bg-slate-50 text-center shadow-sm dark:border-zinc-800/50 dark:bg-zinc-900/80 dark:shadow-none"
                 >
                   <div>
                     <ShieldCheck className="mx-auto h-6 w-6 text-[#00a657]" />
-                    <div className="mt-2 text-xs font-semibold tracking-wider text-white">{b}</div>
+                    <div className="mt-2 text-xs font-semibold tracking-wider text-slate-800 dark:text-white">{b}</div>
                   </div>
                 </div>
               ))}
@@ -501,7 +501,7 @@ function FinalCTA() {
 
 function Landing() {
   return (
-    <main className="relative bg-black" style={FONT}>
+    <main className="relative bg-slate-50 dark:bg-black" style={FONT}>
       <ScrollHero />
       <StatsSection />
       <ZigZagBlocks />
