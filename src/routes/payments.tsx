@@ -203,6 +203,28 @@ function PaymentsPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Live UPI feed simulation (webhook-style inbound payments)
+  const [feed, setFeed] = useState<UpiRow[]>(initialUpiFeed);
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    const mountedAt = Date.now();
+    setFeed((prev) => prev.map((r) => ({ ...r, createdAt: mountedAt + r.createdAt })));
+    setNow(mountedAt);
+
+    const clock = setInterval(() => setNow(Date.now()), 1000);
+    const feedTimer = setInterval(
+      () => setFeed((prev) => [makeUpiRow(), ...prev].slice(0, 4)),
+      Math.floor(Math.random() * 2000) + 6000, // 6–8 seconds
+    );
+    return () => {
+      clearInterval(clock);
+      clearInterval(feedTimer);
+    };
+  }, []);
+
+
+
   // Today's UPI Collection snapshot simulation
   const [collectedToday, setCollectedToday] = useState(214850);
   const [totalTxns, setTotalTxns] = useState(86);
