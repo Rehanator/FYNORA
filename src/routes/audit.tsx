@@ -371,10 +371,15 @@ function LiveAuditStream({ query, types }: { query: string; types: string[] | nu
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const t = setInterval(() => {
-      setEntries((prev) => [...prev.slice(-30), makeEntry()]);
-    }, 1600);
-    return () => clearInterval(t);
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const schedule = () => {
+      timeoutId = setTimeout(() => {
+        setEntries((prev) => [...prev.slice(-30), makeEntry()]);
+        schedule();
+      }, 3000 + Math.random() * 2000);
+    };
+    schedule();
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const visible = entries.filter((e) => {
