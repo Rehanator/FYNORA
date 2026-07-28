@@ -297,14 +297,24 @@ function Dashboard() {
             <div className="text-xs text-muted-foreground">Highest overdue balances, first</div>
           </div>
           <button
-            onClick={() =>
+            onClick={() => {
               toast.success(`Bulk reminder queued for ${defaulters.length} families`, {
                 description: "WhatsApp + SMS reminders will be delivered within 5 minutes.",
-              })
-            }
+              });
+              setBulkSent(true);
+              setTimeout(() => setBulkSent(false), 2000);
+            }}
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg shadow-[oklch(0.85_0.12_180)_/_0.25] hover:brightness-110"
           >
-            <Send className="h-4 w-4" /> Send Bulk Reminder
+            {bulkSent ? (
+              <>
+                <CheckCircle2 className="h-4 w-4" /> Queued
+              </>
+            ) : (
+              <>
+                <Send className="h-4 w-4" /> Send Bulk Reminder
+              </>
+            )}
           </button>
         </div>
         <div className="defaulters-scroll max-h-[350px] overflow-y-auto overflow-x-auto rounded-xl">
