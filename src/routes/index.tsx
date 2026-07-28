@@ -49,17 +49,21 @@ const FONT = { fontFamily: '"Outfit", ui-sans-serif, system-ui, sans-serif' } as
 // Each icon starts at an offset from center (in px) and animates to (0,0)
 // as the user scrolls. Values chosen so they scatter around the headline/box.
 const FLOATING_ICONS = [
-  // Top Left — Rupee in yellow circle
-  { id: "rupee", startX: -420, startY: -220, floatDur: 5.2, floatDelay: 0 },
-  // Top Right — UPI badge
-  { id: "upi", startX: 400, startY: -240, floatDur: 6.0, floatDelay: 0.4 },
-  // Right Center — Green credit card
-  { id: "card", startX: 460, startY: 40, floatDur: 5.6, floatDelay: 0.8 },
-  // Bottom Left — Receipt
-  { id: "receipt", startX: -440, startY: 200, floatDur: 6.4, floatDelay: 1.2 },
-  // Bottom Center — Calendar
-  { id: "calendar", startX: 20, startY: 280, floatDur: 5.8, floatDelay: 1.6 },
+  // Far left, upper — Rupee in yellow circle
+  { id: "rupee", startX: -560, startY: -160, floatDur: 5.2, floatDelay: 0 },
+  // Far right, upper — UPI badge
+  { id: "upi", startX: 560, startY: -180, floatDur: 6.0, floatDelay: 0.4 },
+  // Right edge, center — Green credit card
+  { id: "card", startX: 600, startY: 30, floatDur: 5.6, floatDelay: 0.8 },
+  // Left edge, lower — Receipt
+  { id: "receipt", startX: -600, startY: 60, floatDur: 6.4, floatDelay: 1.2 },
+  // Left edge, upper-most — Calendar
+  { id: "calendar", startX: -480, startY: -260, floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
+
+// Where the icons converge: the center of the box that sits below the text.
+const DROP_TARGET_Y = 300;
+
 
 function FloatingIcon({
   id,
@@ -77,11 +81,12 @@ function FloatingIcon({
   floatDelay: number;
 }) {
   // As the user scrolls 0 → 0.3, each icon flies from its (startX, startY)
-  // to the center (0, 0) while scaling + fading out — the "drop" into the box.
+  // down into the box that sits below the headline — the "drop".
   const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.3], [startY, DROP_TARGET_Y]);
   const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const opacity = useTransform(scrollYProgress, [0, 0.28], [1, 0]);
+
 
   const renderInner = () => {
     switch (id) {
@@ -154,7 +159,7 @@ function FloatingIcon({
   return (
     <motion.div
       style={{ x, y, scale, opacity }}
-      className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      className="pointer-events-none absolute left-1/2 top-[34%] z-10 -translate-x-1/2 -translate-y-1/2"
     >
       <motion.div
         animate={{ y: [-15, 15, -15] }}
@@ -187,17 +192,22 @@ function ScrollHero() {
 
   return (
     <section ref={ref} className="relative h-[300vh]">
-      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+      <div className="sticky top-0 flex h-screen w-full flex-col items-center overflow-hidden pt-20 text-center">
         {/* Ambient wash */}
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[oklch(0.92_0.09_165)] opacity-40 blur-[160px]" />
           <div className="absolute right-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-[oklch(0.88_0.10_220)] opacity-40 blur-[160px]" />
         </div>
 
-        {/* Heading */}
+        {/* Floating icons — decorative, framing the text from the edges */}
+        {FLOATING_ICONS.map((cfg) => (
+          <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
+        ))}
+
+        {/* Top block: heading + CTAs */}
         <motion.div
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
-          className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
+          className="relative z-20 w-[min(920px,92%)] text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-1.5 text-xs font-medium text-[#14171d] backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
@@ -212,14 +222,24 @@ function ScrollHero() {
           <p className="mx-auto mt-5 max-w-xl text-base text-[#14171d]/70 sm:text-lg">
             Drop the spreadsheets. FYNORA automates every rupee — from reminders to reconciliation.
           </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-2 rounded-2xl bg-[#00a657] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a657]"
+            >
+              Explore FYNORA <ArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 rounded-2xl border border-black/10 bg-white/80 px-7 py-3.5 text-sm font-semibold text-[#14171d] backdrop-blur transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a657]"
+            >
+              Book a Demo
+            </a>
+          </div>
         </motion.div>
 
-        {/* Floating icons that drop into the box */}
-        {FLOATING_ICONS.map((cfg) => (
-          <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
-        ))}
-
-        {/* Morphing box → phone */}
+        {/* Bottom block: the morphing box → phone, below the text in normal flow */}
+        <div className="relative z-10 mx-auto mt-24 flex w-full max-w-3xl justify-center">
         <motion.div
           style={{
             width: boxWidth,
@@ -230,6 +250,7 @@ function ScrollHero() {
           }}
           className="relative overflow-hidden bg-[#0b0d10] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]"
         >
+
           <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
           <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
@@ -286,6 +307,8 @@ function ScrollHero() {
             </div>
           </motion.div>
         </motion.div>
+        </div>
+
 
         {/* Scroll hint */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-[#14171d]/40" style={FONT}>
