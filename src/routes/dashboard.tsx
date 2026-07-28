@@ -174,13 +174,7 @@ function Dashboard() {
               Live sync active
             </span>
             <button
-              onClick={() =>
-                toast.promise(new Promise((r) => setTimeout(r, 1200)), {
-                  loading: "Compiling today's collection report…",
-                  success: "Report ready — download link sent to your inbox.",
-                  error: "Could not generate report.",
-                })
-              }
+              onClick={downloadReport}
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg shadow-[oklch(0.85_0.12_180)_/_0.25] hover:brightness-110"
             >
               <Sparkles className="h-4 w-4" /> Generate Report
