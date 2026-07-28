@@ -14,6 +14,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as FeeEngineRouteImport } from './routes/fee-engine'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ControllerRouteImport } from './routes/controller'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -42,6 +43,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ControllerRoute = ControllerRouteImport.update({
+  id: '/controller',
+  path: '/controller',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuditRoute = AuditRouteImport.update({
   id: '/audit',
   path: '/audit',
@@ -56,6 +62,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
+  '/controller': typeof ControllerRoute
   '/dashboard': typeof DashboardRoute
   '/fee-engine': typeof FeeEngineRoute
   '/payments': typeof PaymentsRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
+  '/controller': typeof ControllerRoute
   '/dashboard': typeof DashboardRoute
   '/fee-engine': typeof FeeEngineRoute
   '/payments': typeof PaymentsRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
+  '/controller': typeof ControllerRoute
   '/dashboard': typeof DashboardRoute
   '/fee-engine': typeof FeeEngineRoute
   '/payments': typeof PaymentsRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/audit'
+    | '/controller'
     | '/dashboard'
     | '/fee-engine'
     | '/payments'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/audit'
+    | '/controller'
     | '/dashboard'
     | '/fee-engine'
     | '/payments'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/audit'
+    | '/controller'
     | '/dashboard'
     | '/fee-engine'
     | '/payments'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuditRoute: typeof AuditRoute
+  ControllerRoute: typeof ControllerRoute
   DashboardRoute: typeof DashboardRoute
   FeeEngineRoute: typeof FeeEngineRoute
   PaymentsRoute: typeof PaymentsRoute
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/controller': {
+      id: '/controller'
+      path: '/controller'
+      fullPath: '/controller'
+      preLoaderRoute: typeof ControllerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/audit': {
       id: '/audit'
       path: '/audit'
@@ -178,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuditRoute: AuditRoute,
+  ControllerRoute: ControllerRoute,
   DashboardRoute: DashboardRoute,
   FeeEngineRoute: FeeEngineRoute,
   PaymentsRoute: PaymentsRoute,
