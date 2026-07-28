@@ -307,6 +307,8 @@ function ScrollHero() {
             </div>
           </motion.div>
         </motion.div>
+        </div>
+
 
         {/* Scroll hint */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-[#14171d]/40" style={FONT}>
