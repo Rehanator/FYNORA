@@ -426,7 +426,7 @@ function LiveAuditStream({ query, types }: { query: string; types: string[] | nu
         </div>
       </div>
 
-      <div className="h-[26rem] overflow-x-auto overflow-y-hidden px-4 py-3">
+      <div ref={scrollRef} className="h-[26rem] overflow-x-auto overflow-y-auto px-4 py-3">
         <div className="flex h-full min-w-max flex-col justify-end gap-1">
           <AnimatePresence initial={false}>
             {visible.slice(-14).map((e) => (
