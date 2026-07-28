@@ -1,8 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { Award, Mail, Phone, ArrowRight, Github, Linkedin, Twitter, UserPlus } from "lucide-react";
+import { Award, Mail, Phone, ArrowRight, UserPlus, Briefcase } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/staff")({
   head: () => ({
