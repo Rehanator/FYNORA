@@ -181,3 +181,19 @@
 .dark [class*="hover\\:bg-black/"]:hover {
   background-color: oklch(1 0 0 / 0.09) !important;
 }
+
+/* Slim, subtle scrollbar for scrollable card lists */
+.defaulters-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0 0 0 / 0.18) transparent;
+}
+.defaulters-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.defaulters-scroll::-webkit-scrollbar-track { background: transparent; }
+.defaulters-scroll::-webkit-scrollbar-thumb {
+  background-color: oklch(0 0 0 / 0.18);
+  border-radius: 9999px;
+}
+.defaulters-scroll::-webkit-scrollbar-thumb:hover { background-color: oklch(0 0 0 / 0.32); }
+.dark .defaulters-scroll { scrollbar-color: oklch(1 0 0 / 0.16) transparent; }
+.dark .defaulters-scroll::-webkit-scrollbar-thumb { background-color: oklch(1 0 0 / 0.16); }
+.dark .defaulters-scroll::-webkit-scrollbar-thumb:hover { background-color: oklch(1 0 0 / 0.28); }
