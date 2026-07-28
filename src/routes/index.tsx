@@ -49,17 +49,21 @@ const FONT = { fontFamily: '"Outfit", ui-sans-serif, system-ui, sans-serif' } as
 // Each icon starts at an offset from center (in px) and animates to (0,0)
 // as the user scrolls. Values chosen so they scatter around the headline/box.
 const FLOATING_ICONS = [
-  // Top Left — Rupee in yellow circle
-  { id: "rupee", startX: -420, startY: -220, floatDur: 5.2, floatDelay: 0 },
-  // Top Right — UPI badge
-  { id: "upi", startX: 400, startY: -240, floatDur: 6.0, floatDelay: 0.4 },
-  // Right Center — Green credit card
-  { id: "card", startX: 460, startY: 40, floatDur: 5.6, floatDelay: 0.8 },
-  // Bottom Left — Receipt
-  { id: "receipt", startX: -440, startY: 200, floatDur: 6.4, floatDelay: 1.2 },
-  // Bottom Center — Calendar
-  { id: "calendar", startX: 20, startY: 280, floatDur: 5.8, floatDelay: 1.6 },
+  // Far left, upper — Rupee in yellow circle
+  { id: "rupee", startX: -560, startY: -160, floatDur: 5.2, floatDelay: 0 },
+  // Far right, upper — UPI badge
+  { id: "upi", startX: 560, startY: -180, floatDur: 6.0, floatDelay: 0.4 },
+  // Right edge, center — Green credit card
+  { id: "card", startX: 600, startY: 30, floatDur: 5.6, floatDelay: 0.8 },
+  // Left edge, lower — Receipt
+  { id: "receipt", startX: -600, startY: 60, floatDur: 6.4, floatDelay: 1.2 },
+  // Left edge, upper-most — Calendar
+  { id: "calendar", startX: -480, startY: -260, floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
+
+// Where the icons converge: the center of the box that sits below the text.
+const DROP_TARGET_Y = 300;
+
 
 function FloatingIcon({
   id,
