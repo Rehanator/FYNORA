@@ -20,11 +20,7 @@ export const Route = createFileRoute("/settings")({
   component: Settings,
 });
 
-const sections = [
-  { icon: Bell, title: "Notifications", desc: "WhatsApp, email and SMS reminder cadence for parents and staff." },
-  { icon: Key, title: "Integrations", desc: "UPI webhook, accounting exports and identity providers." },
-  { icon: Palette, title: "Branding", desc: "Logo, receipt colours and parent-portal theming." },
-];
+
 
 type ProfileField = {
   key: string;
