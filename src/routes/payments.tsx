@@ -12,12 +12,26 @@ import {
   Wallet,
   Percent,
   Clock,
+  ChevronDown,
+  Check,
   type LucideIcon,
 } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const DATE_FILTERS = ["Today", "Yesterday", "Last 7 Days", "This Month"] as const;
+type DateFilter = (typeof DATE_FILTERS)[number];
+
 
 export const Route = createFileRoute("/payments")({
   head: () => ({
