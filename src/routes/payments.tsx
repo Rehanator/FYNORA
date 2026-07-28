@@ -198,13 +198,32 @@ function PaymentsPage() {
   const pendingCount = rows.filter((r) => r.status === "pending").length;
   const approvedCount = rows.filter((r) => r.status === "approved").length;
 
+  // Base values per date filter
+  const FILTER_BASE: Record<DateFilter, { collection: number; upi: number; offline: number; pending: number }> = {
+    "Today": { collection: 482300, upi: 326, offline: 112800, pending: 18 },
+    "Yesterday": { collection: 415000, upi: 298, offline: 95000, pending: 0 },
+    "Last 7 Days": { collection: 3245000, upi: 2150, offline: 850000, pending: 5 },
+    "This Month": { collection: 12500000, upi: 8400, offline: 2400000, pending: 12 },
+  };
+
   // Live metric simulation
-  const [todaysCollection, setTodaysCollection] = useState(482300);
-  const [upiTransactions, setUpiTransactions] = useState(326);
-  const [offlineEarning] = useState(112800);
-  const [pendingOffline, setPendingOffline] = useState(18);
+  const [todaysCollection, setTodaysCollection] = useState(FILTER_BASE["Today"].collection);
+  const [upiTransactions, setUpiTransactions] = useState(FILTER_BASE["Today"].upi);
+  const [offlineEarning, setOfflineEarning] = useState(FILTER_BASE["Today"].offline);
+  const [pendingOffline, setPendingOffline] = useState(FILTER_BASE["Today"].pending);
+
+  // Reset metrics whenever the date filter changes
+  useEffect(() => {
+    const base = FILTER_BASE[dateFilter];
+    setTodaysCollection(base.collection);
+    setUpiTransactions(base.upi);
+    setOfflineEarning(base.offline);
+    setPendingOffline(base.pending);
+  }, [dateFilter]);
 
   useEffect(() => {
+    // Historical ranges are static — only "Today" ticks live
+    if (dateFilter !== "Today") return;
     let tick = 0;
     const intervalMs = Math.floor(Math.random() * 2000) + 3000; // 3–5 seconds
     const interval = setInterval(() => {
@@ -216,7 +235,8 @@ function PaymentsPage() {
       tick++;
     }, intervalMs);
     return () => clearInterval(interval);
-  }, []);
+  }, [dateFilter]);
+
 
   // Live UPI feed simulation (webhook-style inbound payments)
   const [feed, setFeed] = useState<UpiRow[]>(initialUpiFeed);
