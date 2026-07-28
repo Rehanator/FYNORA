@@ -58,9 +58,11 @@ const initialNotifications: Notification[] = [
 export function NotificationPopover({ className }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const [activeTab, setActiveTab] = useState<"all" | "unread">("all");
   const ref = useRef<HTMLDivElement>(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
+  const displayedNotifications = activeTab === "unread" ? notifications.filter((n) => !n.read) : notifications;
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
