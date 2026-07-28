@@ -209,7 +209,7 @@ function PaymentsPage() {
 
   useEffect(() => {
     const mountedAt = Date.now();
-    setFeed((prev) => prev.map((r) => ({ ...r, createdAt: mountedAt + r.createdAt })));
+    setFeed((prev) => prev.map((r) => ({ ...r, createdAt: r.createdAt > 0 ? r.createdAt : mountedAt + r.createdAt })));
     setNow(mountedAt);
 
     const clock = setInterval(() => setNow(Date.now()), 1000);
