@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import {
   IndianRupee,
@@ -178,17 +178,6 @@ function ScrollHero() {
   // Headline fades as the drop begins
   const headingOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   const headingY = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
-
-  // Box → Phone morph (starts after icons have dropped in)
-  const boxWidth = useTransform(scrollYProgress, [0.3, 0.7], [320, 240]);
-  const boxHeight = useTransform(scrollYProgress, [0.3, 0.7], [320, 500]);
-  const boxRadius = useTransform(scrollYProgress, [0.3, 0.7], [40, 48]);
-  const boxRotate = useTransform(scrollYProgress, [0.3, 0.7], [-8, 0]);
-  const labelOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0]);
-  const phoneOpacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
-
-  // Subtle pulse on the box while icons are dropping in
-  const boxPulse = useTransform(scrollYProgress, [0, 0.15, 0.3], [1, 1.04, 1]);
 
   return (
     <section ref={ref} className="relative h-[300vh]">
