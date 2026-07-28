@@ -375,6 +375,11 @@ function FeeEngine() {
             <button
               onClick={() => {
                 setSplit(true);
+                const emiAmount = Math.round(total / installments);
+                const message = `Dear Parent, \n\nYour customized 0% interest fee payment plan for ${selectedStudent.name} is ready.\n\nTotal Amount: ₹${total.toLocaleString("en-IN")}\nMonthly Plan: ₹${emiAmount.toLocaleString("en-IN")} / month\nDuration: ${installments} Months\n\nView your full schedule and set up auto-pay securely via FYNORA: https://fynora.in/pay`;
+                const encodedMessage = encodeURIComponent(message);
+                const url = `https://wa.me/919867487919?text=${encodedMessage}`;
+                window.open(url, "_blank");
                 toast.success(`Plan generated · ${installments} installments`, {
                   description: "Payment plan sent to the parent on WhatsApp.",
                 });
