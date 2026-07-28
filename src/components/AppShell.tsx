@@ -8,10 +8,11 @@ import {
   ShieldCheck,
   Settings,
   Search,
-  Bell,
+
   MessageCircle,
 } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { NotificationPopover } from "./ui/notification-popover";
 import fynoraLogo from "@/assets/fynora-logo.png.asset.json";
 import { toast } from "sonner";
 import { Sidebar, SidebarBody, SidebarLink, useSidebar } from "./ui/sidebar-aceternity";
