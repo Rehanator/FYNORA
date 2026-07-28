@@ -12,12 +12,26 @@ import {
   Wallet,
   Percent,
   Clock,
+  ChevronDown,
+  Check,
   type LucideIcon,
 } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const DATE_FILTERS = ["Today", "Yesterday", "Last 7 Days", "This Month"] as const;
+type DateFilter = (typeof DATE_FILTERS)[number];
+
 
 export const Route = createFileRoute("/payments")({
   head: () => ({
@@ -179,6 +193,7 @@ const initialOffline: OfflineRowFull[] = [
 
 function PaymentsPage() {
   const [tab, setTab] = useState<"digital" | "offline">("digital");
+  const [dateFilter, setDateFilter] = useState<DateFilter>("Today");
   const [rows, setRows] = useState(initialOffline);
   const pendingCount = rows.filter((r) => r.status === "pending").length;
   const approvedCount = rows.filter((r) => r.status === "approved").length;
@@ -315,12 +330,37 @@ function PaymentsPage() {
         description="Live UPI collections and manual reconciliation in one console."
         actions={
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setTab((t) => (t === "digital" ? "offline" : "digital"))}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-secondary px-3 py-2 text-sm font-medium transition hover:bg-secondary/80"
-            >
-              <Filter className="h-4 w-4" /> Filter
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-xl border border-border bg-secondary px-3 py-2 text-sm font-medium transition hover:bg-secondary/80 focus:outline-none">
+                <Filter className="h-4 w-4" /> {dateFilter}
+                <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-44 border-gray-800 bg-[#111111] text-white"
+              >
+                <DropdownMenuLabel className="text-[11px] uppercase tracking-wider text-zinc-500">
+                  Date range
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-gray-800" />
+                {DATE_FILTERS.map((option) => (
+                  <DropdownMenuItem
+                    key={option}
+                    onSelect={() => {
+                      setDateFilter(option);
+                      toast.success(`Filter applied · ${option}`, {
+                        description: "Payment records scoped to the selected range.",
+                      });
+                    }}
+                    className="cursor-pointer text-sm text-white focus:bg-zinc-800 focus:text-white data-[highlighted]:bg-zinc-800"
+                  >
+                    <span className="flex-1">{option}</span>
+                    {dateFilter === option && <Check className="h-3.5 w-3.5 text-primary" />}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <button
               onClick={exportCsv}
               className="inline-flex items-center gap-2 rounded-xl border border-border bg-secondary px-3 py-2 text-sm font-medium transition hover:bg-secondary/80"
