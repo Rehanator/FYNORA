@@ -9,11 +9,11 @@ function applyTheme(theme: "light" | "dark") {
 }
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = (localStorage.getItem("ssft-theme") as "light" | "dark" | null) ?? "light";
+    const stored = (localStorage.getItem("ssft-theme") as "light" | "dark" | null) ?? "dark";
     setTheme(stored);
     applyTheme(stored);
     setMounted(true);

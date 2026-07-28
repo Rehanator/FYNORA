@@ -111,10 +111,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const themeScript = `
+    (function () {
+      try {
+        var stored = localStorage.getItem("ssft-theme");
+        var theme = stored === "light" ? "light" : "dark";
+        document.documentElement.classList.add(theme);
+      } catch (e) {}
+    })();
+  `;
+
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
         {children}
