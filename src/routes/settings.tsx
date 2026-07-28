@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Bell, Key, Palette, Pencil, Building, Check } from "lucide-react";
+import { Bell, Pencil, Building, Check, CreditCard, Lock } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 
 export const Route = createFileRoute("/settings")({
@@ -19,11 +20,7 @@ export const Route = createFileRoute("/settings")({
   component: Settings,
 });
 
-const sections = [
-  { icon: Bell, title: "Notifications", desc: "WhatsApp, email and SMS reminder cadence for parents and staff." },
-  { icon: Key, title: "Integrations", desc: "UPI webhook, accounting exports and identity providers." },
-  { icon: Palette, title: "Branding", desc: "Logo, receipt colours and parent-portal theming." },
-];
+
 
 type ProfileField = {
   key: string;
@@ -119,6 +116,101 @@ function InstitutionProfileCard() {
   );
 }
 
+type ToggleRow = { key: string; title: string; desc?: string; on: boolean };
+
+function TogglePanel({
+  icon: Icon,
+  title,
+  badge,
+  rows,
+}: {
+  icon: typeof Bell;
+  title: string;
+  badge?: string;
+  rows: ToggleRow[];
+}) {
+  const [items, setItems] = useState(rows);
+  return (
+    <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
+      <div className="flex items-center gap-3">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/10 text-emerald-300 ring-1 ring-white/10">
+          <Icon className="h-5 w-5" strokeWidth={2.2} />
+        </div>
+        <h3 className="truncate text-lg font-semibold tracking-tight">{title}</h3>
+        {badge && (
+          <span className="shrink-0 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-emerald-300">
+            {badge}
+          </span>
+        )}
+      </div>
+
+      <div className="mt-4 space-y-3">
+        {items.map((row) => (
+          <div
+            key={row.key}
+            className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.04] px-4 py-3"
+          >
+            <div className="min-w-0">
+              <div className="truncate text-sm font-semibold">{row.title}</div>
+              {row.desc && (
+                <div className="mt-0.5 text-xs text-muted-foreground">{row.desc}</div>
+              )}
+            </div>
+            <Switch
+              checked={row.on}
+              onCheckedChange={(v) =>
+                setItems((prev) => prev.map((r) => (r.key === row.key ? { ...r, on: v } : r)))
+              }
+              className="shrink-0 data-[state=checked]:bg-emerald-400"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const integrations = [
+  { name: "UPI · Razorpay", sub: "acct_XYZ1029", connected: true },
+  { name: "WhatsApp Business API", sub: "+91 80-4700-2000", connected: true },
+  { name: "SMS Gateway · MSG91", sub: "sender: SPRNGF", connected: true },
+  { name: "Tally Sync", sub: "—", connected: false },
+];
+
+function IntegrationsPanel() {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
+      <div className="flex items-center gap-3">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/10 text-cyan-300 ring-1 ring-white/10">
+          <CreditCard className="h-5 w-5" strokeWidth={2.2} />
+        </div>
+        <h3 className="truncate text-lg font-semibold tracking-tight">Payment Integrations</h3>
+      </div>
+
+      <div className="mt-4 space-y-3">
+        {integrations.map((i) => (
+          <div
+            key={i.name}
+            className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.04] px-4 py-3"
+          >
+            <div className="min-w-0">
+              <div className="truncate text-sm font-semibold">{i.name}</div>
+              <div className="mt-0.5 truncate text-xs text-muted-foreground">{i.sub}</div>
+            </div>
+            {i.connected ? (
+              <span className="shrink-0 text-xs font-semibold text-emerald-400">Connected</span>
+            ) : (
+              <span className="shrink-0 rounded-full bg-white/[0.06] px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                Not connected
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Settings() {
   return (
     <div className="space-y-6">
@@ -130,30 +222,33 @@ function Settings() {
 
       <InstitutionProfileCard />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {sections.map((s) => {
-          const Icon = s.icon;
-          return (
-            <div key={s.title} className="glass rounded-2xl p-5">
-              <div className="flex items-start gap-4">
-                <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-[oklch(0.88_0.14_165)] to-[oklch(0.82_0.13_220)] text-[oklch(0.2_0.03_260)]">
-                  <Icon className="h-5 w-5" strokeWidth={2.4} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="text-sm font-semibold">{s.title}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">{s.desc}</div>
-                </div>
-              </div>
-              <button
-                onClick={() => toast(s.title, { description: s.desc })}
-                className="mt-4 rounded-xl border border-black/[0.07] bg-black/[0.04] px-3 py-1.5 text-xs hover:bg-black/[0.07]"
-              >
-                Configure →
-              </button>
-            </div>
-          );
-        })}
+      <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+        <TogglePanel
+          icon={Bell}
+          title="Notifications"
+          rows={[
+            { key: "wa", title: "WhatsApp fee reminders", desc: "Send auto reminders 5 days before due date.", on: true },
+            { key: "email", title: "Email receipts to parents", desc: "PDF receipt emailed on every successful payment.", on: true },
+            { key: "sms", title: "SMS for large transactions", desc: "Alert admin for any single payment above ₹50,000.", on: true },
+            { key: "digest", title: "Daily reconciliation digest", desc: "9:00 AM summary of previous day's collections.", on: true },
+          ]}
+        />
+
+        <IntegrationsPanel />
+
+        <TogglePanel
+          icon={Lock}
+          title="Security"
+          badge="SOC 2"
+          rows={[
+            { key: "2fa", title: "Require 2FA for all admins", on: true },
+            { key: "ip", title: "IP allowlist for accounts team", on: true },
+            { key: "lock", title: "Auto-lock session after 15m idle", on: true },
+            { key: "sign", title: "Sign audit ledger with hardware key", on: false },
+          ]}
+        />
       </div>
     </div>
   );
 }
+
