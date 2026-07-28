@@ -220,6 +220,9 @@ function ScrollHero() {
           <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
         ))}
 
+        {/* Cinematic backlit glow behind the box/phone */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 blur-[120px]" />
+
         {/* Morphing box → phone */}
         <motion.div
           style={{
@@ -229,8 +232,9 @@ function ScrollHero() {
             rotate: boxRotate,
             scale: boxPulse,
           }}
-          className="relative overflow-hidden bg-[#0b0d10] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="relative overflow-hidden bg-[#0b0b0b] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.8),0_0_80px_-20px_rgba(0,166,87,0.35),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-800/60"
         >
+
           <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
           <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
