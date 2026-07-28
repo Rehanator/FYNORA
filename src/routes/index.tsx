@@ -95,7 +95,7 @@ function FloatingIcon({
       case "upi":
         return (
           <div className="rounded-2xl border border-white/70 bg-white/90 px-4 py-2.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.2)] backdrop-blur-xl">
-            <div className="text-[10px] font-medium uppercase tracking-widest text-[#14171d]/50">
+            <div className="text-[10px] font-medium uppercase tracking-widest text-zinc-500">
               Pay via
             </div>
             <div className="mt-0.5 text-lg font-bold tracking-tight">
@@ -129,7 +129,7 @@ function FloatingIcon({
               <div className="h-1 w-1/2 rounded bg-black/10" />
             </div>
             <div className="mt-2 flex items-center justify-between border-t border-dashed border-black/10 pt-1.5">
-              <div className="text-[8px] text-[#14171d]/50">TOTAL</div>
+              <div className="text-[8px] text-zinc-500">TOTAL</div>
               <div className="text-[9px] font-bold text-[#00a657]">₹48,500</div>
             </div>
           </div>
@@ -141,9 +141,9 @@ function FloatingIcon({
               <div className="text-[8px] font-semibold uppercase tracking-widest text-white/90">Due</div>
             </div>
             <div className="grid place-items-center py-2">
-              <Calendar className="h-4 w-4 text-[#14171d]/40" strokeWidth={2} />
+              <Calendar className="h-4 w-4 text-zinc-500" strokeWidth={2} />
               <div className="mt-0.5 text-lg font-bold leading-none text-[#14171d]">15</div>
-              <div className="text-[8px] font-medium uppercase tracking-wider text-[#14171d]/50">Jul</div>
+              <div className="text-[8px] font-medium uppercase tracking-wider text-zinc-500">Jul</div>
             </div>
           </div>
         );
@@ -191,8 +191,8 @@ function ScrollHero() {
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Ambient wash */}
         <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[oklch(0.92_0.09_165)] opacity-40 blur-[160px]" />
-          <div className="absolute right-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-[oklch(0.88_0.10_220)] opacity-40 blur-[160px]" />
+          <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/15 blur-[180px]" />
+          <div className="absolute right-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-[oklch(0.6_0.12_220)]/15 blur-[180px]" />
         </div>
 
         {/* Heading */}
@@ -200,17 +200,17 @@ function ScrollHero() {
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
           className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-1.5 text-xs font-medium text-[#14171d] backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/70 px-4 py-1.5 text-xs font-medium text-zinc-200 backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
             Built for modern K-12 finance teams
           </span>
-          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-[#14171d] sm:text-6xl md:text-7xl">
+          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl">
             Fed up with chaotic{" "}
             <span className="bg-gradient-to-r from-[#00a657] to-[oklch(0.55_0.15_200)] bg-clip-text text-transparent">
               Fee Collection?
             </span>
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base text-[#14171d]/70 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-xl text-base text-zinc-400 sm:text-lg">
             Drop the spreadsheets. FYNORA automates every rupee — from reminders to reconciliation.
           </p>
         </motion.div>
@@ -219,6 +219,9 @@ function ScrollHero() {
         {FLOATING_ICONS.map((cfg) => (
           <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
         ))}
+
+        {/* Cinematic backlit glow behind the box/phone */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 blur-[120px]" />
 
         {/* Morphing box → phone */}
         <motion.div
@@ -229,8 +232,9 @@ function ScrollHero() {
             rotate: boxRotate,
             scale: boxPulse,
           }}
-          className="relative overflow-hidden bg-[#0b0d10] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="relative overflow-hidden bg-[#0b0b0b] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.8),0_0_80px_-20px_rgba(0,166,87,0.35),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-800/60"
         >
+
           <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
           <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
@@ -267,7 +271,7 @@ function ScrollHero() {
         </motion.div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-[#14171d]/40" style={FONT}>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-zinc-500" style={FONT}>
           Scroll ↓
         </div>
       </div>
@@ -284,15 +288,15 @@ function StatsSection() {
   ];
   return (
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
-      <div className="mx-auto max-w-6xl rounded-[50px] border border-black/5 bg-[#edf7f5] p-8 shadow-[0_30px_80px_-40px_rgba(0,166,87,0.35)] sm:p-14">
+      <div className="mx-auto max-w-6xl rounded-[50px] border border-zinc-800/50 bg-[#0b0b0b] p-8 shadow-[0_30px_80px_-40px_rgba(0,166,87,0.35)] sm:p-14">
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-[#14171d]">
+          <span className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-200">
             <span className="h-1.5 w-1.5 rounded-full bg-[#00a657]" /> Real outcomes
           </span>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-[#14171d] sm:text-5xl">
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             Why switch to FYNORA?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-[#14171d]/60">
+          <p className="mx-auto mt-3 max-w-xl text-zinc-400">
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
         </div>
@@ -300,13 +304,13 @@ function StatsSection() {
           {stats.map(({ v, label, icon: Icon }) => (
             <div
               key={label}
-              className="group rounded-3xl border border-black/5 bg-white p-6 transition hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,166,87,0.4)]"
+              className="group rounded-3xl border border-zinc-800/50 bg-[#111111] p-6 transition hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,166,87,0.4)]"
             >
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#00a657]/10 text-[#00a657]">
                 <Icon className="h-5 w-5" strokeWidth={2} />
               </div>
-              <div className="mt-5 text-4xl font-bold tracking-tight text-[#14171d]">{v}</div>
-              <div className="mt-1 text-sm text-[#14171d]/60">{label}</div>
+              <div className="mt-5 text-4xl font-bold tracking-tight text-white">{v}</div>
+              <div className="mt-1 text-sm text-zinc-400">{label}</div>
             </div>
           ))}
         </div>
@@ -359,13 +363,13 @@ function ZigZagBlocks() {
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#00a657]/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-[#00a657]">
                   {b.tag}
                 </div>
-                <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-[#14171d] sm:text-4xl md:text-5xl">
+                <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
                   {b.heading}
                 </h3>
-                <p className="mt-4 max-w-lg text-base leading-relaxed text-[#14171d]/65 sm:text-lg">
+                <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-400 sm:text-lg">
                   {b.text}
                 </p>
-                <div className="mt-6 flex items-center gap-4 text-sm text-[#14171d]/70">
+                <div className="mt-6 flex items-center gap-4 text-sm text-zinc-400">
                   <div className="inline-flex items-center gap-1.5">
                     <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> No code setup
                   </div>
@@ -374,13 +378,13 @@ function ZigZagBlocks() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-[36px] bg-[#edf7f5] p-6 sm:p-12">
+              <div className="rounded-[36px] border border-zinc-800/50 bg-[#111111] p-6 sm:p-12">
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="h-auto w-full rounded-3xl mix-blend-multiply"
+                  className="h-auto w-full rounded-3xl"
                 >
                   <source src={b.video} type="video/mp4" />
                 </video>
@@ -403,10 +407,10 @@ function ExpandSection() {
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <h2 className="text-4xl font-semibold tracking-tight text-[#14171d] sm:text-5xl">
+          <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             Expand your possibilities
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-[#14171d]/60">
+          <p className="mx-auto mt-3 max-w-xl text-zinc-400">
             Add-on modules that grow with your institution — plug in what you need, when you need it.
           </p>
         </div>
@@ -414,13 +418,13 @@ function ExpandSection() {
           {addons.map(({ name, desc, icon: Icon }) => (
             <div
               key={name}
-              className="group rounded-[36px] border border-black/5 bg-white p-8 transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(0,166,87,0.35)]"
+              className="group rounded-[36px] border border-zinc-800/50 bg-[#111111] p-8 transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(0,166,87,0.35)]"
             >
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#00a657] text-white shadow-lg">
                 <Icon className="h-6 w-6" strokeWidth={1.75} />
               </div>
-              <h3 className="mt-6 text-xl font-semibold text-[#14171d]">{name}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#14171d]/60">{desc}</p>
+              <h3 className="mt-6 text-xl font-semibold text-white">{name}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{desc}</p>
               <div className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-[#00a657]">
                 Learn more <ArrowRight className="h-4 w-4" />
               </div>
@@ -429,13 +433,13 @@ function ExpandSection() {
         </div>
 
         {/* Trust */}
-        <div className="mt-20 rounded-[50px] bg-[#edf7f5] p-8 sm:p-14">
+        <div className="mt-20 rounded-[50px] border border-zinc-800/50 bg-[#0b0b0b] p-8 sm:p-14">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div>
-              <h3 className="text-3xl font-semibold tracking-tight text-[#14171d] sm:text-4xl">
+              <h3 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Why institutes trust FYNORA?
               </h3>
-              <p className="mt-3 max-w-md text-[#14171d]/60">
+              <p className="mt-3 max-w-md text-zinc-400">
                 Built with bank-grade encryption, immutable audit trails, and role-based access from day one.
               </p>
             </div>
@@ -443,11 +447,11 @@ function ExpandSection() {
               {["SOC 2", "GDPR", "ISO 27001", "PCI DSS"].map((b) => (
                 <div
                   key={b}
-                  className="grid aspect-square place-items-center rounded-2xl border border-black/5 bg-white text-center shadow-sm"
+                  className="grid aspect-square place-items-center rounded-2xl border border-zinc-800/50 bg-[#111111] text-center shadow-sm"
                 >
                   <div>
                     <ShieldCheck className="mx-auto h-6 w-6 text-[#00a657]" />
-                    <div className="mt-2 text-xs font-semibold tracking-wider text-[#14171d]">{b}</div>
+                    <div className="mt-2 text-xs font-semibold tracking-wider text-white">{b}</div>
                   </div>
                 </div>
               ))}
@@ -497,7 +501,7 @@ function FinalCTA() {
 
 function Landing() {
   return (
-    <main className="relative" style={FONT}>
+    <main className="relative bg-black" style={FONT}>
       <ScrollHero />
       <StatsSection />
       <ZigZagBlocks />
