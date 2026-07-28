@@ -46,32 +46,144 @@ export const Route = createFileRoute("/")({
 
 const FONT = { fontFamily: '"Outfit", ui-sans-serif, system-ui, sans-serif' } as const;
 
+// Each icon starts at an offset from center (in px) and animates to (0,0)
+// as the user scrolls. Values chosen so they scatter around the headline/box.
 const FLOATING_ICONS = [
-  { Icon: IndianRupee, x: "-38%", y: "-24%", delay: 0 },
-  { Icon: CreditCard, x: "34%", y: "-28%", delay: 0.4 },
-  { Icon: Calendar, x: "-42%", y: "18%", delay: 0.8 },
-  { Icon: Receipt, x: "40%", y: "22%", delay: 1.2 },
-  { Icon: Wallet, x: "0%", y: "-38%", delay: 1.6 },
-];
+  // Top Left — Rupee in yellow circle
+  { id: "rupee", startX: -420, startY: -220, floatDur: 5.2, floatDelay: 0 },
+  // Top Right — UPI badge
+  { id: "upi", startX: 400, startY: -240, floatDur: 6.0, floatDelay: 0.4 },
+  // Right Center — Green credit card
+  { id: "card", startX: 460, startY: 40, floatDur: 5.6, floatDelay: 0.8 },
+  // Bottom Left — Receipt
+  { id: "receipt", startX: -440, startY: 200, floatDur: 6.4, floatDelay: 1.2 },
+  // Bottom Center — Calendar
+  { id: "calendar", startX: 20, startY: 280, floatDur: 5.8, floatDelay: 1.6 },
+] as const;
+
+function FloatingIcon({
+  id,
+  scrollYProgress,
+  startX,
+  startY,
+  floatDur,
+  floatDelay,
+}: {
+  id: string;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  startX: number;
+  startY: number;
+  floatDur: number;
+  floatDelay: number;
+}) {
+  // As the user scrolls 0 → 0.3, each icon flies from its (startX, startY)
+  // to the center (0, 0) while scaling + fading out — the "drop" into the box.
+  const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.28], [1, 0]);
+
+  const renderInner = () => {
+    switch (id) {
+      case "rupee":
+        return (
+          <div className="grid h-16 w-16 place-items-center rounded-full bg-[#facc15] shadow-[0_18px_40px_-12px_rgba(250,204,21,0.55)] ring-1 ring-black/5 sm:h-20 sm:w-20">
+            <IndianRupee className="h-7 w-7 text-[#14171d] sm:h-9 sm:w-9" strokeWidth={2.5} />
+          </div>
+        );
+      case "upi":
+        return (
+          <div className="rounded-2xl border border-white/70 bg-white/90 px-4 py-2.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.2)] backdrop-blur-xl">
+            <div className="text-[10px] font-medium uppercase tracking-widest text-[#14171d]/50">
+              Pay via
+            </div>
+            <div className="mt-0.5 text-lg font-bold tracking-tight">
+              <span className="text-[#ff6a00]">U</span>
+              <span className="text-[#00a657]">P</span>
+              <span className="text-[#00558f]">I</span>
+            </div>
+          </div>
+        );
+      case "card":
+        return (
+          <div className="relative h-14 w-24 overflow-hidden rounded-xl bg-gradient-to-br from-[#00a657] to-[#008a48] p-2.5 text-white shadow-[0_18px_40px_-12px_rgba(0,166,87,0.55)] sm:h-16 sm:w-28">
+            <div className="absolute right-2 top-2 h-2.5 w-3.5 rounded-[3px] bg-yellow-300/90" />
+            <CreditCard className="absolute bottom-2 right-2 h-4 w-4 text-white/70" strokeWidth={1.75} />
+            <div className="absolute bottom-2 left-2.5 space-y-0.5">
+              <div className="h-0.5 w-10 rounded bg-white/60" />
+              <div className="h-0.5 w-6 rounded bg-white/40" />
+            </div>
+          </div>
+        );
+      case "receipt":
+        return (
+          <div className="w-24 rounded-xl bg-white p-2.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5 sm:w-28">
+            <div className="flex items-center gap-1.5">
+              <Receipt className="h-3.5 w-3.5 text-[#00a657]" strokeWidth={2} />
+              <div className="text-[8px] font-semibold uppercase tracking-wider text-[#14171d]">Receipt</div>
+            </div>
+            <div className="mt-2 space-y-1">
+              <div className="h-1 w-full rounded bg-black/10" />
+              <div className="h-1 w-3/4 rounded bg-black/10" />
+              <div className="h-1 w-1/2 rounded bg-black/10" />
+            </div>
+            <div className="mt-2 flex items-center justify-between border-t border-dashed border-black/10 pt-1.5">
+              <div className="text-[8px] text-[#14171d]/50">TOTAL</div>
+              <div className="text-[9px] font-bold text-[#00a657]">₹48,500</div>
+            </div>
+          </div>
+        );
+      case "calendar":
+        return (
+          <div className="w-16 overflow-hidden rounded-xl bg-white shadow-[0_18px_40px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5 sm:w-20">
+            <div className="bg-[#ef4444] py-1 text-center">
+              <div className="text-[8px] font-semibold uppercase tracking-widest text-white/90">Due</div>
+            </div>
+            <div className="grid place-items-center py-2">
+              <Calendar className="h-4 w-4 text-[#14171d]/40" strokeWidth={2} />
+              <div className="mt-0.5 text-lg font-bold leading-none text-[#14171d]">15</div>
+              <div className="text-[8px] font-medium uppercase tracking-wider text-[#14171d]/50">Jul</div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <motion.div
+      style={{ x, y, scale, opacity }}
+      className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+    >
+      <motion.div
+        animate={{ y: [-15, 15, -15] }}
+        transition={{ duration: floatDur, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
+      >
+        {renderInner()}
+      </motion.div>
+    </motion.div>
+  );
+}
 
 function ScrollHero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  // Phase 1 (0 -> 0.4): icons drop into box
-  // Phase 2 (0.4 -> 0.8): box morphs into phone, screen fades in
-  const iconScale = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
-  const iconTx = useTransform(scrollYProgress, [0, 0.35], ["0%", "0%"]);
+  // Headline fades as the drop begins
   const headingOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   const headingY = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
 
-  // Box → Phone morph
-  const boxWidth = useTransform(scrollYProgress, [0.35, 0.75], [320, 240]);
-  const boxHeight = useTransform(scrollYProgress, [0.35, 0.75], [320, 500]);
-  const boxRadius = useTransform(scrollYProgress, [0.35, 0.75], [40, 48]);
-  const boxRotate = useTransform(scrollYProgress, [0.35, 0.75], [-8, 0]);
-  const labelOpacity = useTransform(scrollYProgress, [0.35, 0.55], [1, 0]);
-  const phoneOpacity = useTransform(scrollYProgress, [0.55, 0.8], [0, 1]);
+  // Box → Phone morph (starts after icons have dropped in)
+  const boxWidth = useTransform(scrollYProgress, [0.3, 0.7], [320, 240]);
+  const boxHeight = useTransform(scrollYProgress, [0.3, 0.7], [320, 500]);
+  const boxRadius = useTransform(scrollYProgress, [0.3, 0.7], [40, 48]);
+  const boxRotate = useTransform(scrollYProgress, [0.3, 0.7], [-8, 0]);
+  const labelOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0]);
+  const phoneOpacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
+
+  // Subtle pulse on the box while icons are dropping in
+  const boxPulse = useTransform(scrollYProgress, [0, 0.15, 0.3], [1, 1.04, 1]);
 
   return (
     <section ref={ref} className="relative h-[300vh]">
@@ -85,7 +197,7 @@ function ScrollHero() {
         {/* Heading */}
         <motion.div
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
-          className="absolute left-1/2 top-[22%] w-[min(920px,92%)] -translate-x-1/2 text-center"
+          className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-1.5 text-xs font-medium text-[#14171d] backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
@@ -102,21 +214,9 @@ function ScrollHero() {
           </p>
         </motion.div>
 
-        {/* Floating icons */}
-        {FLOATING_ICONS.map(({ Icon, x, y, delay }, i) => (
-          <motion.div
-            key={i}
-            style={{ scale: iconScale, x: iconTx, translateX: x, translateY: y }}
-            className="absolute left-1/2 top-1/2"
-          >
-            <motion.div
-              animate={{ y: [-15, 15, -15] }}
-              transition={{ duration: 5 + i * 0.4, delay, repeat: Infinity, ease: "easeInOut" }}
-              className="grid h-16 w-16 place-items-center rounded-2xl border border-white/60 bg-white/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] backdrop-blur-xl sm:h-20 sm:w-20"
-            >
-              <Icon className="h-7 w-7 text-[#00a657] sm:h-9 sm:w-9" strokeWidth={1.75} />
-            </motion.div>
-          </motion.div>
+        {/* Floating icons that drop into the box */}
+        {FLOATING_ICONS.map((cfg) => (
+          <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
         ))}
 
         {/* Morphing box → phone */}
@@ -126,10 +226,10 @@ function ScrollHero() {
             height: boxHeight,
             borderRadius: boxRadius,
             rotate: boxRotate,
+            scale: boxPulse,
           }}
           className="relative overflow-hidden bg-[#0b0d10] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]"
         >
-          {/* Dark box gradient face */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
           <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
