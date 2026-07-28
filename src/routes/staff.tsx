@@ -30,7 +30,7 @@ type Member = {
   avatar: string;
 };
 
-const staff: Member[] = [
+const initialStaff: Member[] = [
   { name: "Ravi Narayanan", role: "Senior Accountant", dept: "Finance", years: 12, email: "ravi.n@smartschool.edu", phone: "+91 98765 12345", dotColor: "bg-emerald-400", avatar: "https://i.pravatar.cc/160?img=68" },
   { name: "Priya Menon", role: "Front Desk Lead", dept: "Reception", years: 6, email: "priya.m@smartschool.edu", phone: "+91 98213 55401", dotColor: "bg-fuchsia-400", avatar: "https://i.pravatar.cc/160?img=47" },
   { name: "Suresh Iyer", role: "Bus Coordinator", dept: "Transport", years: 10, email: "suresh.i@smartschool.edu", phone: "+91 90234 66112", dotColor: "bg-amber-400", avatar: "https://i.pravatar.cc/160?img=12" },
