@@ -43,27 +43,15 @@ const NotificationItem = ({ notification, index, onMarkAsRead }: NotificationIte
 );
 
 const initialNotifications: Notification[] = [
-  {
-    id: "1",
-    title: "Offline payments pending",
-    description: "2 offline payments awaiting approval in reconciliation queue.",
-    timestamp: new Date(),
-    read: false,
-  },
-  {
-    id: "2",
-    title: "New waiver request",
-    description: "Aarav Sharma's parent requested a late fee waiver (₹4,500).",
-    timestamp: new Date(),
-    read: false,
-  },
-  {
-    id: "3",
-    title: "UPI settlement received",
-    description: "₹2,84,300 settled to the school account by HDFC.",
-    timestamp: new Date(Date.now() - 86400000),
-    read: false,
-  },
+  { id: "1", title: "Bulk Reminders Delivered", description: "WhatsApp reminders successfully delivered to 42 parents.", timestamp: new Date(), read: false },
+  { id: "2", title: "Offline payments pending", description: "5 offline payments awaiting approval in reconciliation queue.", timestamp: new Date(), read: false },
+  { id: "3", title: "New waiver request", description: "Aarav Sharma's parent requested a late fee waiver (₹4,500).", timestamp: new Date(), read: false },
+  { id: "4", title: "Bounced Cheque Alert", description: "Cheque #40921 from Rohan Patel's parent has bounced. Penalty added.", timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), read: false },
+  { id: "5", title: "High Value Payment", description: "₹1,25,000 received via NEFT from Grade 10 batch.", timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), read: true },
+  { id: "6", title: "UPI settlement received", description: "₹2,84,300 settled to the school account by HDFC.", timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000), read: true },
+  { id: "7", title: "Automated Nudge Report", description: "35 parents viewed the payment link yesterday but did not complete the transaction.", timestamp: new Date(Date.now() - 26 * 60 * 60 * 1000), read: true },
+  { id: "8", title: "Cash Deposit Required", description: "₹85,000 cash collected at the counter exceeds daily safe limit.", timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000), read: true },
+  { id: "9", title: "System Alert", description: "Weekly reconciliation report is ready for download.", timestamp: new Date(Date.now() - 72 * 60 * 60 * 1000), read: true },
 ];
 
 export function NotificationPopover({ className }: { className?: string }) {
