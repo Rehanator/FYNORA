@@ -101,6 +101,20 @@ const defaulters = [
 ];
 
 function Dashboard() {
+  const [sent, setSent] = useState<Record<string, boolean>>({});
+
+  const notify = (d: { id: string; name: string; due: string }) => {
+    toast.success(`Reminder sent to ${d.name}'s parent`, {
+      description: `WhatsApp payment link for ${d.due} delivered.`,
+    });
+
+    const text = `Dear Parent, this is a reminder that the pending fee for ${d.name} is ${d.due}. Please pay via FYNORA.`;
+    window.open(`https://wa.me/919876543210?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+
+    setSent((p) => ({ ...p, [d.id]: true }));
+    setTimeout(() => setSent((p) => ({ ...p, [d.id]: false })), 2000);
+  };
+
   const [live, setLive] = useState({
     revenue: 4280000,
     dues: 640000,
@@ -325,15 +339,20 @@ function Dashboard() {
                   </td>
                   <td className="text-right">
                     <button
-                      onClick={() =>
-                        toast.success(`Reminder sent to ${d.name}'s parent`, {
-                          description: `WhatsApp payment link for ${d.due} delivered.`,
-                        })
-                      }
+                      onClick={() => notify(d)}
                       className="glass inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition hover:bg-black/[0.07]"
                     >
-                      <Bell className="h-3.5 w-3.5 text-[oklch(0.5_0.15_155)]" />
-                      Notify
+                      {sent[d.id] ? (
+                        <>
+                          <CheckCircle2 className="h-3.5 w-3.5 text-[oklch(0.5_0.15_155)]" />
+                          Sent
+                        </>
+                      ) : (
+                        <>
+                          <Bell className="h-3.5 w-3.5 text-[oklch(0.5_0.15_155)]" />
+                          Notify
+                        </>
+                      )}
                     </button>
                   </td>
                 </tr>
