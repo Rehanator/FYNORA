@@ -157,6 +157,52 @@ function Dashboard() {
     { name: "Late Fees", amount: live.lateFees, color: "oklch(0.82 0.16 70)" },
   ].map((s) => ({ ...s, pct: Math.round((s.amount / breakdownTotal) * 100) }));
 
+  const downloadReport = () => {
+    toast.loading("Compiling today's collection report…", { id: "report", duration: 1200 });
+
+    const now = new Date();
+    const inr = (n: number) => `₹${Math.round(n).toLocaleString("en-IN")}`;
+    const todaysCollection = Math.round(breakdownTotal * 0.018);
+
+    const rows: (string | number)[][] = [
+      ["FYNORA — Daily Collection Report"],
+      ["Generated on", now.toLocaleString("en-IN")],
+      [],
+      ["Metric", "Value"],
+      ["Total Revenue", inr(live.revenue)],
+      ["Pending Dues", inr(live.dues)],
+      ["Today's Collection", inr(todaysCollection)],
+      ["Active Defaulters", live.defaulters],
+      ["UPI Share (%)", live.upi],
+      ["Cash Share (%)", 100 - live.upi],
+      [],
+      ["Revenue Breakdown", "Amount", "Share (%)"],
+      ...sources.map((s) => [s.name, inr(s.amount), s.pct]),
+      [],
+      ["Prioritized Defaulters"],
+      ["Student ID", "Name", "Grade", "Overdue", "Days Late", "Urgency"],
+      ...defaulters.map((d) => [d.id, d.name, d.grade, d.due, d.days, d.level]),
+    ];
+
+    const csv = rows
+      .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Fynora_Daily_Collection_Report.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    setTimeout(() => {
+      toast.success("Report downloaded — Fynora_Daily_Collection_Report.csv", { id: "report" });
+    }, 900);
+  };
+
   return (
 
     <div className="space-y-6">
