@@ -122,20 +122,27 @@ function ScrollHero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  // Headline fades as the drop begins
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0]);
-  const headingY = useTransform(scrollYProgress, [0, 0.22], [0, -40]);
+  // 1) Headline fades out early, before the box grows — no clash.
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.18], [1, 0]);
+  const headingY = useTransform(scrollYProgress, [0, 0.18], [0, -60]);
 
-  // Box → Phone morph (starts after icons have dropped in)
-  const boxWidth = useTransform(scrollYProgress, [0.3, 0.7], [240, 220]);
-  const boxHeight = useTransform(scrollYProgress, [0.3, 0.7], [240, 460]);
-  const boxRadius = useTransform(scrollYProgress, [0.3, 0.7], [36, 44]);
-  const boxRotate = useTransform(scrollYProgress, [0.3, 0.7], [-6, 0]);
-  const labelOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0]);
-  const phoneOpacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
+  // 2) Box → phone morph, starting only after icons have been sucked in.
+  const boxWidth = useTransform(scrollYProgress, [0.28, 0.62], [220, 260]);
+  const boxHeight = useTransform(scrollYProgress, [0.28, 0.62], [220, 540]);
+  const boxRadius = useTransform(scrollYProgress, [0.28, 0.62], [36, 40]);
+  const boxRotate = useTransform(scrollYProgress, [0.28, 0.62], [-6, 0]);
+  // Box drifts from lower position to vertical center as the text clears out.
+  const boxCenterY = useTransform(scrollYProgress, [0.18, 0.62], ["-50%", "-50%"]);
+  const boxTop = useTransform(scrollYProgress, [0.18, 0.62], ["62%", "50%"]);
 
-  // Subtle pulse on the box while icons are dropping in
-  const boxPulse = useTransform(scrollYProgress, [0, 0.15, 0.3], [1, 1.04, 1]);
+  const labelOpacity = useTransform(scrollYProgress, [0.28, 0.42], [1, 0]);
+  // 3) Single clean screen: the box chrome (bg, ring, shadow) fades away and
+  // only the video remains with rounded corners — no frame inside a frame.
+  const chromeOpacity = useTransform(scrollYProgress, [0.42, 0.6], [1, 0]);
+  const videoOpacity = useTransform(scrollYProgress, [0.42, 0.62], [0, 1]);
+
+  // Subtle pulse while icons are dropping in
+  const boxPulse = useTransform(scrollYProgress, [0, 0.14, 0.26], [1, 1.05, 1]);
 
   return (
     <section ref={ref} className="relative h-[300vh]">
@@ -149,13 +156,13 @@ function ScrollHero() {
         {/* Heading */}
         <motion.div
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
-          className="pointer-events-none absolute left-1/2 top-[14%] w-[min(840px,92%)] -translate-x-1/2 text-center"
+          className="pointer-events-none absolute left-1/2 top-[12%] w-[min(840px,92%)] -translate-x-1/2 text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-200 dark:shadow-none">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
             Built for modern K-12 finance teams
           </span>
-          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-6xl md:text-7xl">
+          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-6xl md:text-7xl">
             Fed up with chaotic{" "}
             <span className="bg-gradient-to-r from-[#00a657] to-[oklch(0.55_0.15_200)] bg-clip-text text-transparent">
               Fee Collection?
@@ -166,15 +173,18 @@ function ScrollHero() {
           </p>
         </motion.div>
 
-        {/* Floating icons that drop into the box */}
+        {/* Floating icons that get sucked into the box */}
         {FLOATING_ICONS.map((cfg) => (
           <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
         ))}
 
         {/* Cinematic backlit glow behind the box/phone */}
-        <div className="pointer-events-none absolute left-1/2 top-[60%] -z-10 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[100px] dark:opacity-100" />
+        <motion.div
+          style={{ top: boxTop, y: "-50%" }}
+          className="pointer-events-none absolute left-1/2 -z-10 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[100px] dark:opacity-100"
+        />
 
-        {/* Morphing box → phone */}
+        {/* Morphing box → single clean phone video */}
         <motion.div
           style={{
             width: boxWidth,
@@ -182,45 +192,44 @@ function ScrollHero() {
             borderRadius: boxRadius,
             rotate: boxRotate,
             scale: boxPulse,
+            top: boxTop,
             x: "-50%",
-            y: "-50%",
+            y: boxCenterY,
           }}
-          className="absolute left-1/2 top-[60%] overflow-hidden bg-[#0b0b0b] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_60px_-20px_rgba(0,166,87,0.3),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-800/60"
+          className="absolute left-1/2 overflow-hidden"
         >
+          {/* Box chrome — fades out completely so no outer frame survives */}
+          <motion.div style={{ opacity: chromeOpacity }} className="absolute inset-0">
+            <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_60px_-20px_rgba(0,166,87,0.3)] ring-1 ring-zinc-800/60" />
+            <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
-          <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
-          <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
+            {/* FYNORA label (box mode) */}
+            <motion.div
+              style={{ opacity: labelOpacity, ...FONT }}
+              className="absolute inset-0 grid place-items-center"
+            >
+              <div className="text-center">
+                <div className="text-[10px] font-medium uppercase tracking-[0.4em] text-white/50">
+                  Drop it in
+                </div>
+                <div className="mt-2 bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
+                  FYNORA
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
 
-          {/* FYNORA label (box mode) */}
-          <motion.div
-            style={{ opacity: labelOpacity, ...FONT }}
-            className="absolute inset-0 grid place-items-center"
+          {/* Final state: just the video, rounded corners, no extra frame */}
+          <motion.video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ opacity: videoOpacity }}
+            className="absolute inset-0 h-full w-full rounded-[inherit] object-cover"
           >
-            <div className="text-center">
-              <div className="text-[10px] font-medium uppercase tracking-[0.4em] text-white/50">
-                Drop it in
-              </div>
-              <div className="mt-2 bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
-                FYNORA
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Phone UI (phone mode) */}
-          <motion.div style={{ opacity: phoneOpacity }} className="absolute inset-0 p-3">
-            <div className="h-full w-full overflow-hidden rounded-[36px] bg-black">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="h-full w-full object-cover"
-              >
-                <source src={phoneDemo.url} type="video/mp4" />
-              </video>
-            </div>
-          </motion.div>
-
+            <source src={phoneDemo.url} type="video/mp4" />
+          </motion.video>
         </motion.div>
 
         {/* Scroll hint */}
