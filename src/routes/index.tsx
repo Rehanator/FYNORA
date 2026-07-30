@@ -11,6 +11,7 @@ import {
   Wallet,
   CalendarDays,
   Coins,
+  ChevronDown,
 } from "lucide-react";
 
 import video1 from "@/assets/nudges.mp4.asset.json";
@@ -132,6 +133,9 @@ function ScrollHero() {
   const videoScale = useTransform(scrollYProgress, [0.04, 0.34], [0.75, 1], { clamp: true });
   const glowOpacity = useTransform(scrollYProgress, [0.04, 0.3], [0, 1], { clamp: true });
 
+  // Scroll indicator: visible at the very top, fades out as soon as scrolling begins.
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0], { clamp: true });
+
   return (
     <section ref={ref} className="relative h-[300vh]">
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
@@ -184,10 +188,19 @@ function ScrollHero() {
           <source src={phoneDemo.url} type="video/mp4" />
         </motion.video>
 
-        {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500" style={FONT}>
-          Scroll ↓
-        </div>
+        {/* Scroll hint — bottom center of the viewport, fades out on scroll, fades in at top */}
+        <motion.div
+          style={{ opacity: hintOpacity, ...FONT }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500"
+        >
+          <span>Scroll</span>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="h-4 w-4 text-[#00a657]" />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
