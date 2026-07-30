@@ -86,13 +86,11 @@ function FloatingIcon({
   floatDur: number;
   floatDelay: number;
 }) {
-  // First action of the scroll (0 → 0.3): every icon flies from its
-  // (startX, startY) into the box (which sits just below screen center),
-  // shrinking and fading as it gets sucked in.
-  const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0], { ease: easeInOut, clamp: true });
-  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 90], { ease: easeInOut, clamp: true });
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 0.7, 0.05], { clamp: true });
-  const opacity = useTransform(scrollYProgress, [0, 0.12, 0.28], [1, 0.55, 0], { clamp: true });
+  // Icons drift gently inward while fading out with the text.
+  const x = useTransform(scrollYProgress, [0, 0.28], [startX, startX * 0.7], { ease: easeInOut, clamp: true });
+  const y = useTransform(scrollYProgress, [0, 0.28], [startY, startY * 0.7], { ease: easeInOut, clamp: true });
+  const scale = useTransform(scrollYProgress, [0, 0.28], [1, 0.85], { clamp: true });
+  const opacity = useTransform(scrollYProgress, [0, 0.18], [1, 0], { clamp: true });
 
   const art = ICON_ART[id];
 
@@ -122,31 +120,16 @@ function FloatingIcon({
 function ScrollHero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress: rawProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  // Smoothed progress. Running everything off a spring also keeps the values on
-  // the main thread, so opacity/transform stay perfectly in sync with scroll.
   const scrollYProgress = useSpring(rawProgress, { stiffness: 260, damping: 40, mass: 0.4 });
 
-  // 1) Headline + subtitle fade out the instant scrolling begins — fully
-  // invisible long before the box starts to grow.
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0], { clamp: true });
-  const headingY = useTransform(scrollYProgress, [0, 0.12], [0, -80], { clamp: true });
+  // Text clears out immediately on scroll.
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.16], [1, 0], { clamp: true });
+  const headingY = useTransform(scrollYProgress, [0, 0.2], [0, -80], { clamp: true });
 
-  // 2) Box → phone morph, starting only AFTER icons have flown in (0.3).
-  const boxWidth = useTransform(scrollYProgress, [0.34, 0.68], [220, 260], { clamp: true });
-  const boxHeight = useTransform(scrollYProgress, [0.34, 0.68], [220, 540], { clamp: true });
-  const boxRadius = useTransform(scrollYProgress, [0.34, 0.68], [36, 40], { clamp: true });
-  const boxRotate = useTransform(scrollYProgress, [0.34, 0.68], [-6, 0], { clamp: true });
-  // Box drifts from lower position to vertical center as the text clears out.
-  const boxTop = useTransform(scrollYProgress, [0.2, 0.68], ["62%", "50%"], { clamp: true });
-
-  const labelOpacity = useTransform(scrollYProgress, [0.34, 0.48], [1, 0], { clamp: true });
-  // 3) Single clean screen: the box chrome (bg, ring, shadow) fades away and
-  // only the video remains with rounded corners — no frame inside a frame.
-  const chromeOpacity = useTransform(scrollYProgress, [0.5, 0.66], [1, 0], { clamp: true });
-  const videoOpacity = useTransform(scrollYProgress, [0.5, 0.68], [0, 1], { clamp: true });
-
-  // Absorption pulse as the icons land, settling before the box scales up
-  const boxPulse = useTransform(scrollYProgress, [0, 0.16, 0.3, 0.34], [1, 1.06, 1.02, 1], { clamp: true });
+  // Video fades in + scales up at the same time, taking centre stage.
+  const videoOpacity = useTransform(scrollYProgress, [0.04, 0.28], [0, 1], { clamp: true });
+  const videoScale = useTransform(scrollYProgress, [0.04, 0.34], [0.75, 1], { clamp: true });
+  const glowOpacity = useTransform(scrollYProgress, [0.04, 0.3], [0, 1], { clamp: true });
 
   return (
     <section ref={ref} className="relative h-[300vh]">
@@ -177,64 +160,28 @@ function ScrollHero() {
           </p>
         </motion.div>
 
-        {/* Floating icons that get sucked into the box */}
+        {/* Floating icons that fade out with the text */}
         {FLOATING_ICONS.map((cfg) => (
           <FloatingIcon key={cfg.id} scrollYProgress={scrollYProgress} {...cfg} />
         ))}
 
-        {/* Cinematic backlit glow behind the box/phone */}
+        {/* Cinematic backlit glow behind the phone */}
         <motion.div
-          style={{ top: boxTop, y: "-50%" }}
-          className="pointer-events-none absolute left-1/2 -z-10 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[100px] dark:opacity-100"
+          style={{ opacity: glowOpacity }}
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 blur-[100px]"
         />
 
-        {/* Morphing box → single clean phone video */}
-        <motion.div
-          style={{
-            width: boxWidth,
-            height: boxHeight,
-            borderRadius: boxRadius,
-            rotate: boxRotate,
-            scale: boxPulse,
-            top: boxTop,
-            x: "-50%",
-            y: "-50%",
-          }}
-          className="absolute left-1/2 overflow-hidden"
+        {/* Clean phone video — direct reveal, no morph */}
+        <motion.video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ opacity: videoOpacity, scale: videoScale }}
+          className="absolute left-1/2 top-1/2 h-[540px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-[40px] object-cover"
         >
-          {/* Box chrome — fades out completely so no outer frame survives */}
-          <motion.div style={{ opacity: chromeOpacity }} className="absolute inset-0">
-            <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_60px_-20px_rgba(0,166,87,0.3)] ring-1 ring-zinc-800/60" />
-            <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
-
-            {/* FYNORA label (box mode) */}
-            <motion.div
-              style={{ opacity: labelOpacity, ...FONT }}
-              className="absolute inset-0 grid place-items-center"
-            >
-              <div className="text-center">
-                <div className="text-[10px] font-medium uppercase tracking-[0.4em] text-white/50">
-                  Drop it in
-                </div>
-                <div className="mt-2 bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
-                  FYNORA
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Final state: just the video, rounded corners, no extra frame */}
-          <motion.video
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{ opacity: videoOpacity }}
-            className="absolute inset-0 h-full w-full rounded-[inherit] object-cover"
-          >
-            <source src={phoneDemo.url} type="video/mp4" />
-          </motion.video>
-        </motion.div>
+          <source src={phoneDemo.url} type="video/mp4" />
+        </motion.video>
 
         {/* Scroll hint */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500" style={FONT}>
