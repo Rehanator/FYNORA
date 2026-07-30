@@ -149,7 +149,7 @@ function ScrollHero() {
         {/* Heading */}
         <motion.div
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
-          className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
+          className="pointer-events-none absolute left-1/2 top-[14%] w-[min(840px,92%)] -translate-x-1/2 text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-200 dark:shadow-none">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
