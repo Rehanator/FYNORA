@@ -172,7 +172,7 @@ function ScrollHero() {
         ))}
 
         {/* Cinematic backlit glow behind the box/phone */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[120px] dark:opacity-100" />
+        <div className="pointer-events-none absolute left-1/2 top-[60%] -z-10 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[100px] dark:opacity-100" />
 
         {/* Morphing box → phone */}
         <motion.div
@@ -182,8 +182,10 @@ function ScrollHero() {
             borderRadius: boxRadius,
             rotate: boxRotate,
             scale: boxPulse,
+            x: "-50%",
+            y: "-50%",
           }}
-          className="relative overflow-hidden bg-[#0b0b0b] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.8),0_0_80px_-20px_rgba(0,166,87,0.35),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-800/60"
+          className="absolute left-1/2 top-[60%] overflow-hidden bg-[#0b0b0b] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_60px_-20px_rgba(0,166,87,0.3),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-800/60"
         >
 
           <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
