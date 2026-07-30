@@ -21,6 +21,7 @@ import video1 from "@/assets/nudges.mp4.asset.json";
 import video2 from "@/assets/receipts.mp4.asset.json";
 import video3 from "@/assets/3.mp4.asset.json";
 import video4 from "@/assets/4.mp4.asset.json";
+import auditStream from "@/assets/audit-stream.mp4.asset.json";
 import phoneDemo from "@/assets/phone-demo.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -343,6 +344,12 @@ const ZIG_BLOCKS = [
     heading: "Stuck with limited payment options?",
     text: "Make fee payment seamless for parents through UPI, smart Edu-EMI splits, debit, and credit cards.",
     tag: "Every Rail Supported",
+  },
+  {
+    video: auditStream.url,
+    heading: "Worried about fee tampering or hidden edits?",
+    text: "Every action is timestamped, IP-fingerprinted, and written to a tamper-proof audit stream. Staff, parents, and auditors see the same truth.",
+    tag: "Live Audit Stream",
   },
 ];
 
