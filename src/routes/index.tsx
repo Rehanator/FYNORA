@@ -191,7 +191,7 @@ function ScrollHero() {
         {/* Scroll hint — bottom center of the viewport, fades out on scroll, fades in at top */}
         <motion.div
           style={{ opacity: hintOpacity, ...FONT }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500"
         >
           <span>Scroll</span>
           <motion.div
