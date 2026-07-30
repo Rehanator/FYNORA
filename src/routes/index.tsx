@@ -345,6 +345,12 @@ const ZIG_BLOCKS = [
     text: "Make fee payment seamless for parents through UPI, smart Edu-EMI splits, debit, and credit cards.",
     tag: "Every Rail Supported",
   },
+  {
+    video: auditStream.url,
+    heading: "Worried about fee tampering or hidden edits?",
+    text: "Every action is timestamped, IP-fingerprinted, and written to a tamper-proof audit stream. Staff, parents, and auditors see the same truth.",
+    tag: "Live Audit Stream",
+  },
 ];
 
 function ZigZagBlocks() {
