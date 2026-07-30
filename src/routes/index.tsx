@@ -54,16 +54,24 @@ const FONT = { fontFamily: '"Outfit", ui-sans-serif, system-ui, sans-serif' } as
 
 // Each icon starts at an offset from center (in px) and animates to (0,0)
 // as the user scrolls. Values chosen so they scatter around the headline/box.
+const ICON_ART: Record<string, { src: string; alt: string; className: string }> = {
+  rupee: { src: icon3dCoin, alt: "3D golden rupee coin", className: "h-20 w-20 sm:h-28 sm:w-28" },
+  upi: { src: icon3dUpi, alt: "3D UPI payment badge", className: "h-20 w-20 sm:h-24 sm:w-24" },
+  card: { src: icon3dCard, alt: "3D green credit card", className: "h-24 w-24 sm:h-32 sm:w-32" },
+  receipt: { src: icon3dReceipt, alt: "3D paper receipt with chart", className: "h-24 w-24 sm:h-32 sm:w-32" },
+  calendar: { src: icon3dCalendar, alt: "3D calendar date block", className: "h-20 w-20 sm:h-28 sm:w-28" },
+};
+
 const FLOATING_ICONS = [
-  // Top Left — Rupee in yellow circle
+  // Top Left — 3D rupee coin
   { id: "rupee", startX: -420, startY: -220, floatDur: 5.2, floatDelay: 0 },
-  // Top Right — UPI badge
+  // Top Right — 3D UPI badge
   { id: "upi", startX: 400, startY: -240, floatDur: 6.0, floatDelay: 0.4 },
-  // Right Center — Green credit card
+  // Right Center — 3D green credit card
   { id: "card", startX: 460, startY: 40, floatDur: 5.6, floatDelay: 0.8 },
-  // Bottom Left — Receipt
+  // Bottom Left — 3D receipt
   { id: "receipt", startX: -440, startY: 200, floatDur: 6.4, floatDelay: 1.2 },
-  // Bottom Center — Calendar
+  // Bottom Center — 3D calendar
   { id: "calendar", startX: 20, startY: 280, floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
 
