@@ -59,16 +59,16 @@ const ICON_ART: Record<string, { src: string; alt: string; className: string }> 
 };
 
 const FLOATING_ICONS = [
-  // Top Left — 3D rupee coin
-  { id: "rupee", startX: -420, startY: -220, floatDur: 5.2, floatDelay: 0 },
-  // Top Right — 3D UPI badge
-  { id: "upi", startX: 400, startY: -240, floatDur: 6.0, floatDelay: 0.4 },
-  // Right Center — 3D green credit card
-  { id: "card", startX: 460, startY: 40, floatDur: 5.6, floatDelay: 0.8 },
-  // Bottom Left — 3D receipt
-  { id: "receipt", startX: -440, startY: 200, floatDur: 6.4, floatDelay: 1.2 },
-  // Bottom Center — 3D calendar
-  { id: "calendar", startX: 20, startY: 280, floatDur: 5.8, floatDelay: 1.6 },
+  // Top Left — 3D rupee coin (above headline)
+  { id: "rupee", startX: -360, startY: -300, floatDur: 5.2, floatDelay: 0 },
+  // Top Right — 3D UPI badge (above headline)
+  { id: "upi", startX: 360, startY: -290, floatDur: 6.0, floatDelay: 0.4 },
+  // Right Center — 3D green credit card (beside headline)
+  { id: "card", startX: 400, startY: -80, floatDur: 5.6, floatDelay: 0.8 },
+  // Left Mid — 3D receipt (beside subtitle)
+  { id: "receipt", startX: -380, startY: 20, floatDur: 6.4, floatDelay: 1.2 },
+  // Bottom Right — 3D calendar (above box)
+  { id: "calendar", startX: 280, startY: 180, floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
 
 function FloatingIcon({
@@ -123,14 +123,14 @@ function ScrollHero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   // Headline fades as the drop begins
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
-  const headingY = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0]);
+  const headingY = useTransform(scrollYProgress, [0, 0.22], [0, -40]);
 
   // Box → Phone morph (starts after icons have dropped in)
-  const boxWidth = useTransform(scrollYProgress, [0.3, 0.7], [320, 240]);
-  const boxHeight = useTransform(scrollYProgress, [0.3, 0.7], [320, 500]);
-  const boxRadius = useTransform(scrollYProgress, [0.3, 0.7], [40, 48]);
-  const boxRotate = useTransform(scrollYProgress, [0.3, 0.7], [-8, 0]);
+  const boxWidth = useTransform(scrollYProgress, [0.3, 0.7], [240, 220]);
+  const boxHeight = useTransform(scrollYProgress, [0.3, 0.7], [240, 460]);
+  const boxRadius = useTransform(scrollYProgress, [0.3, 0.7], [36, 44]);
+  const boxRotate = useTransform(scrollYProgress, [0.3, 0.7], [-6, 0]);
   const labelOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0]);
   const phoneOpacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
 
@@ -149,7 +149,7 @@ function ScrollHero() {
         {/* Heading */}
         <motion.div
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
-          className="pointer-events-none absolute left-1/2 top-[20%] w-[min(920px,92%)] -translate-x-1/2 text-center"
+          className="pointer-events-none absolute left-1/2 top-[14%] w-[min(840px,92%)] -translate-x-1/2 text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-200 dark:shadow-none">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
@@ -172,7 +172,7 @@ function ScrollHero() {
         ))}
 
         {/* Cinematic backlit glow behind the box/phone */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[120px] dark:opacity-100" />
+        <div className="pointer-events-none absolute left-1/2 top-[60%] -z-10 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 opacity-20 blur-[100px] dark:opacity-100" />
 
         {/* Morphing box → phone */}
         <motion.div
@@ -182,8 +182,10 @@ function ScrollHero() {
             borderRadius: boxRadius,
             rotate: boxRotate,
             scale: boxPulse,
+            x: "-50%",
+            y: "-50%",
           }}
-          className="relative overflow-hidden bg-[#0b0b0b] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.8),0_0_80px_-20px_rgba(0,166,87,0.35),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-800/60"
+          className="absolute left-1/2 top-[60%] overflow-hidden bg-[#0b0b0b] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_60px_-20px_rgba(0,166,87,0.3),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-800/60"
         >
 
           <div className="absolute inset-0 bg-gradient-to-br from-[#181c22] via-[#0b0d10] to-black" />
