@@ -133,8 +133,8 @@ function ScrollHero() {
   const videoScale = useTransform(scrollYProgress, [0.04, 0.34], [0.75, 1], { clamp: true });
   const glowOpacity = useTransform(scrollYProgress, [0.04, 0.3], [0, 1], { clamp: true });
 
-  // Scroll indicator: visible at the very top, fades out as soon as scrolling begins.
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0], { clamp: true });
+  // Scroll indicator: fully visible at the top, fades out as soon as the user scrolls down.
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0], { clamp: true });
 
   return (
     <section ref={ref} className="relative h-[300vh]">
