@@ -198,7 +198,7 @@ function ScrollHero() {
             scale: boxPulse,
             top: boxTop,
             x: "-50%",
-            y: boxCenterY,
+            y: "-50%",
           }}
           className="absolute left-1/2 overflow-hidden"
         >
