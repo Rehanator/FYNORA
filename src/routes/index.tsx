@@ -121,7 +121,6 @@ function FloatingIcon({
     </motion.div>
   );
 }
-}
 
 function ScrollHero() {
   const ref = useRef<HTMLDivElement>(null);
