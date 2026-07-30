@@ -86,11 +86,12 @@ function FloatingIcon({
   floatDur: number;
   floatDelay: number;
 }) {
-  // Icons drift gently inward while fading out with the text.
-  const x = useTransform(scrollYProgress, [0, 0.28], [startX, startX * 0.7], { ease: easeInOut, clamp: true });
-  const y = useTransform(scrollYProgress, [0, 0.28], [startY, startY * 0.7], { ease: easeInOut, clamp: true });
-  const scale = useTransform(scrollYProgress, [0, 0.28], [1, 0.85], { clamp: true });
-  const opacity = useTransform(scrollYProgress, [0, 0.18], [1, 0], { clamp: true });
+  // Icons fly into the center of the screen (where the phone appears)
+  // and shrink to nothing as the phone scales up, creating an "absorption" effect.
+  const x = useTransform(scrollYProgress, [0, 0.28], [startX, 0], { ease: easeInOut, clamp: true });
+  const y = useTransform(scrollYProgress, [0, 0.28], [startY, 0], { ease: easeInOut, clamp: true });
+  const scale = useTransform(scrollYProgress, [0, 0.28], [1, 0], { clamp: true });
+  const opacity = useTransform(scrollYProgress, [0.18, 0.28], [1, 0], { clamp: true });
 
   const art = ICON_ART[id];
 
