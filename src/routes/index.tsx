@@ -2,10 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef } from "react";
 import {
-  IndianRupee,
-  CreditCard,
-  Calendar,
-  Receipt,
   ArrowRight,
   ShieldCheck,
   Sparkles,
