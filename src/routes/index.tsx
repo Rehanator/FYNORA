@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform, easeInOut } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, easeInOut } from "framer-motion";
 import { useRef } from "react";
 import {
   ArrowRight,
@@ -86,13 +86,13 @@ function FloatingIcon({
   floatDur: number;
   floatDelay: number;
 }) {
-  // First action of the scroll (0 → 0.26): every icon flies from its
+  // First action of the scroll (0 → 0.3): every icon flies from its
   // (startX, startY) into the box (which sits just below screen center),
   // shrinking and fading as it gets sucked in.
-  const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0], { ease: easeInOut });
-  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 90], { ease: easeInOut });
-  const scale = useTransform(scrollYProgress, [0, 0.22, 0.3], [1, 0.75, 0.1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.22, 0.3], [1, 0.9, 0]);
+  const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0], { ease: easeInOut, clamp: true });
+  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 90], { ease: easeInOut, clamp: true });
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 0.7, 0.05], { clamp: true });
+  const opacity = useTransform(scrollYProgress, [0, 0.12, 0.28], [1, 0.55, 0], { clamp: true });
 
   const art = ICON_ART[id];
 
@@ -121,30 +121,32 @@ function FloatingIcon({
 
 function ScrollHero() {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const { scrollYProgress: rawProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  // Smoothed progress. Running everything off a spring also keeps the values on
+  // the main thread, so opacity/transform stay perfectly in sync with scroll.
+  const scrollYProgress = useSpring(rawProgress, { stiffness: 260, damping: 40, mass: 0.4 });
 
-  // 1) Headline + subtitle fade out immediately as scrolling begins, well
-  // before the box grows — so nothing is ever covered.
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.14], [1, 0]);
-  const headingY = useTransform(scrollYProgress, [0, 0.14], [0, -70]);
+  // 1) Headline + subtitle fade out the instant scrolling begins — fully
+  // invisible long before the box starts to grow.
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0], { clamp: true });
+  const headingY = useTransform(scrollYProgress, [0, 0.12], [0, -80], { clamp: true });
 
   // 2) Box → phone morph, starting only AFTER icons have flown in (0.3).
-  const boxWidth = useTransform(scrollYProgress, [0.34, 0.68], [220, 260]);
-  const boxHeight = useTransform(scrollYProgress, [0.34, 0.68], [220, 540]);
-  const boxRadius = useTransform(scrollYProgress, [0.34, 0.68], [36, 40]);
-  const boxRotate = useTransform(scrollYProgress, [0.34, 0.68], [-6, 0]);
+  const boxWidth = useTransform(scrollYProgress, [0.34, 0.68], [220, 260], { clamp: true });
+  const boxHeight = useTransform(scrollYProgress, [0.34, 0.68], [220, 540], { clamp: true });
+  const boxRadius = useTransform(scrollYProgress, [0.34, 0.68], [36, 40], { clamp: true });
+  const boxRotate = useTransform(scrollYProgress, [0.34, 0.68], [-6, 0], { clamp: true });
   // Box drifts from lower position to vertical center as the text clears out.
-  const boxCenterY = useTransform(scrollYProgress, [0.2, 0.68], ["-50%", "-50%"]);
-  const boxTop = useTransform(scrollYProgress, [0.2, 0.68], ["62%", "50%"]);
+  const boxTop = useTransform(scrollYProgress, [0.2, 0.68], ["62%", "50%"], { clamp: true });
 
-  const labelOpacity = useTransform(scrollYProgress, [0.34, 0.48], [1, 0]);
+  const labelOpacity = useTransform(scrollYProgress, [0.34, 0.48], [1, 0], { clamp: true });
   // 3) Single clean screen: the box chrome (bg, ring, shadow) fades away and
   // only the video remains with rounded corners — no frame inside a frame.
-  const chromeOpacity = useTransform(scrollYProgress, [0.5, 0.66], [1, 0]);
-  const videoOpacity = useTransform(scrollYProgress, [0.5, 0.68], [0, 1]);
+  const chromeOpacity = useTransform(scrollYProgress, [0.5, 0.66], [1, 0], { clamp: true });
+  const videoOpacity = useTransform(scrollYProgress, [0.5, 0.68], [0, 1], { clamp: true });
 
-  // Absorption pulses each time icons land, then settles before scaling up
-  const boxPulse = useTransform(scrollYProgress, [0, 0.16, 0.3, 0.34], [1, 1.06, 1.02, 1]);
+  // Absorption pulse as the icons land, settling before the box scales up
+  const boxPulse = useTransform(scrollYProgress, [0, 0.16, 0.3, 0.34], [1, 1.06, 1.02, 1], { clamp: true });
 
   return (
     <section ref={ref} className="relative h-[300vh]">
@@ -196,7 +198,7 @@ function ScrollHero() {
             scale: boxPulse,
             top: boxTop,
             x: "-50%",
-            y: boxCenterY,
+            y: "-50%",
           }}
           className="absolute left-1/2 overflow-hidden"
         >
