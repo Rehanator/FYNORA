@@ -378,17 +378,15 @@ function ZigZagBlocks() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-[36px] border border-slate-200 bg-white p-6 shadow-sm dark:border-zinc-800/50 dark:bg-zinc-900/80 dark:shadow-none sm:p-12">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="h-auto w-full rounded-3xl"
-                >
-                  <source src={b.video} type="video/mp4" />
-                </video>
-              </div>
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-auto w-full rounded-3xl"
+              >
+                <source src={b.video} type="video/mp4" />
+              </video>
             </div>
           );
         })}
