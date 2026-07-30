@@ -22,6 +22,11 @@ import video2 from "@/assets/receipts.mp4.asset.json";
 import video3 from "@/assets/records.mp4.asset.json";
 import video4 from "@/assets/rails.mp4.asset.json";
 import phoneDemo from "@/assets/phone-demo.mp4.asset.json";
+import icon3dCoin from "@/assets/hero-3d-coin.png";
+import icon3dCard from "@/assets/hero-3d-card.png";
+import icon3dCalendar from "@/assets/hero-3d-calendar.png";
+import icon3dReceipt from "@/assets/hero-3d-receipt.png";
+import icon3dUpi from "@/assets/hero-3d-upi.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
