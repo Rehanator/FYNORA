@@ -86,13 +86,13 @@ function FloatingIcon({
   floatDur: number;
   floatDelay: number;
 }) {
-  // First action of the scroll (0 → 0.26): every icon flies from its
+  // First action of the scroll (0 → 0.3): every icon flies from its
   // (startX, startY) into the box (which sits just below screen center),
   // shrinking and fading as it gets sucked in.
-  const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0], { ease: easeInOut });
-  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 90], { ease: easeInOut });
-  const scale = useTransform(scrollYProgress, [0, 0.22, 0.3], [1, 0.75, 0.1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.22, 0.3], [1, 0.9, 0]);
+  const x = useTransform(scrollYProgress, [0, 0.3], [startX, 0], { ease: easeInOut, clamp: true });
+  const y = useTransform(scrollYProgress, [0, 0.3], [startY, 90], { ease: easeInOut, clamp: true });
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 0.7, 0.05], { clamp: true });
+  const opacity = useTransform(scrollYProgress, [0, 0.12, 0.28], [1, 0.55, 0], { clamp: true });
 
   const art = ICON_ART[id];
 
