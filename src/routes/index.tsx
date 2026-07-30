@@ -2,10 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef } from "react";
 import {
-  IndianRupee,
-  CreditCard,
-  Calendar,
-  Receipt,
   ArrowRight,
   ShieldCheck,
   Sparkles,
@@ -22,6 +18,11 @@ import video2 from "@/assets/receipts.mp4.asset.json";
 import video3 from "@/assets/records.mp4.asset.json";
 import video4 from "@/assets/rails.mp4.asset.json";
 import phoneDemo from "@/assets/phone-demo.mp4.asset.json";
+import icon3dCoin from "@/assets/hero-3d-coin.png";
+import icon3dCard from "@/assets/hero-3d-card.png";
+import icon3dCalendar from "@/assets/hero-3d-calendar.png";
+import icon3dReceipt from "@/assets/hero-3d-receipt.png";
+import icon3dUpi from "@/assets/hero-3d-upi.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -49,16 +50,24 @@ const FONT = { fontFamily: '"Outfit", ui-sans-serif, system-ui, sans-serif' } as
 
 // Each icon starts at an offset from center (in px) and animates to (0,0)
 // as the user scrolls. Values chosen so they scatter around the headline/box.
+const ICON_ART: Record<string, { src: string; alt: string; className: string }> = {
+  rupee: { src: icon3dCoin, alt: "3D golden rupee coin", className: "h-20 w-20 sm:h-28 sm:w-28" },
+  upi: { src: icon3dUpi, alt: "3D UPI payment badge", className: "h-20 w-20 sm:h-24 sm:w-24" },
+  card: { src: icon3dCard, alt: "3D green credit card", className: "h-24 w-24 sm:h-32 sm:w-32" },
+  receipt: { src: icon3dReceipt, alt: "3D paper receipt with chart", className: "h-24 w-24 sm:h-32 sm:w-32" },
+  calendar: { src: icon3dCalendar, alt: "3D calendar date block", className: "h-20 w-20 sm:h-28 sm:w-28" },
+};
+
 const FLOATING_ICONS = [
-  // Top Left — Rupee in yellow circle
+  // Top Left — 3D rupee coin
   { id: "rupee", startX: -420, startY: -220, floatDur: 5.2, floatDelay: 0 },
-  // Top Right — UPI badge
+  // Top Right — 3D UPI badge
   { id: "upi", startX: 400, startY: -240, floatDur: 6.0, floatDelay: 0.4 },
-  // Right Center — Green credit card
+  // Right Center — 3D green credit card
   { id: "card", startX: 460, startY: 40, floatDur: 5.6, floatDelay: 0.8 },
-  // Bottom Left — Receipt
+  // Bottom Left — 3D receipt
   { id: "receipt", startX: -440, startY: 200, floatDur: 6.4, floatDelay: 1.2 },
-  // Bottom Center — Calendar
+  // Bottom Center — 3D calendar
   { id: "calendar", startX: 20, startY: 280, floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
 
@@ -84,73 +93,7 @@ function FloatingIcon({
   const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const opacity = useTransform(scrollYProgress, [0, 0.28], [1, 0]);
 
-  const renderInner = () => {
-    switch (id) {
-      case "rupee":
-        return (
-          <div className="grid h-16 w-16 place-items-center rounded-full bg-[#facc15] shadow-[0_18px_40px_-12px_rgba(250,204,21,0.55)] ring-1 ring-black/5 sm:h-20 sm:w-20">
-            <IndianRupee className="h-7 w-7 text-[#14171d] sm:h-9 sm:w-9" strokeWidth={2.5} />
-          </div>
-        );
-      case "upi":
-        return (
-          <div className="rounded-2xl border border-white/70 bg-white/90 px-4 py-2.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.2)] backdrop-blur-xl">
-            <div className="text-[10px] font-medium uppercase tracking-widest text-zinc-500">
-              Pay via
-            </div>
-            <div className="mt-0.5 text-lg font-bold tracking-tight">
-              <span className="text-[#ff6a00]">U</span>
-              <span className="text-[#00a657]">P</span>
-              <span className="text-[#00558f]">I</span>
-            </div>
-          </div>
-        );
-      case "card":
-        return (
-          <div className="relative h-14 w-24 overflow-hidden rounded-xl bg-gradient-to-br from-[#00a657] to-[#008a48] p-2.5 text-white shadow-[0_18px_40px_-12px_rgba(0,166,87,0.55)] sm:h-16 sm:w-28">
-            <div className="absolute right-2 top-2 h-2.5 w-3.5 rounded-[3px] bg-yellow-300/90" />
-            <CreditCard className="absolute bottom-2 right-2 h-4 w-4 text-white/70" strokeWidth={1.75} />
-            <div className="absolute bottom-2 left-2.5 space-y-0.5">
-              <div className="h-0.5 w-10 rounded bg-white/60" />
-              <div className="h-0.5 w-6 rounded bg-white/40" />
-            </div>
-          </div>
-        );
-      case "receipt":
-        return (
-          <div className="w-24 rounded-xl bg-white p-2.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5 sm:w-28">
-            <div className="flex items-center gap-1.5">
-              <Receipt className="h-3.5 w-3.5 text-[#00a657]" strokeWidth={2} />
-              <div className="text-[8px] font-semibold uppercase tracking-wider text-[#14171d]">Receipt</div>
-            </div>
-            <div className="mt-2 space-y-1">
-              <div className="h-1 w-full rounded bg-black/10" />
-              <div className="h-1 w-3/4 rounded bg-black/10" />
-              <div className="h-1 w-1/2 rounded bg-black/10" />
-            </div>
-            <div className="mt-2 flex items-center justify-between border-t border-dashed border-black/10 pt-1.5">
-              <div className="text-[8px] text-zinc-500">TOTAL</div>
-              <div className="text-[9px] font-bold text-[#00a657]">₹48,500</div>
-            </div>
-          </div>
-        );
-      case "calendar":
-        return (
-          <div className="w-16 overflow-hidden rounded-xl bg-white shadow-[0_18px_40px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5 sm:w-20">
-            <div className="bg-[#ef4444] py-1 text-center">
-              <div className="text-[8px] font-semibold uppercase tracking-widest text-white/90">Due</div>
-            </div>
-            <div className="grid place-items-center py-2">
-              <Calendar className="h-4 w-4 text-zinc-500" strokeWidth={2} />
-              <div className="mt-0.5 text-lg font-bold leading-none text-[#14171d]">15</div>
-              <div className="text-[8px] font-medium uppercase tracking-wider text-zinc-500">Jul</div>
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
+  const art = ICON_ART[id];
 
   return (
     <motion.div
@@ -158,10 +101,18 @@ function FloatingIcon({
       className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       <motion.div
-        animate={{ y: [-15, 15, -15] }}
+        animate={{ y: [-15, 15, -15], rotate: [-3, 3, -3] }}
         transition={{ duration: floatDur, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
       >
-        {renderInner()}
+        {art ? (
+          <img
+            src={art.src}
+            alt={art.alt}
+            width={512}
+            height={512}
+            className={`select-none object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.25)] ${art.className}`}
+          />
+        ) : null}
       </motion.div>
     </motion.div>
   );
