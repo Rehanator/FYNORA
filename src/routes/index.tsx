@@ -21,7 +21,7 @@ import video1 from "@/assets/nudges.mp4.asset.json";
 import video2 from "@/assets/receipts.mp4.asset.json";
 import video3 from "@/assets/3.mp4.asset.json";
 import video4 from "@/assets/4.mp4.asset.json";
-import auditStream from "@/assets/audit-stream-2.mp4.asset.json";
+import auditStream from "@/assets/audit-stream.mp4.asset.json";
 import phoneDemo from "@/assets/phone-demo.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
