@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, useSpring, easeInOut } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -70,8 +70,8 @@ const FLOATING_ICONS = [
   { id: "card", positionClass: "top-[55%] right-[8%]", floatDur: 5.6, floatDelay: 0.8 },
   // Bottom Left — 3D receipt (below subtitle)
   { id: "receipt", positionClass: "bottom-[25%] left-[15%]", floatDur: 6.4, floatDelay: 1.2 },
-  // Bottom Right — 3D calendar (above scroll indicator)
-  { id: "calendar", positionClass: "bottom-[15%] right-[20%]", floatDur: 5.8, floatDelay: 1.6 },
+  // Bottom Right — 3D calendar (above scroll indicator, clear of the card icon)
+  { id: "calendar", positionClass: "bottom-[15%] right-[38%]", floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
 
 function FloatingIcon({
@@ -87,32 +87,55 @@ function FloatingIcon({
   floatDur: number;
   floatDelay: number;
 }) {
-  // Icons shrink into the phone as it scales up, creating an "absorption" effect.
+  const wrapRef = useRef<HTMLDivElement>(null);
+  // Distance from this icon's resting spot to the centre of the viewport.
+  const [delta, setDelta] = useState({ dx: 0, dy: 0 });
+
+  useEffect(() => {
+    const measure = () => {
+      const el = wrapRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      setDelta({
+        dx: window.innerWidth / 2 - (r.left + r.width / 2),
+        dy: window.innerHeight / 2 - (r.top + r.height / 2),
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  // Icons fly to the centre of the screen and shrink to 0 — "sucked into" the phone.
+  const x = useTransform(scrollYProgress, [0, 0.28], [0, delta.dx], { clamp: true });
+  const y = useTransform(scrollYProgress, [0, 0.28], [0, delta.dy], { clamp: true });
   const scale = useTransform(scrollYProgress, [0, 0.28], [1, 0], { clamp: true });
-  const opacity = useTransform(scrollYProgress, [0.18, 0.28], [1, 0], { clamp: true });
+  const opacity = useTransform(scrollYProgress, [0.2, 0.28], [1, 0], { clamp: true });
 
   const art = ICON_ART[id];
 
   return (
-    <motion.div
-      style={{ scale, opacity }}
+    <div
+      ref={wrapRef}
       className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ${positionClass}`}
     >
-      <motion.div
-        animate={{ y: [-15, 15, -15], rotate: [-3, 3, -3] }}
-        transition={{ duration: floatDur, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
-      >
-        {art ? (
-          <img
-            src={art.src}
-            alt={art.alt}
-            width={512}
-            height={512}
-            className={`select-none object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.25)] ${art.className}`}
-          />
-        ) : null}
+      <motion.div style={{ x, y, scale, opacity }}>
+        <motion.div
+          animate={{ y: [-15, 15, -15], rotate: [-3, 3, -3] }}
+          transition={{ duration: floatDur, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {art ? (
+            <img
+              src={art.src}
+              alt={art.alt}
+              width={512}
+              height={512}
+              className={`select-none object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.25)] ${art.className}`}
+            />
+          ) : null}
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
 
