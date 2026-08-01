@@ -182,7 +182,7 @@ function ScrollHero() {
           loop
           muted
           playsInline
-          style={{ opacity: videoOpacity, scale: videoScale }}
+          style={{ opacity: videoOpacity, scale: videoScale, mixBlendMode: "screen" }}
           className="absolute left-1/2 top-1/2 h-[540px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-[40px] object-cover"
         >
           <source src={phoneDemo.url} type="video/mp4" />
