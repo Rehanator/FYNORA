@@ -22,6 +22,7 @@ import icon3dCard from "@/assets/hero-3d-card.png";
 import icon3dCalendar from "@/assets/hero-3d-calendar.png";
 import icon3dReceipt from "@/assets/hero-3d-receipt.png";
 import icon3dUpi from "@/assets/hero-3d-upi.png";
+import icon3dAlarm from "@/assets/hero-3d-alarm.png";
 import doodleClock from "@/assets/doodle-clock.png";
 import doodleRocket from "@/assets/doodle-rocket.png";
 import doodleGears from "@/assets/doodle-gears.png";
@@ -59,6 +60,7 @@ const ICON_ART: Record<string, { src: string; alt: string; className: string }> 
   card: { src: icon3dCard, alt: "3D green credit card", className: "h-24 w-24 sm:h-32 sm:w-32" },
   receipt: { src: icon3dReceipt, alt: "3D paper receipt with chart", className: "h-24 w-24 sm:h-32 sm:w-32" },
   calendar: { src: icon3dCalendar, alt: "3D calendar date block", className: "h-20 w-20 sm:h-28 sm:w-28" },
+  alarm: { src: icon3dAlarm, alt: "3D golden alarm clock", className: "h-20 w-20 sm:h-28 sm:w-28" },
 };
 
 const FLOATING_ICONS = [
@@ -72,6 +74,8 @@ const FLOATING_ICONS = [
   { id: "receipt", positionClass: "bottom-[25%] left-[15%]", floatDur: 6.4, floatDelay: 1.2 },
   // Bottom Right — 3D calendar (above scroll indicator, clear of the card icon)
   { id: "calendar", positionClass: "bottom-[15%] right-[30%]", floatDur: 5.8, floatDelay: 1.6 },
+  // Bottom Left — 3D alarm clock, mirroring the calendar on the right
+  { id: "alarm", positionClass: "bottom-[15%] left-[30%]", floatDur: 6.2, floatDelay: 2.0 },
 ] as const;
 
 function FloatingIcon({
