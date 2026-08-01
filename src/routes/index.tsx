@@ -5,8 +5,6 @@ import {
   ArrowRight,
   ShieldCheck,
   Sparkles,
-  Zap,
-  Clock,
   CheckCircle2,
   Wallet,
   CalendarDays,
@@ -24,6 +22,10 @@ import icon3dCard from "@/assets/hero-3d-card.png";
 import icon3dCalendar from "@/assets/hero-3d-calendar.png";
 import icon3dReceipt from "@/assets/hero-3d-receipt.png";
 import icon3dUpi from "@/assets/hero-3d-upi.png";
+import doodleClock from "@/assets/doodle-clock.png";
+import doodleRocket from "@/assets/doodle-rocket.png";
+import doodleGears from "@/assets/doodle-gears.png";
+import doodleChecklist from "@/assets/doodle-checklist.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -208,10 +210,10 @@ function ScrollHero() {
 
 function StatsSection() {
   const stats = [
-    { v: "50%", label: "Time Saved", icon: Clock },
-    { v: "10x", label: "Faster Fee Collection", icon: Zap },
-    { v: "100%", label: "Automated Reconciliation", icon: CheckCircle2 },
-    { v: "0", label: "Accounting Errors", icon: ShieldCheck },
+    { v: "50%", label: "Time Saved", art: doodleClock, alt: "Colorful doodle of an alarm clock", tilt: "lg:-rotate-3 lg:translate-y-3" },
+    { v: "10x", label: "Faster Fee Collection", art: doodleRocket, alt: "Colorful doodle of a launching rocket", tilt: "lg:rotate-2 lg:-translate-y-3" },
+    { v: "100%", label: "Automated Reconciliation", art: doodleGears, alt: "Colorful doodle of a sync gear", tilt: "lg:-rotate-2 lg:translate-y-4" },
+    { v: "0", label: "Accounting Errors", art: doodleChecklist, alt: "Colorful doodle of a checklist with a green tick", tilt: "lg:rotate-3 lg:-translate-y-2" },
   ];
   return (
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
@@ -227,17 +229,24 @@ function StatsSection() {
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
         </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map(({ v, label, icon: Icon }) => (
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map(({ v, label, art, alt, tilt }) => (
             <div
               key={label}
-              className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,166,87,0.4)] dark:border-zinc-800/50 dark:bg-zinc-900/80 dark:shadow-none"
+              className={`group flex min-h-[300px] flex-col rounded-[36px] bg-white p-6 shadow-[0_20px_50px_-25px_rgba(15,23,42,0.35)] ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_30px_70px_-25px_rgba(15,23,42,0.45)] ${tilt}`}
             >
-              <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#00a657]/10 text-[#00a657]">
-                <Icon className="h-5 w-5" strokeWidth={2} />
+              <div className="text-4xl font-bold tracking-tight text-slate-900">{v}</div>
+              <div className="mt-1 text-base font-medium text-slate-700">{label}</div>
+              <div className="mt-auto flex justify-center pt-6">
+                <img
+                  src={art}
+                  alt={alt}
+                  loading="lazy"
+                  width={512}
+                  height={512}
+                  className="h-28 w-28 select-none object-contain transition-transform duration-300 group-hover:scale-105 sm:h-32 sm:w-32"
+                />
               </div>
-              <div className="mt-5 text-4xl font-bold tracking-tight text-slate-900 dark:text-white">{v}</div>
-              <div className="mt-1 text-sm text-slate-600 dark:text-zinc-400">{label}</div>
             </div>
           ))}
         </div>
@@ -245,6 +254,7 @@ function StatsSection() {
     </section>
   );
 }
+
 
 const ZIG_BLOCKS = [
   {
