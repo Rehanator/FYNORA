@@ -62,37 +62,32 @@ const ICON_ART: Record<string, { src: string; alt: string; className: string }> 
 };
 
 const FLOATING_ICONS = [
-  // Top Left — 3D rupee coin (below nav, above headline)
-  { id: "rupee", startX: -360, startY: -130, floatDur: 5.2, floatDelay: 0 },
-  // Top Right — 3D UPI badge (below nav, above headline)
-  { id: "upi", startX: 360, startY: -120, floatDur: 6.0, floatDelay: 0.4 },
-  // Right Center — 3D green credit card (beside headline)
-  { id: "card", startX: 400, startY: 90, floatDur: 5.6, floatDelay: 0.8 },
-  // Left Mid — 3D receipt (beside subtitle)
-  { id: "receipt", startX: -380, startY: 190, floatDur: 6.4, floatDelay: 1.2 },
+  // Top Left — 3D rupee coin (left of headline, below nav)
+  { id: "rupee", positionClass: "top-[15%] left-[10%]", floatDur: 5.2, floatDelay: 0 },
+  // Top Right — 3D UPI badge (right of headline)
+  { id: "upi", positionClass: "top-[20%] right-[10%]", floatDur: 6.0, floatDelay: 0.4 },
+  // Middle Right — 3D green credit card (right of subtitle)
+  { id: "card", positionClass: "top-[55%] right-[8%]", floatDur: 5.6, floatDelay: 0.8 },
+  // Bottom Left — 3D receipt (below subtitle)
+  { id: "receipt", positionClass: "bottom-[25%] left-[15%]", floatDur: 6.4, floatDelay: 1.2 },
   // Bottom Right — 3D calendar (above scroll indicator)
-  { id: "calendar", startX: 280, startY: 350, floatDur: 5.8, floatDelay: 1.6 },
+  { id: "calendar", positionClass: "bottom-[15%] right-[20%]", floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
 
 function FloatingIcon({
   id,
   scrollYProgress,
-  startX,
-  startY,
+  positionClass,
   floatDur,
   floatDelay,
 }: {
   id: string;
   scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
-  startX: number;
-  startY: number;
+  positionClass: string;
   floatDur: number;
   floatDelay: number;
 }) {
-  // Icons fly into the center of the screen (where the phone appears)
-  // and shrink to nothing as the phone scales up, creating an "absorption" effect.
-  const x = useTransform(scrollYProgress, [0, 0.28], [startX, 0], { ease: easeInOut, clamp: true });
-  const y = useTransform(scrollYProgress, [0, 0.28], [startY, 0], { ease: easeInOut, clamp: true });
+  // Icons shrink into the phone as it scales up, creating an "absorption" effect.
   const scale = useTransform(scrollYProgress, [0, 0.28], [1, 0], { clamp: true });
   const opacity = useTransform(scrollYProgress, [0.18, 0.28], [1, 0], { clamp: true });
 
@@ -100,8 +95,8 @@ function FloatingIcon({
 
   return (
     <motion.div
-      style={{ x, y, scale, opacity }}
-      className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      style={{ scale, opacity }}
+      className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ${positionClass}`}
     >
       <motion.div
         animate={{ y: [-15, 15, -15], rotate: [-3, 3, -3] }}
