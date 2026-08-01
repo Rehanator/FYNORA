@@ -5,8 +5,6 @@ import {
   ArrowRight,
   ShieldCheck,
   Sparkles,
-  Zap,
-  Clock,
   CheckCircle2,
   Wallet,
   CalendarDays,
