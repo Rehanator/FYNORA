@@ -210,10 +210,10 @@ function ScrollHero() {
 
 function StatsSection() {
   const stats = [
-    { v: "50%", label: "Time Saved", art: doodleClock, alt: "Colorful doodle of an alarm clock", tilt: "lg:-rotate-3 lg:translate-y-3" },
-    { v: "10x", label: "Faster Fee Collection", art: doodleRocket, alt: "Colorful doodle of a launching rocket", tilt: "lg:rotate-2 lg:-translate-y-3" },
-    { v: "100%", label: "Automated Reconciliation", art: doodleGears, alt: "Colorful doodle of a sync gear", tilt: "lg:-rotate-2 lg:translate-y-4" },
-    { v: "0", label: "Accounting Errors", art: doodleChecklist, alt: "Colorful doodle of a checklist with a green tick", tilt: "lg:rotate-3 lg:-translate-y-2" },
+    { v: "50%", label: "Time Saved", art: doodleClock, alt: "Colorful doodle of an alarm clock", tilt: "lg:-rotate-2" },
+    { v: "10x", label: "Faster Fee Collection", art: doodleRocket, alt: "Colorful doodle of a launching rocket", tilt: "lg:rotate-2" },
+    { v: "100%", label: "Automated Reconciliation", art: doodleGears, alt: "Colorful doodle of a sync gear", tilt: "lg:-rotate-2" },
+    { v: "0", label: "Accounting Errors", art: doodleChecklist, alt: "Colorful doodle of a checklist with a green tick", tilt: "lg:rotate-2" },
   ];
   return (
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
@@ -229,22 +229,22 @@ function StatsSection() {
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
         </div>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(({ v, label, art, alt, tilt }) => (
             <div
               key={label}
-              className={`group flex aspect-square flex-col rounded-[40px] bg-zinc-900 p-6 text-white shadow-[0_20px_50px_-25px_rgba(0,0,0,0.5)] transition duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_30px_70px_-25px_rgba(0,0,0,0.6)] ${tilt}`}
+              className={`group relative isolate flex aspect-square flex-col overflow-hidden rounded-[40px] bg-zinc-800 p-6 text-white shadow-[0_20px_50px_-25px_rgba(0,0,0,0.5)] transition-transform duration-300 will-change-transform hover:z-10 hover:rotate-0 hover:scale-[1.04] ${tilt}`}
             >
               <div className="text-4xl font-bold tracking-tight text-white">{v}</div>
               <div className="mt-1 text-base font-medium text-zinc-300">{label}</div>
-              <div className="mt-4 flex flex-1 items-end justify-center pb-2">
+              <div className="mt-2 flex flex-1 items-end justify-center pb-1">
                 <img
                   src={art}
                   alt={alt}
                   loading="lazy"
                   width={512}
                   height={512}
-                  className="h-24 w-24 select-none object-contain transition-transform duration-300 group-hover:scale-105 sm:h-28 sm:w-28"
+                  className="h-24 w-24 select-none object-contain sm:h-28 sm:w-28"
                 />
               </div>
             </div>
