@@ -71,7 +71,7 @@ const FLOATING_ICONS = [
   // Bottom Left — 3D receipt (below subtitle)
   { id: "receipt", positionClass: "bottom-[25%] left-[15%]", floatDur: 6.4, floatDelay: 1.2 },
   // Bottom Right — 3D calendar (above scroll indicator, clear of the card icon)
-  { id: "calendar", positionClass: "bottom-[15%] right-[38%]", floatDur: 5.8, floatDelay: 1.6 },
+  { id: "calendar", positionClass: "bottom-[15%] right-[30%]", floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
 
 function FloatingIcon({
