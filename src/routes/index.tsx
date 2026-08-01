@@ -210,10 +210,10 @@ function ScrollHero() {
 
 function StatsSection() {
   const stats = [
-    { v: "50%", label: "Time Saved", art: doodleClock, alt: "Colorful doodle of an alarm clock", tilt: "lg:-rotate-3 lg:translate-y-3" },
-    { v: "10x", label: "Faster Fee Collection", art: doodleRocket, alt: "Colorful doodle of a launching rocket", tilt: "lg:rotate-2 lg:-translate-y-3" },
-    { v: "100%", label: "Automated Reconciliation", art: doodleGears, alt: "Colorful doodle of a sync gear", tilt: "lg:-rotate-2 lg:translate-y-4" },
-    { v: "0", label: "Accounting Errors", art: doodleChecklist, alt: "Colorful doodle of a checklist with a green tick", tilt: "lg:rotate-3 lg:-translate-y-2" },
+    { v: "50%", label: "Time Saved", art: doodleClock, alt: "Colorful doodle of an alarm clock", tilt: "lg:-rotate-2" },
+    { v: "10x", label: "Faster Fee Collection", art: doodleRocket, alt: "Colorful doodle of a launching rocket", tilt: "lg:rotate-2" },
+    { v: "100%", label: "Automated Reconciliation", art: doodleGears, alt: "Colorful doodle of a sync gear", tilt: "lg:-rotate-2" },
+    { v: "0", label: "Accounting Errors", art: doodleChecklist, alt: "Colorful doodle of a checklist with a green tick", tilt: "lg:rotate-2" },
   ];
   return (
     <section className="relative px-4 py-16 sm:py-24" style={FONT}>
