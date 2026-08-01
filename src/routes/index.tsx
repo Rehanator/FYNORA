@@ -62,16 +62,16 @@ const ICON_ART: Record<string, { src: string; alt: string; className: string }> 
 };
 
 const FLOATING_ICONS = [
-  // Top Left — 3D rupee coin (above headline)
-  { id: "rupee", startX: -360, startY: -300, floatDur: 5.2, floatDelay: 0 },
-  // Top Right — 3D UPI badge (above headline)
-  { id: "upi", startX: 360, startY: -290, floatDur: 6.0, floatDelay: 0.4 },
+  // Top Left — 3D rupee coin (below nav, above headline)
+  { id: "rupee", startX: -360, startY: -130, floatDur: 5.2, floatDelay: 0 },
+  // Top Right — 3D UPI badge (below nav, above headline)
+  { id: "upi", startX: 360, startY: -120, floatDur: 6.0, floatDelay: 0.4 },
   // Right Center — 3D green credit card (beside headline)
-  { id: "card", startX: 400, startY: -80, floatDur: 5.6, floatDelay: 0.8 },
+  { id: "card", startX: 400, startY: 90, floatDur: 5.6, floatDelay: 0.8 },
   // Left Mid — 3D receipt (beside subtitle)
-  { id: "receipt", startX: -380, startY: 20, floatDur: 6.4, floatDelay: 1.2 },
-  // Bottom Right — 3D calendar (above box)
-  { id: "calendar", startX: 280, startY: 180, floatDur: 5.8, floatDelay: 1.6 },
+  { id: "receipt", startX: -380, startY: 190, floatDur: 6.4, floatDelay: 1.2 },
+  // Bottom Right — 3D calendar (above scroll indicator)
+  { id: "calendar", startX: 280, startY: 350, floatDur: 5.8, floatDelay: 1.6 },
 ] as const;
 
 function FloatingIcon({
