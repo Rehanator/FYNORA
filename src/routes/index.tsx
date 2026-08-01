@@ -229,22 +229,22 @@ function StatsSection() {
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(({ v, label, art, alt, tilt }) => (
             <div
               key={label}
-              className={`group flex min-h-[300px] flex-col rounded-[36px] bg-white p-6 shadow-[0_20px_50px_-25px_rgba(15,23,42,0.35)] ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_30px_70px_-25px_rgba(15,23,42,0.45)] ${tilt}`}
+              className={`group flex aspect-square flex-col rounded-[40px] bg-zinc-900 p-6 text-white shadow-[0_20px_50px_-25px_rgba(0,0,0,0.5)] transition duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_30px_70px_-25px_rgba(0,0,0,0.6)] ${tilt}`}
             >
-              <div className="text-4xl font-bold tracking-tight text-slate-900">{v}</div>
-              <div className="mt-1 text-base font-medium text-slate-700">{label}</div>
-              <div className="mt-auto flex justify-center pt-6">
+              <div className="text-4xl font-bold tracking-tight text-white">{v}</div>
+              <div className="mt-1 text-base font-medium text-zinc-300">{label}</div>
+              <div className="mt-4 flex flex-1 items-end justify-center pb-2">
                 <img
                   src={art}
                   alt={alt}
                   loading="lazy"
                   width={512}
                   height={512}
-                  className="h-28 w-28 select-none object-contain transition-transform duration-300 group-hover:scale-105 sm:h-32 sm:w-32"
+                  className="h-24 w-24 select-none object-contain transition-transform duration-300 group-hover:scale-105 sm:h-28 sm:w-28"
                 />
               </div>
             </div>
