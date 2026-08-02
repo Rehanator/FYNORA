@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform, useSpring, easeInOut } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValueEvent, easeInOut } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -160,6 +160,15 @@ function ScrollHero() {
   // Scroll indicator: fully visible at the top, fades out as soon as the user scrolls down.
   const hintOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0], { clamp: true });
 
+  // Play the phone demo exactly once, the first time it is revealed on scroll.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hasPlayed = useRef(false);
+  useMotionValueEvent(videoOpacity, "change", (v) => {
+    if (hasPlayed.current || v < 0.35) return;
+    hasPlayed.current = true;
+    videoRef.current?.play().catch(() => {});
+  });
+
   return (
     <section ref={ref} className="relative h-[300vh]">
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
@@ -200,17 +209,18 @@ function ScrollHero() {
           className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/20 blur-[100px]"
         />
 
-        {/* Clean phone video — direct reveal, no morph */}
+        {/* Clean phone video — plays once when scrolled into view, holds final frame */}
         <motion.video
-          autoPlay
-          loop
+          ref={videoRef}
           muted
           playsInline
+          preload="auto"
           style={{ opacity: videoOpacity, scale: videoScale, mixBlendMode: "screen" }}
           className="absolute left-1/2 top-1/2 h-[540px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-[40px] object-cover"
         >
           <source src={phoneDemo.url} type="video/mp4" />
         </motion.video>
+
 
         {/* Scroll hint — fixed bottom center of the viewport, fades out on scroll, fades in at top */}
         <motion.div
