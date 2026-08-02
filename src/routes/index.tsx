@@ -299,7 +299,7 @@ const ZIG_BLOCKS = [
   },
   {
     video: video4.url,
-    heading: "Turn heavy fees into 0% Interest Micro-EMIs.",
+    heading: "Want to turn heavy fees into 0% Interest Micro-EMIs?",
     text: "Break down large tuition amounts into manageable monthly payments and notify parents instantly via WhatsApp.",
     tag: "SMART FEE SPLITS",
   },
