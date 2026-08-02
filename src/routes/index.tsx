@@ -308,8 +308,8 @@ const ZIG_BLOCKS = [
     heading: "Want to turn heavy fees into 0% Interest Micro-EMIs?",
     text: "Break down large tuition amounts into manageable monthly payments and notify parents instantly via WhatsApp.",
     tag: "SMART FEE SPLITS",
-    check1: "No Interest",
-    check2: "Flexible Tenure"
+    check1: "AI Auto-Suggest",
+    check2: "Zero Hidden Charges"
   },
 ];
 
