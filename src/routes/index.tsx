@@ -60,7 +60,7 @@ const ICON_ART: Record<string, { src: string; alt: string; className: string }> 
   card: { src: icon3dCard, alt: "3D green credit card", className: "h-24 w-24 sm:h-32 sm:w-32" },
   receipt: { src: icon3dReceipt, alt: "3D paper receipt with chart", className: "h-24 w-24 sm:h-32 sm:w-32" },
   calendar: { src: icon3dCalendar, alt: "3D calendar date block", className: "h-20 w-20 sm:h-28 sm:w-28" },
-  alarm: { src: icon3dAlarm, alt: "3D golden alarm clock", className: "h-20 w-20 sm:h-28 sm:w-28" },
+  alarm: { src: icon3dAlarm.url, alt: "3D yellow alarm clock", className: "h-24 w-24 sm:h-32 sm:w-32 scale-110" },
 };
 
 const FLOATING_ICONS = [
