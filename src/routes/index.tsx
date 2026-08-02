@@ -301,7 +301,7 @@ const ZIG_BLOCKS = [
     text: "Track and filter defaulters instantly by class, section, or urgency to keep cash flow organized.",
     tag: "Single Source of Truth",
     check1: "Real-time Sync",
-    check2: "Bulk Export"
+    check2: "Smart Filters"
   },
   {
     video: video4.url,
