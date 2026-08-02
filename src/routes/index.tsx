@@ -160,14 +160,27 @@ function ScrollHero() {
   // Scroll indicator: fully visible at the top, fades out as soon as the user scrolls down.
   const hintOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0], { clamp: true });
 
-  // Play the phone demo exactly once, the first time it is revealed on scroll.
+  // Play the phone demo every time it re-enters the viewport.
   const videoRef = useRef<HTMLVideoElement>(null);
-  const hasPlayed = useRef(false);
-  useMotionValueEvent(videoOpacity, "change", (v) => {
-    if (hasPlayed.current || v < 0.35) return;
-    hasPlayed.current = true;
-    videoRef.current?.play().catch(() => {});
-  });
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section ref={ref} className="relative h-[300vh]">
