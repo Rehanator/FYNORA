@@ -176,7 +176,7 @@ function ScrollHero() {
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-200 dark:shadow-none">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
-            Built for modern K-12 finance teams
+            Next-gen finance platform for schools
           </span>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-6xl md:text-7xl">
             Fed up with chaotic{" "}
@@ -185,7 +185,7 @@ function ScrollHero() {
             </span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base text-slate-600 dark:text-zinc-400 sm:text-lg">
-            Drop the spreadsheets. FYNORA automates every rupee — from reminders to reconciliation.
+            Ditch the manual spreadsheets. FYNORA handles smart EMIs, automated WhatsApp nudges, and real-time reconciliation in one seamless platform.
           </p>
         </motion.div>
 
