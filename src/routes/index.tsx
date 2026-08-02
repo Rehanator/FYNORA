@@ -330,10 +330,10 @@ function ZigZagBlocks() {
                 </p>
                 <div className="mt-6 flex items-center gap-4 text-sm text-slate-600 dark:text-zinc-400">
                   <div className="inline-flex items-center gap-1.5">
-                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> No code setup
+                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> 1-Click Send
                   </div>
                   <div className="inline-flex items-center gap-1.5">
-                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> 5-min live
+                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> Instant Delivery
                   </div>
                 </div>
               </div>
