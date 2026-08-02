@@ -281,7 +281,7 @@ function StatsSection() {
 const ZIG_BLOCKS = [
   {
     video: video1.url,
-    heading: "Tired of manual reminders and follow-ups?",
+    heading: "Tired of chasing parents for pending fees?",
     text: "Schedule payment links and automated reminders via WhatsApp and SMS — parents pay in taps, not trips.",
     tag: "Automated Nudges",
   },
