@@ -22,7 +22,7 @@ import icon3dCard from "@/assets/hero-3d-card.png";
 import icon3dCalendar from "@/assets/hero-3d-calendar.png";
 import icon3dReceipt from "@/assets/hero-3d-receipt.png";
 import icon3dUpi from "@/assets/hero-3d-upi.png";
-import icon3dAlarm from "@/assets/hero-3d-alarm.png";
+import icon3dAlarm from "@/assets/hero-3d-alarm.png.asset.json";
 import doodleClock from "@/assets/doodle-clock.png";
 import doodleRocket from "@/assets/doodle-rocket.png";
 import doodleGears from "@/assets/doodle-gears.png";
