@@ -284,24 +284,32 @@ const ZIG_BLOCKS = [
     heading: "Tired of chasing parents for pending fees?",
     text: "Automate bulk payment links and reminders via WhatsApp and SMS. Parents pay in taps, not trips.",
     tag: "Automated Nudges",
+    check1: "1-Click Send",
+    check2: "Instant Delivery"
   },
   {
     video: video2.url,
     heading: "Need a tamper-proof audit trail?",
     text: "Monitor every system action, waiver, and transaction in real-time with a secure, unchangeable audit ledger.",
     tag: "IMMUTABLE SECURITY",
+    check1: "Bank-grade Security",
+    check2: "100% Tamper-proof"
   },
   {
     video: video3.url,
     heading: "Scattered student fee records?",
     text: "Track and filter defaulters instantly by class, section, or urgency to keep cash flow organized.",
     tag: "Single Source of Truth",
+    check1: "Real-time Sync",
+    check2: "Bulk Export"
   },
   {
     video: video4.url,
     heading: "Want to turn heavy fees into 0% Interest Micro-EMIs?",
     text: "Break down large tuition amounts into manageable monthly payments and notify parents instantly via WhatsApp.",
     tag: "SMART FEE SPLITS",
+    check1: "No Interest",
+    check2: "Flexible Tenure"
   },
 ];
 
@@ -330,10 +338,10 @@ function ZigZagBlocks() {
                 </p>
                 <div className="mt-6 flex items-center gap-4 text-sm text-slate-600 dark:text-zinc-400">
                   <div className="inline-flex items-center gap-1.5">
-                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> 1-Click Send
+                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> {(b as any).check1}
                   </div>
                   <div className="inline-flex items-center gap-1.5">
-                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> Instant Delivery
+                    <CheckCircle2 className="h-4 w-4 text-[#00a657]" /> {(b as any).check2}
                   </div>
                 </div>
               </div>
