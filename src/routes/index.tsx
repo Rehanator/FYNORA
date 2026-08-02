@@ -287,21 +287,21 @@ const ZIG_BLOCKS = [
   },
   {
     video: video2.url,
-    heading: "Trouble reconciling bank statements?",
-    text: "Send customized, instant payment receipts for online and offline transactions with a permanent audit trail.",
-    tag: "Instant Receipts",
+    heading: "Need a tamper-proof audit trail?",
+    text: "Monitor every system action, waiver, and transaction in real-time with a secure, unchangeable audit ledger.",
+    tag: "IMMUTABLE SECURITY",
   },
   {
     video: video3.url,
     heading: "Scattered student fee records?",
-    text: "Track payments easily in real-time from a single place with detailed insights on every class, section, and student.",
+    text: "Track and filter defaulters instantly by class, section, or urgency to keep cash flow organized.",
     tag: "Single Source of Truth",
   },
   {
     video: video4.url,
-    heading: "Stuck with limited payment options?",
-    text: "Make fee payment seamless for parents through UPI, smart Edu-EMI splits, debit, and credit cards.",
-    tag: "Every Rail Supported",
+    heading: "Turn heavy fees into 0% Interest Micro-EMIs.",
+    text: "Break down large tuition amounts into manageable monthly payments and notify parents instantly via WhatsApp.",
+    tag: "SMART FEE SPLITS",
   },
 ];
 
