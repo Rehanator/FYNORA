@@ -282,7 +282,7 @@ const ZIG_BLOCKS = [
   {
     video: video1.url,
     heading: "Tired of chasing parents for pending fees?",
-    text: "Stop the manual follow-ups and awkward phone calls. Select defaulters based on urgency and send automated WhatsApp and SMS payment links in just one click. Parents pay in taps, not trips",
+    text: "Automate bulk payment links and reminders via WhatsApp and SMS. Parents pay in taps, not trips.",
     tag: "Automated Nudges",
   },
   {
