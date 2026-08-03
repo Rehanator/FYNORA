@@ -27,6 +27,7 @@ import doodleClock from "@/assets/doodle-clock.png";
 import doodleRocket from "@/assets/doodle-rocket.png";
 import doodleGears from "@/assets/doodle-gears.png";
 import doodleChecklist from "@/assets/doodle-checklist.png";
+import coinSpin from "@/assets/coin.webm.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
