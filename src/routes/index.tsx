@@ -160,27 +160,33 @@ function ScrollHero() {
   // Scroll indicator: fully visible at the top, fades out as soon as the user scrolls down.
   const hintOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0], { clamp: true });
 
-  // Play the phone demo every time it re-enters the viewport.
+  // Direction-aware playback: play once when entering from the top, never on the
+  // way back up, and re-arm only when the user returns to the hero headline.
   const videoRef = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
+  const armedRef = useRef(true);
+
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
     const video = videoRef.current;
     if (!video) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.currentTime = 0;
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.35 }
-    );
+    // Back at the very top (hero headline) — reset and arm for the next pass down.
+    if (p <= 0.02) {
+      if (!armedRef.current || video.currentTime > 0) {
+        video.pause();
+        video.currentTime = 0;
+      }
+      armedRef.current = true;
+      return;
+    }
 
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
+    // Scrolling down into the video stage: play exactly once per arming.
+    if (armedRef.current && p >= 0.1) {
+      armedRef.current = false;
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    }
+  });
+
 
   return (
     <section ref={ref} className="relative h-[300vh]">
