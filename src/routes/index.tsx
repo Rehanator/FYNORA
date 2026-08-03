@@ -27,6 +27,7 @@ import doodleClock from "@/assets/doodle-clock.png";
 import doodleRocket from "@/assets/doodle-rocket.png";
 import doodleGears from "@/assets/doodle-gears.png";
 import doodleChecklist from "@/assets/doodle-checklist.png";
+import coinSpin from "@/assets/coin.webm.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -259,6 +260,47 @@ function ScrollHero() {
   );
 }
 
+function SpinningCoin() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const playedRef = useRef(false);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !playedRef.current) {
+          playedRef.current = true;
+          el.currentTime = 0;
+          el.play().catch(() => {});
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      animate={{ y: [-10, 10, -10] }}
+      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      className="pointer-events-none mx-auto mt-10 h-40 w-40 sm:h-52 sm:w-52"
+    >
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        preload="auto"
+        className="h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,166,87,0.35)]"
+      >
+        <source src={coinSpin.url} type="video/webm" />
+      </video>
+    </motion.div>
+  );
+}
+
 function StatsSection() {
   const stats = [
     { v: "50%", label: "Time Saved", art: doodleClock, alt: "Colorful doodle of an alarm clock", tilt: "lg:translate-y-10 lg:-rotate-3" },
@@ -279,9 +321,11 @@ function StatsSection() {
           <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-zinc-400">
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
+          <SpinningCoin />
         </div>
         <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(({ v, label, art, alt, tilt }) => (
+
             <div
               key={label}
               className={`group relative isolate flex aspect-square flex-col overflow-hidden rounded-[40px] bg-zinc-800 p-6 text-white shadow-[0_20px_50px_-25px_rgba(0,0,0,0.5)] transition-transform duration-300 will-change-transform hover:z-10 hover:translate-y-0 hover:rotate-0 hover:scale-[1.04] ${tilt}`}
