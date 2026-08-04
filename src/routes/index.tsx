@@ -262,17 +262,22 @@ function ScrollHero() {
 
 function SpinningCoin() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const playedRef = useRef(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    const el = videoRef.current;
+    const el = wrapRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !playedRef.current) {
-          playedRef.current = true;
-          el.currentTime = 0;
-          el.play().catch(() => {});
+        if (entry.isIntersecting) {
+          setStarted(true);
+          const v = videoRef.current;
+          if (v) {
+            v.currentTime = 0;
+            v.play().catch(() => {});
+          }
+          io.disconnect();
         }
       },
       { threshold: 0.4 },
@@ -282,24 +287,37 @@ function SpinningCoin() {
   }, []);
 
   return (
-    <motion.div
+    <div
+      ref={wrapRef}
       aria-hidden="true"
-      animate={{ y: [-10, 10, -10] }}
-      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      className="pointer-events-none mx-auto mt-10 h-40 w-40 sm:h-52 sm:w-52"
+      className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-visible"
+      style={{ perspective: 1000 }}
     >
-      <video
-        ref={videoRef}
-        muted
-        playsInline
-        preload="auto"
-        className="h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,166,87,0.35)]"
+      <motion.div
+        initial={{ scale: 0, y: 0, rotateY: 0 }}
+        animate={started ? { scale: [0, 1.15, 1, 1, 1], y: [0, 0, 0, 0, 520], rotateY: [0, 90, 360, 360, 360] } : {}}
+        transition={{
+          duration: 3.2,
+          times: [0, 0.18, 0.55, 0.62, 1],
+          ease: ["backOut", "linear", "linear", "easeIn"],
+        }}
+        className="h-40 w-40 sm:h-56 sm:w-56 lg:h-64 lg:w-64"
+        style={{ transformStyle: "preserve-3d" }}
       >
-        <source src={coinSpin.url} type="video/webm" />
-      </video>
-    </motion.div>
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          preload="auto"
+          className="h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,166,87,0.45)]"
+        >
+          <source src={coinSpin.url} type="video/webm" />
+        </video>
+      </motion.div>
+    </div>
   );
 }
+
 
 function StatsSection() {
   const stats = [
@@ -321,9 +339,10 @@ function StatsSection() {
           <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-zinc-400">
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
-          <SpinningCoin />
         </div>
-        <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <SpinningCoin />
+
           {stats.map(({ v, label, art, alt, tilt }) => (
 
             <div
