@@ -280,7 +280,7 @@ function SpinningCoin() {
           io.disconnect();
         }
       },
-      { threshold: 0.4 },
+      { threshold: 0.35 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -291,17 +291,26 @@ function SpinningCoin() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-visible"
-      style={{ perspective: 1000 }}
+      style={{ perspective: 1200 }}
     >
       <motion.div
-        initial={{ scale: 0, y: 0, rotateY: 0 }}
-        animate={started ? { scale: [0, 1.15, 1, 1, 1], y: [0, 0, 0, 0, 520], rotateY: [0, 90, 360, 360, 360] } : {}}
+        initial={{ scale: 0, y: 0, rotateY: 0, opacity: 0 }}
+        animate={
+          started
+            ? {
+                scale: [0, 1.25, 1.1, 1.1, 1.1],
+                y: [0, 0, 0, 0, 420],
+                rotateY: [0, 180, 360, 360, 360],
+                opacity: [1, 1, 1, 1, 0],
+              }
+            : {}
+        }
         transition={{
-          duration: 3.2,
-          times: [0, 0.18, 0.55, 0.62, 1],
+          duration: 3.6,
+          times: [0, 0.22, 0.58, 0.68, 1],
           ease: ["backOut", "linear", "linear", "easeIn"],
         }}
-        className="h-40 w-40 sm:h-56 sm:w-56 lg:h-64 lg:w-64"
+        className="h-44 w-44 sm:h-60 sm:w-60 lg:h-80 lg:w-80"
         style={{ transformStyle: "preserve-3d" }}
       >
         <video
@@ -309,7 +318,7 @@ function SpinningCoin() {
           muted
           playsInline
           preload="auto"
-          className="h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,166,87,0.45)]"
+          className="h-full w-full object-contain drop-shadow-[0_30px_70px_rgba(0,166,87,0.5)]"
         >
           <source src={coinSpin.url} type="video/webm" />
         </video>
