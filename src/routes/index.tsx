@@ -325,7 +325,9 @@ function FeaturesJourney() {
   return (
     <div ref={ref} className="relative">
       <TravellingCoin progress={scrollYProgress} />
-      <FeaturesJourney />
+      <StatsSection />
+      <ZigZagBlocks />
+
     </div>
   );
 }
