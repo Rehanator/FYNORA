@@ -260,78 +260,72 @@ function ScrollHero() {
   );
 }
 
-function TravellingCoin({
-  progress,
-}: {
-  progress: import("framer-motion").MotionValue<number>;
-}) {
+function SpinningCoin() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.play().catch(() => {});
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true);
+          const v = videoRef.current;
+          if (v) {
+            v.currentTime = 0;
+            v.play().catch(() => {});
+          }
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
-
-  // Stops: stats grid centre, then beside each of the 4 feature headings.
-  const stops = [0.02, 0.12, 0.34, 0.53, 0.72, 0.9];
-  const xRaw = useTransform(progress, stops, [
-    "0vw",
-    "0vw",
-    "-30vw",
-    "30vw",
-    "-30vw",
-    "30vw",
-  ]);
-  const scaleRaw = useTransform(progress, [0, 0.06, 0.12, 0.95, 1], [0, 1.15, 1, 1, 0.9]);
-  const rotate = useTransform(progress, [0, 1], [0, 720]);
-
-  const x = useSpring(xRaw, { stiffness: 60, damping: 20, mass: 0.6 });
-  const scale = useSpring(scaleRaw, { stiffness: 90, damping: 18 });
 
   return (
     <div
+      ref={wrapRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-20 hidden lg:block"
+      className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-visible"
+      style={{ perspective: 1200 }}
     >
-      <div className="sticky top-1/2 flex -translate-y-1/2 justify-center">
-        <motion.div
-          style={{ x, scale, rotateY: rotate, transformStyle: "preserve-3d", perspective: 1200 }}
-          className="h-56 w-56 xl:h-72 xl:w-72"
+      <motion.div
+        initial={{ scale: 0, y: 0, rotateY: 0, opacity: 0 }}
+        animate={
+          started
+            ? {
+                scale: [0, 1.25, 1.1, 1.1, 1.1],
+                y: [0, 0, 0, 0, 420],
+                rotateY: [0, 180, 360, 360, 360],
+                opacity: [1, 1, 1, 1, 0],
+              }
+            : {}
+        }
+        transition={{
+          duration: 3.6,
+          times: [0, 0.22, 0.58, 0.68, 1],
+          ease: ["backOut", "linear", "linear", "easeIn"],
+        }}
+        className="h-44 w-44 sm:h-60 sm:w-60 lg:h-80 lg:w-80"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          preload="auto"
+          className="h-full w-full object-contain drop-shadow-[0_30px_70px_rgba(0,166,87,0.5)]"
         >
-          <video
-            ref={videoRef}
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="h-full w-full object-contain drop-shadow-[0_30px_70px_rgba(0,166,87,0.5)]"
-          >
-            <source src={coinSpin.url} type="video/webm" />
-          </video>
-        </motion.div>
-      </div>
+          <source src={coinSpin.url} type="video/webm" />
+        </video>
+      </motion.div>
     </div>
   );
 }
-
-function FeaturesJourney() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
-
-  return (
-    <div ref={ref} className="relative">
-      <TravellingCoin progress={scrollYProgress} />
-      <StatsSection />
-      <ZigZagBlocks />
-
-    </div>
-  );
-}
-
 
 
 function StatsSection() {
@@ -356,7 +350,7 @@ function StatsSection() {
           </p>
         </div>
         <div className="relative mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
+          <SpinningCoin />
 
           {stats.map(({ v, label, art, alt, tilt }) => (
 
@@ -575,7 +569,8 @@ function Landing() {
   return (
     <main className="relative bg-slate-50 dark:bg-black" style={FONT}>
       <ScrollHero />
-      <FeaturesJourney />
+      <StatsSection />
+      <ZigZagBlocks />
       <ExpandSection />
       <FinalCTA />
     </main>
