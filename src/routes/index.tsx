@@ -325,8 +325,7 @@ function FeaturesJourney() {
   return (
     <div ref={ref} className="relative">
       <TravellingCoin progress={scrollYProgress} />
-      <StatsSection />
-      <ZigZagBlocks />
+      <FeaturesJourney />
     </div>
   );
 }
@@ -574,8 +573,7 @@ function Landing() {
   return (
     <main className="relative bg-slate-50 dark:bg-black" style={FONT}>
       <ScrollHero />
-      <StatsSection />
-      <ZigZagBlocks />
+      <FeaturesJourney />
       <ExpandSection />
       <FinalCTA />
     </main>
