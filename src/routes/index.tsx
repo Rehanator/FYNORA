@@ -339,9 +339,10 @@ function StatsSection() {
           <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-zinc-400">
             Finance teams cut hours of manual reconciliation and never chase a defaulter twice.
           </p>
-          <SpinningCoin />
         </div>
-        <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <SpinningCoin />
+
           {stats.map(({ v, label, art, alt, tilt }) => (
 
             <div
