@@ -355,7 +355,7 @@ function StatsSection() {
           </p>
         </div>
         <div className="relative mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <SpinningCoin />
+
 
           {stats.map(({ v, label, art, alt, tilt }) => (
 
