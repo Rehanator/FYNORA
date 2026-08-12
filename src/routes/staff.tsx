@@ -63,29 +63,6 @@ const cardVariants = {
 };
 
 const TeamMemberCard = React.memo(({ member, index, onView }: { member: Member; index: number; onView: (m: Member) => void }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30, bounce: 0.2 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30, bounce: 0.2 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      x.set((e.clientX - rect.left) / rect.width - 0.5);
-      y.set((e.clientY - rect.top) / rect.height - 0.5);
-    },
-    [x, y],
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    x.set(0);
-    y.set(0);
-  }, [x, y]);
-
   return (
     <motion.div
       custom={index}
@@ -93,12 +70,10 @@ const TeamMemberCard = React.memo(({ member, index, onView }: { member: Member; 
       initial="offscreen"
       whileInView="onscreen"
       viewport={{ once: true, amount: 0.2 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className="glass relative rounded-2xl p-6"
+      className="glass group relative rounded-2xl p-6 transition-[transform,box-shadow] duration-300 ease-out will-change-transform hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(34,211,238,0.45)]"
     >
-      <div style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }} className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5">
+
         {/* Header: avatar + name + role */}
         <div className="flex items-center gap-4">
           <img
