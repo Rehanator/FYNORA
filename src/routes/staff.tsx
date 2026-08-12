@@ -70,7 +70,7 @@ const TeamMemberCard = React.memo(({ member, index, onView }: { member: Member; 
       initial="offscreen"
       whileInView="onscreen"
       viewport={{ once: true, amount: 0.2 }}
-      className="glass group relative rounded-2xl p-6 transition-[transform,box-shadow] duration-300 ease-out will-change-transform hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(34,211,238,0.45)]"
+      className="glass group relative rounded-2xl p-6 transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:shadow-[0_20px_50px_-15px_rgba(34,211,238,0.5)]"
     >
       <div className="flex flex-col gap-5">
 
