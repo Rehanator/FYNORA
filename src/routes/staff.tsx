@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Award, Mail, Phone, ArrowRight, UserPlus, Briefcase } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -166,7 +166,7 @@ function Staff() {
   };
 
   return (
-    <div className="space-y-8" style={{ perspective: "1200px" }}>
+    <div className="space-y-8">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Staff Directory</h1>
