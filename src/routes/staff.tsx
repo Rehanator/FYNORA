@@ -31,15 +31,16 @@ type Member = {
 };
 
 const initialStaff: Member[] = [
-  { name: "Ravi Narayanan", role: "Senior Accountant", dept: "Finance", years: 12, email: "ravi.n@smartschool.edu", phone: "+91 98765 12345", dotColor: "bg-emerald-400", avatar: "https://i.pravatar.cc/160?img=68" },
-  { name: "Priya Menon", role: "Front Desk Lead", dept: "Reception", years: 6, email: "priya.m@smartschool.edu", phone: "+91 98213 55401", dotColor: "bg-fuchsia-400", avatar: "https://i.pravatar.cc/160?img=47" },
-  { name: "Suresh Iyer", role: "Bus Coordinator", dept: "Transport", years: 10, email: "suresh.i@smartschool.edu", phone: "+91 90234 66112", dotColor: "bg-amber-400", avatar: "https://i.pravatar.cc/160?img=12" },
-  { name: "Anita Kapoor", role: "Principal Admin", dept: "Administration", years: 18, email: "anita.k@smartschool.edu", phone: "+91 99887 12200", dotColor: "bg-violet-400", avatar: "https://i.pravatar.cc/160?img=45" },
-  { name: "Meera Joshi", role: "Fee Reconciliation Officer", dept: "Finance", years: 8, email: "meera.j@smartschool.edu", phone: "+91 98450 78990", dotColor: "bg-emerald-400", avatar: "https://i.pravatar.cc/160?img=32" },
-  { name: "Arjun Rathore", role: "IT Systems Admin", dept: "Technology", years: 5, email: "arjun.r@smartschool.edu", phone: "+91 91234 45566", dotColor: "bg-cyan-400", avatar: "https://i.pravatar.cc/160?img=15" },
-  { name: "Fatima Sheikh", role: "Scholarship Coordinator", dept: "HR", years: 7, email: "fatima.s@smartschool.edu", phone: "+91 93450 22110", dotColor: "bg-pink-400", avatar: "https://i.pravatar.cc/160?img=44" },
-  { name: "David Thomas", role: "Cheque Reconciliation Analyst", dept: "Compliance", years: 4, email: "david.t@smartschool.edu", phone: "+91 97766 55211", dotColor: "bg-rose-400", avatar: "https://i.pravatar.cc/160?img=13" },
+  { name: "Ravi Narayanan", role: "Senior Accountant", dept: "Finance", years: 12, email: "ravi.n@smartschool.edu", phone: "+91 98765 12345", dotColor: "bg-emerald-400", avatar: staff0032.url },
+  { name: "Priya Menon", role: "Front Desk Lead", dept: "Reception", years: 6, email: "priya.m@smartschool.edu", phone: "+91 98213 55401", dotColor: "bg-fuchsia-400", avatar: staff0043.url },
+  { name: "Suresh Iyer", role: "Bus Coordinator", dept: "Transport", years: 10, email: "suresh.i@smartschool.edu", phone: "+91 90234 66112", dotColor: "bg-amber-400", avatar: staff0034.url },
+  { name: "Anita Kapoor", role: "Principal Admin", dept: "Administration", years: 18, email: "anita.k@smartschool.edu", phone: "+91 99887 12200", dotColor: "bg-violet-400", avatar: staff0033.url },
+  { name: "Meera Joshi", role: "Fee Reconciliation Officer", dept: "Finance", years: 8, email: "meera.j@smartschool.edu", phone: "+91 98450 78990", dotColor: "bg-emerald-400", avatar: staff0031.url },
+  { name: "Arjun Rathore", role: "IT Systems Admin", dept: "Technology", years: 5, email: "arjun.r@smartschool.edu", phone: "+91 91234 45566", dotColor: "bg-cyan-400", avatar: staff0035.url },
+  { name: "Fatima Sheikh", role: "Scholarship Coordinator", dept: "HR", years: 7, email: "fatima.s@smartschool.edu", phone: "+91 93450 22110", dotColor: "bg-pink-400", avatar: staff0045.url },
+  { name: "David Thomas", role: "Cheque Reconciliation Analyst", dept: "Compliance", years: 4, email: "david.t@smartschool.edu", phone: "+91 97766 55211", dotColor: "bg-rose-400", avatar: staff0046.url },
 ];
+
 
 const FILTERS = ["All", "Finance", "Administration", "Transport", "Reception", "Technology", "Compliance", "HR"] as const;
 type Filter = (typeof FILTERS)[number];
