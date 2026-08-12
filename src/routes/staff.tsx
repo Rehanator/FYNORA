@@ -6,6 +6,14 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import staff0031 from "@/assets/staff/staff-0031.jpg.asset.json";
+import staff0032 from "@/assets/staff/staff-0032.jpg.asset.json";
+import staff0033 from "@/assets/staff/staff-0033.jpg.asset.json";
+import staff0034 from "@/assets/staff/staff-0034.jpg.asset.json";
+import staff0035 from "@/assets/staff/staff-0035.jpg.asset.json";
+import staff0043 from "@/assets/staff/staff-0043.jpg.asset.json";
+import staff0045 from "@/assets/staff/staff-0045.jpg.asset.json";
+import staff0046 from "@/assets/staff/staff-0046.jpg.asset.json";
 
 export const Route = createFileRoute("/staff")({
   head: () => ({
