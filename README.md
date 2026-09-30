@@ -13,7 +13,6 @@ A full-stack web application combining a modern TypeScript frontend with a Pytho
 
 **Backend & Tooling:**
 * **Python** (Backend services/API)
-* **Lovable.dev** (AI IDE agent integration)
 * **ESLint & Prettier** (Code formatting and linting)
 
 ## 📁 Project Structure
@@ -21,7 +20,6 @@ A full-stack web application combining a modern TypeScript frontend with a Pytho
 * `/src` - Frontend TypeScript source code and UI components.
 * `/backend` - Python backend logic, APIs, and scripts.
 * `/public` - Static assets (images, icons, etc.).
-* `.lovable` - Configuration for Lovable.dev AI generation.
 
 ## 💻 Getting Started
 
