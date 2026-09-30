@@ -28,6 +28,7 @@ import doodleRocket from "@/assets/doodle-rocket.png";
 import doodleGears from "@/assets/doodle-gears.png";
 import doodleChecklist from "@/assets/doodle-checklist.png";
 import coinSpin from "@/assets/coin.webm.asset.json";
+import { CoinDropAnimation } from "@/components/fee/CoinDropAnimation";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -146,6 +147,7 @@ function FloatingIcon({
 
 function ScrollHero() {
   const ref = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: rawProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const scrollYProgress = useSpring(rawProgress, { stiffness: 260, damping: 40, mass: 0.4 });
 
@@ -191,17 +193,28 @@ function ScrollHero() {
 
   return (
     <section ref={ref} className="relative h-[300vh]">
-      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+      <div ref={stickyRef} className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Ambient wash */}
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00a657]/15 blur-[180px]" />
           <div className="absolute right-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-[oklch(0.6_0.12_220)]/15 blur-[180px]" />
         </div>
 
+        {/* Coins cascade into the "collection vault" as the user scrolls — tied to the sticky viewport */}
+        <CoinDropAnimation
+          mode="scroll"
+          targetRef={ref}
+          scrollStart={0.12}
+          scrollEnd={0.62}
+          coinCount={22}
+          intensity={1.1}
+          className="z-0"
+        />
+
         {/* Heading */}
         <motion.div
           style={{ opacity: headingOpacity, y: headingY, ...FONT }}
-          className="pointer-events-none absolute left-1/2 top-[12%] w-[min(840px,92%)] -translate-x-1/2 text-center"
+          className="pointer-events-none absolute left-1/2 top-[12%] w-[min(840px,92%)] -translate-x-1/2 text-center z-10"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-200 dark:shadow-none">
             <Sparkles className="h-3.5 w-3.5 text-[#00a657]" />
@@ -236,7 +249,7 @@ function ScrollHero() {
           playsInline
           preload="auto"
           style={{ opacity: videoOpacity, scale: videoScale, mixBlendMode: "screen" }}
-          className="absolute left-1/2 top-1/2 h-[540px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-[40px] object-cover"
+          className="absolute left-1/2 top-1/2 h-[540px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-[40px] object-cover z-10"
         >
           <source src={phoneDemo.url} type="video/mp4" />
         </motion.video>
@@ -245,7 +258,7 @@ function ScrollHero() {
         {/* Scroll hint — fixed bottom center of the viewport, fades out on scroll, fades in at top */}
         <motion.div
           style={{ opacity: hintOpacity, ...FONT }}
-          className="pointer-events-none fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500"
+          className="pointer-events-none fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.35em] text-slate-500 dark:text-zinc-500 z-20"
         >
           <span>Scroll</span>
           <motion.div
@@ -530,12 +543,26 @@ function ExpandSection() {
 }
 
 function FinalCTA() {
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
   return (
-    <section className="px-4 py-16 sm:py-24" style={FONT}>
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[68px] bg-[#00a657] p-10 text-white shadow-[0_40px_120px_-30px_rgba(0,166,87,0.6)] sm:p-20">
+    <section ref={sectionRef} className="px-4 py-16 sm:py-24" style={FONT}>
+      <div ref={ctaRef} className="relative mx-auto max-w-6xl overflow-hidden rounded-[68px] bg-[#00a657] p-10 text-white shadow-[0_40px_120px_-30px_rgba(0,166,87,0.6)] sm:p-20">
         <div className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full bg-white/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-16 h-[420px] w-[420px] rounded-full bg-black/10 blur-3xl" />
-        <div className="relative text-center">
+
+        {/* CTA coin shower — scroll-triggered into the green "vault" card */}
+        <CoinDropAnimation
+          mode="scroll"
+          targetRef={sectionRef}
+          scrollStart={0.05}
+          scrollEnd={0.85}
+          coinCount={16}
+          intensity={1.2}
+        />
+
+        <div className="relative text-center z-10">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur">
             <Sparkles className="h-3.5 w-3.5" /> Ready in minutes
           </span>

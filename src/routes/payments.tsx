@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Smartphone,
   Banknote,
@@ -28,6 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CoinDropAnimation, type CoinDropHandle } from "@/components/fee/CoinDropAnimation";
 
 const DATE_FILTERS = ["Today", "Yesterday", "Last 7 Days", "This Month"] as const;
 type DateFilter = (typeof DATE_FILTERS)[number];
@@ -197,6 +198,7 @@ function PaymentsPage() {
   const [rows, setRows] = useState(initialOffline);
   const pendingCount = rows.filter((r) => r.status === "pending").length;
   const approvedCount = rows.filter((r) => r.status === "approved").length;
+  const coinBurstRef = useRef<CoinDropHandle | null>(null);
 
   // Base values per date filter
   const FILTER_BASE: Record<DateFilter, { collection: number; upi: number; offline: number; pending: number }> = {
@@ -317,6 +319,7 @@ function PaymentsPage() {
     setRows((r) => r.map((x) => (x.id === id ? { ...x, status } : x)));
     const row = rows.find((x) => x.id === id);
     if (status === "approved") {
+      coinBurstRef.current?.triggerBurst(18);
       toast.success(`Payment approved · ${row?.receipt ?? id}`, {
         description: "Receipt issued and an immutable audit entry was written.",
       });
@@ -343,7 +346,15 @@ function PaymentsPage() {
 
 
   return (
-    <div className="space-y-6">
+    <div className="relative space-y-6">
+      {/* Coin celebration burst — triggered when an offline/online payment is marked approved */}
+      <CoinDropAnimation
+        mode="burst"
+        triggerRef={coinBurstRef}
+        coinCount={18}
+        intensity={1.15}
+        className="fixed inset-0 z-[60]"
+      />
       <PageHeader
         eyebrow="Payments"
         title="Omnichannel Payments"
