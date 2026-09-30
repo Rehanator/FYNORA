@@ -1,4 +1,4 @@
-# FYNORA-Team-Beginners
+# FYNORA
 
 A full-stack web application combining a modern TypeScript frontend with a Python backend.
 
