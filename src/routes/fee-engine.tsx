@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
+import * as XLSX from "xlsx";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { feeIconMap, type FeeIconKey } from "@/components/fee/AnimatedFeeIcon";
 import { LivingBackdrop } from "@/components/fee/LivingBackdrop";
@@ -447,7 +448,7 @@ function FeeEngine() {
         </div>
       </div>
 
-
+ <StudentBulkImport />
       {/* Waiver Rules */}
       <div className="glass rounded-2xl p-6">
         <div className="flex items-start justify-between gap-4">
@@ -657,3 +658,207 @@ function Field({
     </div>
   );
 }
+type ImportRow = {
+  student_code: string;
+  full_name: string;
+  grade: string;
+  parent_phone: string;
+  fee_type: string;
+  errors: string[];
+};
+
+function StudentBulkImport() {
+  const [rows, setRows] = useState<ImportRow[]>([]);
+  const [fileName, setFileName] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const required = [
+    "student_code",
+    "full_name",
+    "grade",
+    "parent_phone",
+    "fee_type",
+  ];
+
+  async function handleFile(file?: File) {
+    if (!file) return;
+
+    if (!/\.(csv|xlsx)$/i.test(file.name)) {
+      toast.error("Please choose a CSV or XLSX file");
+      return;
+    }
+
+    try {
+      let data: Record<string, unknown>[] = [];
+
+      if (/\.csv$/i.test(file.name)) {
+        const text = await file.text();
+        const lines = text.trim().split(/\r?\n/);
+        const headers = lines[0]
+          .split(",")
+          .map((h) => h.trim().replace(/^"|"$/g, ""));
+
+        data = lines.slice(1).filter(Boolean).map((line) => {
+          const values = line.split(",").map((v) =>
+            v.trim().replace(/^"|"$/g, "")
+          );
+          return Object.fromEntries(
+            headers.map((header, i) => [header, values[i] ?? ""])
+          );
+        });
+      } else {
+        const workbook = XLSX.read(await file.arrayBuffer(), {
+          type: "array",
+        });
+        data = XLSX.utils.sheet_to_json(
+          workbook.Sheets[workbook.SheetNames[0]],
+          { defval: "" }
+        ) as Record<string, unknown>[];
+      }
+
+      const parsed = data.map((item) => {
+        const row = Object.fromEntries(
+          Object.entries(item).map(([key, value]) => [
+            key.trim().toLowerCase(),
+            String(value ?? "").trim(),
+          ])
+        ) as Record<string, string>;
+
+        const errors = required
+          .filter((key) => !row[key])
+          .map((key) => `Missing ${key}`);
+
+        return {
+          student_code: row.student_code ?? "",
+          full_name: row.full_name ?? "",
+          grade: row.grade ?? "",
+          parent_phone: row.parent_phone ?? "",
+          fee_type: row.fee_type ?? "",
+          errors,
+        };
+      });
+
+      setRows(parsed);
+      setFileName(file.name);
+      toast.success(`${parsed.length} rows loaded for preview`);
+    } catch {
+      toast.error("Could not read this file");
+    }
+  }
+
+  async function submitImport() {
+    const validRows = rows.filter((row) => row.errors.length === 0);
+
+    if (!validRows.length) {
+      toast.error("No valid rows to import");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/students/bulk-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          students: validRows.map(({ errors, ...row }) => row),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.detail ?? "Import failed");
+      }
+
+      toast.success(
+        `Import complete: ${result.imported ?? 0} imported, ${result.skipped ?? 0} skipped`
+      );
+      setRows([]);
+      setFileName("");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Import failed"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section className="mt-6 rounded-2xl border border-black/10 p-5">
+      <h2 className="text-lg font-semibold">Bulk Student Import</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Upload a CSV or Excel file to preview student records.
+      </p>
+
+      <label className="mt-4 flex cursor-pointer flex-col items-center rounded-xl border-2 border-dashed border-black/20 p-6 text-center">
+        <span className="font-medium">Choose CSV or XLSX file</span>
+        <span className="mt-1 text-xs text-muted-foreground">
+          Required columns: {required.join(", ")}
+        </span>
+        <input
+          type="file"
+          accept=".csv,.xlsx"
+          className="mt-3 max-w-full text-sm"
+          onChange={(event) => handleFile(event.target.files?.[0])}
+        />
+      </label>
+
+      {fileName && (
+        <p className="mt-3 text-sm">File: {fileName}</p>
+      )}
+
+      {rows.length > 0 && (
+        <>
+          <p className="mt-3 text-sm">
+            {rows.filter((row) => !row.errors.length).length} valid ·{" "}
+            {rows.filter((row) => row.errors.length > 0).length} invalid
+          </p>
+
+          <div className="mt-3 max-h-80 overflow-auto rounded-xl border border-black/10">
+            <table className="w-full text-left text-sm">
+              <thead className="sticky top-0 bg-background">
+                <tr>
+                  <th className="p-2">Row</th>
+                  <th className="p-2">Student code</th>
+                  <th className="p-2">Name</th>
+                  <th className="p-2">Grade</th>
+                  <th className="p-2">Errors</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, index) => (
+                  <tr
+                    key={`${row.student_code}-${index}`}
+                    className={
+                      row.errors.length
+                        ? "bg-red-500/10"
+                        : "border-t border-black/10"
+                    }
+                  >
+                    <td className="p-2">{index + 2}</td>
+                    <td className="p-2">{row.student_code || "—"}</td>
+                    <td className="p-2">{row.full_name || "—"}</td>
+                    <td className="p-2">{row.grade || "—"}</td>
+                    <td className="p-2" title={row.errors.join(", ")}>
+                      {row.errors.join(", ") || "Valid"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <button
+            disabled={loading || rows.every((row) => row.errors.length > 0)}
+            onClick={submitImport}
+            className="mt-4 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+          >
+            {loading ? "Importing..." : "Import valid rows"}
+          </button>
+        </>
+      )}
+    </section>
+  );
+}
+
