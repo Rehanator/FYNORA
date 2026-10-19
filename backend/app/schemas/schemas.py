@@ -163,3 +163,11 @@ class DefaulterOut(BaseModel):
     overdue_amount: float
     days_late: int
     urgency: str  # low / med / high
+class BulkStudentImportRow(BaseModel):
+    student_code: str
+    full_name: str
+    grade: str
+    parent_phone: str
+    fee_type: str
+    parent_name: Optional[str] = None
+    parent_email: Optional[str] = None
